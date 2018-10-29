@@ -9,7 +9,7 @@
     "esModuleInterop": true,
 
     "strict": true,
-    "strictPropertyInitialization": true,
+    "strictPropertyInitialization": false,
 
     "inlineSourceMap": true,              
     "inlineSources": true,                 
