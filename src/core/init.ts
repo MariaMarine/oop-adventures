@@ -1,23 +1,22 @@
+import { inject, injectable } from 'inversify';
 import { IsessionDataService } from '../session-data-service/interfaces/sessionDataService';
-import { Ireader } from './UI/interfaces/reader';
-import { Iwriter } from './UI/interfaces/writer';
-import { injectable } from 'inversify';
+import { PromptLoop } from './UI/promptLoop';
 
 @injectable()
 export class Init {
-    private readonly writer: Iwriter;
-    private readonly reader: Ireader;
+    private readonly promptLoop: PromptLoop;
     private readonly sessionDataService: IsessionDataService;
-    public constructor(writer: Iwriter, reader: Ireader, sessionDataService: IsessionDataService) {
-        if (!writer) {
-            throw new Error('Invalid writer, please try again');
-        }
-        if (!reader) {
-            throw new Error('Invalid reader, please try again');
-        }
-        this.sessionDataService =  sessionDataService;
-        this.writer = writer;
-        this.reader = reader;
+
+    public constructor(@inject('prompt-loop') promptLoop: PromptLoop,
+                       @inject('local-data') sessionDataService: IsessionDataService) {
+        this.sessionDataService = sessionDataService;
+        this.promptLoop = promptLoop;
+    }
+    public initialize(): void {
+
+        const userName: string = this.promptLoop.setName();
+        this.sessionDataService.write('username', userName);
+        this.promptLoop.multiple(['Choose direction', 'Invalid direction', 'Please try again'], ['North', 'South', 'East', 'West']);
     }
 
 }

@@ -1,21 +1,21 @@
+import { Container } from 'inversify';
+import { Iparser } from '../core/UI/interfaces/parser';
+import { Iwriter } from '../core/UI/interfaces/writer';
+import { TestParser } from '../core/UI/parsers/parser';
+import { Init } from './../core/init';
+import { Ireader } from './../core/UI/interfaces/reader';
+import { ConsoleReader } from './../core/UI/readers/console-reader';
+import { ConsoleWriter } from './../core/UI/writers/console-writer';
 import { LocalStorageService } from './../session-data-service/implementations/local-storage-service';
 import { IsessionDataService } from './../session-data-service/interfaces/sessionDataService';
-import { SessionDataService } from './../session-data-service/session-data-service';
-import { ConsoleReader } from './../core/UI/readers/console-reader';
-import { Ireader } from './../core/UI/interfaces/reader';
-import { ConsoleWriter } from './../core/UI/writers/console-writer';
-import { Init } from './../core/init';
-import { Container } from 'inversify';
-import { Iwriter } from '../core/UI/interfaces/writer';
+import { PromptLoop } from '../core/UI/promptLoop';
 
 const container: Container = new Container();
 
 container.bind<Init>('init').to(Init);
 container.bind<Iwriter>('ui-writer').to(ConsoleWriter);
 container.bind<Ireader>('ui-reader').to(ConsoleReader);
-container.bind<IsessionDataService>('session-data').to(SessionDataService);
-container.bind<IsessionDataService>('local-data').to(LocalStorageService).whenInjectedInto(SessionDataService);
-
-
-
+container.bind<IsessionDataService>('local-data').to(LocalStorageService);
+container.bind<Iparser>('ui-parser').to(TestParser);
+container.bind<PromptLoop>('prompt-loop').to(PromptLoop);
 export { container };

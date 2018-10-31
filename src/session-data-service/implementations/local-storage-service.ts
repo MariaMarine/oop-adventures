@@ -1,5 +1,8 @@
 import nodeLocalstorage from 'node-localstorage';
 import { IsessionDataService } from '../interfaces/sessionDataService';
+import { injectable } from 'inversify';
+
+@injectable()
 
 export class LocalStorageService implements IsessionDataService {
 
