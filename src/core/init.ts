@@ -1,7 +1,9 @@
 import { IsessionDataService } from '../session-data-service/interfaces/sessionDataService';
 import { Ireader } from './UI/interfaces/reader';
 import { Iwriter } from './UI/interfaces/writer';
+import { injectable } from 'inversify';
 
+@injectable()
 export class Init {
     private readonly writer: Iwriter;
     private readonly reader: Ireader;
