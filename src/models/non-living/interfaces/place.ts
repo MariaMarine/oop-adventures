@@ -1,8 +1,8 @@
 import { ICollectable } from './collectable';
 export interface IPlace {
     name: string;
-    mapPostionX: number;
-    mapPositionY: number;
+    // MapPostionX: number;
+    // MapPositionY: number;
     visited: boolean;
     containsCreature: boolean;
     introText: string;

@@ -1,4 +1,4 @@
 export interface ICollectable {
-    name: string;
+    // Name: string;
     price: number;
 }
