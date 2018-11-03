@@ -1,11 +1,12 @@
+import { IInventory } from './inventory';
 import { ICollectable } from './collectable';
 export interface IPlace {
-    name: string;
+    // Name: string;
     // MapPostionX: number;
     // MapPositionY: number;
     visited: boolean;
     containsCreature: boolean;
     introText: string;
-    loot: ICollectable [];
+    // To add: loot: IInventory;
 }
-// Map position may not be necessary?
+

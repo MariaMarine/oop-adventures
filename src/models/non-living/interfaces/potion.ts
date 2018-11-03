@@ -3,5 +3,5 @@ import { ICollectable } from './collectable';
 
 export interface IPotion extends ICollectable {
     power: number;
-    subtype: PotionType;
+    //subtype: PotionType;
 }
