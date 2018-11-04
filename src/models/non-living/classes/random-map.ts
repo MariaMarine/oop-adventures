@@ -1,7 +1,7 @@
-import { IInventory } from '../interfaces/inventory';
 import { Place } from './place';
 import { IPlace } from '../interfaces/place';
 import { IMap } from '../interfaces/map';
+
 class RandomizedPlaceMap implements IMap <IPlace>  {
     private _rows: number;
     private _cols: number;
@@ -13,8 +13,8 @@ class RandomizedPlaceMap implements IMap <IPlace>  {
         this._map = [];
         for (let y: number = 0; y < rows; y += 1) {
             const row: IPlace[] = [];
-            for (let x: number = 0; x < cols; x  += 1) {
-              row.push(new Place());
+            for (let x: number = 0; x < cols; x += 1) {
+              row.push(new Place()); // Unchuck!
             }
             this._map.push(row);
           }
@@ -30,8 +30,9 @@ class RandomizedPlaceMap implements IMap <IPlace>  {
     }
 }
 
-/* Test
+// Test
 const gameMap: RandomizedPlaceMap = new RandomizedPlaceMap(2, 3);
 const map: IPlace[][] = gameMap.map;
-console.log(map);
-*/
+const currentPlace: IPlace = map[1][2];
+console.log(currentPlace);
+console.log(currentPlace.loot);

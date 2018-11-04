@@ -7,6 +7,5 @@ export interface IPlace {
     visited: boolean;
     containsCreature: boolean;
     introText: string;
-    // To add: loot: IInventory;
+    loot: IInventory;
 }
-

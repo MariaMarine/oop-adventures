@@ -1,3 +1,5 @@
+import { PlaceDescription } from './../enums/placeDescriptions';
+import { Randomizer } from './../../../core/constants/randomizer';
 import { IInventory } from '../interfaces/inventory';
 import { IPlace } from '../interfaces/place';
 
@@ -5,21 +7,25 @@ export class Place implements IPlace {
     private _visited: boolean;
     private _containsCreature: boolean;
     private _introText: string;
-    //private _loot: IInventory;
+    private _loot: IInventory;
 
-    public constructor (containsCreature?: boolean, introText?: string) {
+    public constructor (containsCreature?: boolean, introText?: string, loot?: IInventory) {
             this._visited = false;
-            if (containsCreature){
+            if (containsCreature) {
                 this._containsCreature = containsCreature;
             } else {
-                this._containsCreature = Math.random() < 0.5;
-            } 
-            if (introText){
+                this._containsCreature = Randomizer.GENERATERANDOMBOOLEAN();
+            }
+            if (introText) {
                 this._introText = introText;
             } else {
-                this._introText = 'Placeholder text';
+                this._introText = `You enter ${Randomizer.GETRANDOMENUMOPTION(PlaceDescription)}. What would you like to do next?`;
             }
-            //this._loot = loot;
+            if (loot) {
+                this._loot = loot;
+            } else {
+                this._loot = Randomizer.GENERATERANDOMLOOT();
+            }
     }
 
     public get visited (): boolean {
@@ -31,9 +37,8 @@ export class Place implements IPlace {
     public get introText (): string {
         return this._introText;
     }
-/*
+
     public get loot (): IInventory {
         return this._loot;
     }
-    */
 }
