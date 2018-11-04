@@ -1,10 +1,7 @@
 import { Iparser } from './UI/interfaces/parser';
-import { Ireader } from './UI/interfaces/reader';
-import { Iwriter } from './UI/interfaces/writer';
 import { Modes } from './modes/enums/modes';
 import { inject } from 'inversify';
 import { PromptLoop } from './UI/promptLoop';
-import { promptLoop } from 'readline-sync';
 
 export class MainEngine {
     private readonly parser: Iparser;
