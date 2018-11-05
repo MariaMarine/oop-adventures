@@ -8,22 +8,19 @@ export class MainEngine {
     private readonly parser: Iparser;
     private _currentMode: Modes;
     private readonly promptLoop: PromptLoop;
-    private readonly currentX: number;
-    private readonly currentY: number;
-    // tslint:disable-next-line:no-any
-    private readonly map: IMap<any>;
+    private readonly currentX: number = 0;
+    private readonly currentY: number = 0;
+    private readonly map: Object;
+
     public constructor(
-        @inject('prompt-loop') promptloop: PromptLoop,
-        @inject('ui-parser') parser: Iparser) {
-        this.currentMode = Modes.explore;
+        @inject('prompt-loop') promptloop: PromptLoop) {
         this.promptLoop = promptloop;
-        this.parser = parser;
     }
 
     public set currentMode(mode: Modes) {
         this._currentMode = mode;
     }
-    public start(): void {
+    public static START(): void {
 
     }
 }
