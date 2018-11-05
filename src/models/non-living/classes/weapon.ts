@@ -8,9 +8,12 @@ export class Weapon implements IWeapon {
     private _magicalDamage: number;
     private _price: number;
     private _name: string;
+    private _oneHanded: boolean;
 
-    constructor(physicalDamage?: number, magicalDamage?: number,
-                price?: number, name?: string) {
+    constructor(oneHanded: boolean, physicalDamage?: number, magicalDamage?: number, price?: number, name?: string) {
+        if (oneHanded !== undefined && oneHanded !== null) {
+            this._oneHanded = oneHanded;
+        }
         if (physicalDamage) {
             // Add validation
             this._physicalDamage = physicalDamage;
@@ -34,25 +37,29 @@ export class Weapon implements IWeapon {
             this._name = name;
         } else {
             if (this._magicalDamage < 50) {
-                this._name = Randomizer.GETRANDOMENUMOPTION (WeaponType);
+                this._name = Randomizer.GETRANDOMENUMOPTION(WeaponType);
             } else {
-                this._name = `Enchanted ${Randomizer.GETRANDOMENUMOPTION (WeaponType)}`;
+                this._name = `Enchanted ${Randomizer.GETRANDOMENUMOPTION(WeaponType)}`;
             }
         }
     }
 
-    public get physicalDamage (): number {
+    public get physicalDamage(): number {
         return this._physicalDamage;
     }
-    public get magicalDamage (): number {
+    public get magicalDamage(): number {
         return this._magicalDamage;
     }
-    public get price (): number {
+    public get price(): number {
         return this._price;
     }
 
-    public get name (): string {
+    public get name(): string {
         return this._name;
+    }
+
+    public get oneHanded(): boolean {
+        return this._oneHanded;
     }
 
 }

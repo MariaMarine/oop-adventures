@@ -8,7 +8,7 @@ export class MainEngine {
     private _currentMode: Modes;
     private readonly promptLoop: PromptLoop;
     public constructor(
-        @inject('prompt-loop') promptloop: PromptLoop
+        @inject('prompt-loop') promptloop: PromptLoop,
         @inject('ui-parser') parser: Iparser) {
         this.currentMode = Modes.explore;
         this.promptLoop = promptloop;

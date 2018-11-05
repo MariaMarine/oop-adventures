@@ -1,4 +1,4 @@
-import { MagicResistanceText } from "../enums/magicResistance";
+import { MagicResistanceText } from '../enums/magicResistance';
 
 export interface Ialive {
     name: string;
@@ -7,6 +7,5 @@ export interface Ialive {
     magicResistance: number; //betweeen 0 and 1
     magicResistanceText: MagicResistanceText;
     fearFactor: number; // between 0 and 1
+    say(): string;
 }
-
-//left out the "say()" method for Creature interface. humanoids may have "talk()"

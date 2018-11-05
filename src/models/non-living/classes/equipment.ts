@@ -1,24 +1,23 @@
-import { Armour } from './armour';
-import { Weapon } from './weapon';
 import { Randomizer } from './../../../core/constants/randomizer';
 import { IArmour } from './../interfaces/armour';
 import { IWeapon } from './../interfaces/weapon';
 import { IEquipment } from './../interfaces/equipment';
+import { Ishield } from '../interfaces/shield';
 
 export class Equipment implements IEquipment {
     private _weapon: IWeapon;
     private _armour: IArmour;
+    private _shield: Ishield;
 
-    public constructor (weapon?: IWeapon, armour?: IArmour) {
+    public constructor (weapon?: IWeapon, armour?: IArmour, shield?: Ishield) {
         if (weapon) {
             this._weapon = weapon;
-        } else {
-            this._weapon =  Randomizer.GENERATERANDOMWEAPON();
         }
         if (armour) {
             this._armour = armour;
-        } else {
-            this._armour =  Randomizer.GENERATERANDOMWARMOUR();
+        }
+        if (shield) {
+            this._shield = shield;
         }
     }
     public get weapon (): IWeapon {
@@ -33,6 +32,12 @@ export class Equipment implements IEquipment {
 
     public set armour (newArmour: IArmour) {
         this._armour = newArmour;
+    }
+    public get shield (): Ishield {
+        return this._shield;
+    }
+    public set shield (newShield: Ishield) {
+        this._shield = newShield;
     }
 
 }

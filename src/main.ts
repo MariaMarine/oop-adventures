@@ -4,9 +4,6 @@ import { Init } from './core/init';
 import { container } from './ioc-config/ioc.config';
 
 // Write your code here
-
-console.log(__dirname);
-
 const init: Init = container.get<Init>('init');
 
 init.initialize();
