@@ -10,9 +10,11 @@ export class Weapon implements IWeapon {
     private _name: string;
     private _oneHanded: boolean;
 
-    constructor(oneHanded: boolean, physicalDamage?: number, magicalDamage?: number, price?: number, name?: string) {
+    constructor(oneHanded?: boolean, physicalDamage?: number, magicalDamage?: number, price?: number, name?: string) {
         if (oneHanded !== undefined && oneHanded !== null) {
             this._oneHanded = oneHanded;
+        } else {
+            this._oneHanded = Randomizer.GENERATERANDOMBOOLEAN();
         }
         if (physicalDamage) {
             // Add validation
