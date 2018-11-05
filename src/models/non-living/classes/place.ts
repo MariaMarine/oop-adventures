@@ -15,8 +15,9 @@ export class Place implements IPlace {
         this._visited = false;
 
         this._containsCreature = containsCreature || Randomizer.GENERATERANDOMBOOLEAN();
-        this._introText = introText || `You enter ${Randomizer.GETRANDOMENUMOPTION(PlaceDescription)}. What would you like to do next?`;
-        this._nextVisitText = introText || `You enter ${Randomizer.GETRANDOMENUMOPTION(PlaceDescription)}. What would you like to do next?`;
+        const newPlaceDescription: string = Randomizer.GETRANDOMENUMOPTION(PlaceDescription);
+        this._introText = introText || `You enter ${newPlaceDescription}. What would you like to do next?`;
+        this._nextVisitText = introText || `You are back to the ${newPlaceDescription}. What do you do next?`;
         this._loot = loot || Randomizer.GENERATERANDOMLOOT();
 
     }
