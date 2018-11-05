@@ -10,12 +10,13 @@ export class Place implements IPlace {
     private _creature: Ialive;
     private _introText: string;
     private _loot: IInventory;
-
+    private _nextVisitText: string = '';
     public constructor(containsCreature?: boolean, introText?: string, loot?: IInventory) {
         this._visited = false;
 
         this._containsCreature = containsCreature || Randomizer.GENERATERANDOMBOOLEAN();
         this._introText = introText || `You enter ${Randomizer.GETRANDOMENUMOPTION(PlaceDescription)}. What would you like to do next?`;
+        this._nextVisitText = introText || `You enter ${Randomizer.GETRANDOMENUMOPTION(PlaceDescription)}. What would you like to do next?`;
         this._loot = loot || Randomizer.GENERATERANDOMLOOT();
 
     }
@@ -23,10 +24,17 @@ export class Place implements IPlace {
     public get visited(): boolean {
         return this._visited;
     }
+    public set visited(visited: boolean) {
+        this._visited = visited;
+    }
     public get containsCreature(): boolean {
         return this._containsCreature;
     }
     public get introText(): string {
+        if (this.visited) {
+            return this._nextVisitText;
+        }
+
         return this._introText;
     }
 

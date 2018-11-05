@@ -16,7 +16,7 @@ export class MainEngine {
     private readonly map: Object;
     private readonly sessionDataService: IsessionDataService;
     private currentPlace: IPlace;
-
+    private visitedPlaces: any = new Map();
     public constructor(
         @inject('prompt-loop') promptloop: PromptLoop,
         @inject('session-data') sessionDataService: IsessionDataService) {
@@ -41,10 +41,27 @@ export class MainEngine {
         this._currentX = x;
     }
     public setCurrentPlace(): void {
-        console.log(this.sessionDataService.read('map')[0][0]);
+        const placeCoordinates: string = `${this.currentX}-${this.currentY}`;
+        if (this.visitedPlaces[placeCoordinates]) {
+            this.currentPlace = this.visitedPlaces[placeCoordinates];
+        } else {
+            this.currentPlace = new Place();
+            this.currentPlace.visited = true;
+            this.visitedPlaces[placeCoordinates] = this.currentPlace;
+        }
     }
 
     public start(): void {
         this.setCurrentPlace();
+        console.log(this.currentPlace);
+        this.currentPlace.loot.addCoins(1222);
+        this.currentX = 1;
+        this.currentY = 1;
+        this.setCurrentPlace();
+        console.log(`new current place\n`, this.currentPlace);
+        this.currentX = 0;
+        this.currentY = 0;
+        this.setCurrentPlace();
+        console.log(`new current place\n`, this.currentPlace);
     }
 }
