@@ -1,7 +1,9 @@
-import { WeaponTypes } from '../enums/weaponTypes';
+import { Randomizer } from './../../../core/constants/randomizer';
+import { WeaponType } from '../enums/weaponTypes';
 import { IWeapon } from '../interfaces/weapon';
+import { Constants } from '../../../core/constants/constants';
 
-class Weapon implements IWeapon {
+export class Weapon implements IWeapon {
     private _physicalDamage: number;
     private _magicalDamage: number;
     private _price: number;
@@ -13,42 +15,32 @@ class Weapon implements IWeapon {
             // Add validation
             this._physicalDamage = physicalDamage;
         } else {
-            // Implament randomizer class
-            this._physicalDamage = Math.floor(Math.random() * 100);
+            this._physicalDamage = Randomizer.GENERATERANDOMNUMBER(Constants.maxPhysicalDamage);
         }
         if (magicalDamage) {
             // Add validation
             this._magicalDamage = magicalDamage;
         } else {
-            // Implament randomizer class
-            this._magicalDamage = Math.floor(Math.random() * 100);
+            this._magicalDamage = Randomizer.GENERATERANDOMNUMBER(Constants.maxMagicalDamage);
         }
         if (price) {
             // Add validation
             this._price = price;
         } else {
-            // Implament randomizer class
-            this._price = Math.floor(Math.random() * 100);
+            this._price = Randomizer.GENERATERANDOMNUMBER(Constants.maxItemPrice);
         }
         if (name) {
             // Add validation
             this._name = name;
         } else {
             if (this._magicalDamage < 50) {
-                this._name = Weapon.GETRANDOMWEAPONNAME ();
+                this._name = Randomizer.GETRANDOMENUMOPTION (WeaponType);
             } else {
-                this._name = `Enchanted ${Weapon.GETRANDOMWEAPONNAME ()}`;
+                this._name = `Enchanted ${Randomizer.GETRANDOMENUMOPTION (WeaponType)}`;
             }
         }
     }
 
-    public static GETRANDOMWEAPONNAME (): string {
-        // Implement randomizer method
-        const options: number = (Object.keys(WeaponTypes).length / 2 - 1);
-        const item: number = (Math.floor(Math.random() * options));
-
-        return WeaponTypes[item];
-    }
     public get physicalDamage (): number {
         return this._physicalDamage;
     }

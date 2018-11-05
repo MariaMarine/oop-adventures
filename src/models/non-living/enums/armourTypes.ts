@@ -1,4 +1,4 @@
-export enum ArmourTypes {
+export enum ArmourType {
     'Shiny Armour',
     'Leather Armour',
     'Chainmail',
