@@ -21,7 +21,7 @@ export class LocalStorageService implements IsessionDataService {
             throw new Error('Value is null');
         }
 
-        return value;
+        return JSON.parse(value);
     }
     public write(key: string, value: string): void {
         if (!key) {
@@ -30,6 +30,6 @@ export class LocalStorageService implements IsessionDataService {
         if (!value) {
             throw new Error('Invalid value, please try again');
         }
-        this.localStorage.setItem(key, value);
+        this.localStorage.setItem(key, JSON.stringify(value));
     }
 }
