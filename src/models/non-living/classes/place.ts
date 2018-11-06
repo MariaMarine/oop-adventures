@@ -2,43 +2,44 @@ import { PlaceDescription } from './../enums/placeDescriptions';
 import { Randomizer } from './../../../core/constants/randomizer';
 import { IInventory } from '../interfaces/inventory';
 import { IPlace } from '../interfaces/place';
+import { Ialive } from '../../living/interfaces/alive';
 
 export class Place implements IPlace {
     private _visited: boolean;
     private _containsCreature: boolean;
+    private _creature: Ialive;
     private _introText: string;
     private _loot: IInventory;
+    private _nextVisitText: string = '';
+    public constructor(containsCreature?: boolean, introText?: string, loot?: IInventory) {
+        this._visited = false;
 
-    public constructor (containsCreature?: boolean, introText?: string, loot?: IInventory) {
-            this._visited = false;
-            if (containsCreature) {
-                this._containsCreature = containsCreature;
-            } else {
-                this._containsCreature = Randomizer.GENERATERANDOMBOOLEAN();
-            }
-            if (introText) {
-                this._introText = introText;
-            } else {
-                this._introText = `You enter ${Randomizer.GETRANDOMENUMOPTION(PlaceDescription)}. What would you like to do next?`;
-            }
-            if (loot) {
-                this._loot = loot;
-            } else {
-                this._loot = Randomizer.GENERATERANDOMLOOT();
-            }
+        this._containsCreature = containsCreature || Randomizer.GENERATERANDOMBOOLEAN();
+        const newPlaceDescription: string = Randomizer.GETRANDOMENUMOPTION(PlaceDescription);
+        this._introText = introText || `You enter ${newPlaceDescription}. What would you like to do next?`;
+        this._nextVisitText = introText || `You are back to the ${newPlaceDescription}. What do you do next?`;
+        this._loot = loot || Randomizer.GENERATERANDOMLOOT();
+
     }
 
-    public get visited (): boolean {
+    public get visited(): boolean {
         return this._visited;
     }
-    public get containsCreature (): boolean {
+    public set visited(visited: boolean) {
+        this._visited = visited;
+    }
+    public get containsCreature(): boolean {
         return this._containsCreature;
     }
-    public get introText (): string {
+    public get introText(): string {
+        if (this.visited) {
+            return this._nextVisitText;
+        }
+
         return this._introText;
     }
 
-    public get loot (): IInventory {
+    public get loot(): IInventory {
         return this._loot;
     }
 }
