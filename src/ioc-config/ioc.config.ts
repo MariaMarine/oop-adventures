@@ -8,8 +8,6 @@ import { LocalStorageService } from './../session-data-service/implementations/l
 import { IsessionDataService } from './../session-data-service/interfaces/sessionDataService';
 import { PromptLoop } from '../core/UI/promptLoop';
 import { MainEngine } from '../core/engine';
-import { Directions } from '../core/commands/directions';
-
 const container: Container = new Container();
 
 container.bind<Init>('init').to(Init);
@@ -18,5 +16,5 @@ container.bind<Ireader>('ui-reader').to(ConsoleReader);
 container.bind<IsessionDataService>('session-data').to(LocalStorageService);
 container.bind<PromptLoop>('prompt-loop').to(PromptLoop);
 container.bind<MainEngine>('main-engine').to(MainEngine).inSingletonScope();
-container.bind<Directions>('directions').to(Directions);
+
 export { container };

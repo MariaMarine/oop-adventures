@@ -1,7 +1,7 @@
 import { Ireader } from './interfaces/reader';
 import { Iwriter } from './interfaces/writer';
 import { inject, injectable } from 'inversify';
-import { Icommand } from '../commands/interface/command';
+import { Ichoice } from '../choices/interface/choice';
 
 @injectable()
 
@@ -15,9 +15,9 @@ export class PromptLoop {
         this.reader = reader;
         this.writer = writer;
     }
-    public multiple(promptStrings: string[], commands: Icommand[]): Icommand {
+    public multiple(promptStrings: string[], commands: Ichoice[]): Ichoice {
         let i: number = 0;
-        let commandToReturn: Icommand = {
+        let commandToReturn: Ichoice = {
             names: [],
             commandNotPossibleStrings: [],
             isPossible: false
@@ -31,7 +31,7 @@ export class PromptLoop {
 
             const input: string = this.reader.read().toLowerCase();
 
-            commands.forEach((command: Icommand) => {
+            commands.forEach((command: Ichoice) => {
                 command.names.forEach((commandName: string) => {
                     if (commandName === input) {
                         if (command.isPossible) {

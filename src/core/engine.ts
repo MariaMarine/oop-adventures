@@ -1,11 +1,10 @@
 import { inject, injectable } from 'inversify';
 import { PromptLoop } from './UI/promptLoop';
 import { IsessionDataService } from '../session-data-service/interfaces/sessionDataService';
-import { Place } from '../models/non-living/classes/place';
 import { IPlace } from '../models/non-living/interfaces/place';
 import { Iengine } from './UI/interfaces/engine';
-import { Icommand } from './commands/interface/command';
-import { Directions } from './commands/directions';
+import { Ichoice } from './choices/interface/choice';
+import { PlaceGenerator } from './engine-helpers/current-place-generator';
 
 @injectable()
 export class MainEngine implements Iengine {
@@ -14,12 +13,15 @@ export class MainEngine implements Iengine {
     private _currentY: number = 0;
     private readonly sessionDataService: IsessionDataService;
     private currentPlace: IPlace;
-    private visitedPlaces: any = new Map();
+    private currentChoices: Ichoice[] = [];
+    private placeGenerator: PlaceGenerator;
+
     public constructor(
         @inject('prompt-loop') promptloop: PromptLoop,
         @inject('session-data') sessionDataService: IsessionDataService) {
         this.promptLoop = promptloop;
         this.sessionDataService = sessionDataService;
+        this.placeGenerator = new PlaceGenerator(sessionDataService);
     }
 
     public get currentY(): number {
@@ -34,39 +36,21 @@ export class MainEngine implements Iengine {
     public set currentX(x: number) {
         this._currentX = x;
     }
-    public setCurrentPlace(): void {
-        const placeCoordinates: string = `${this.currentX}-${this.currentY}`;
-        if (this.visitedPlaces[placeCoordinates]) {
-            this.currentPlace = this.visitedPlaces[placeCoordinates];
-        } else {
-            // Get the current map position
-            const currentMapMatrixPosition: {
-                x: number; y: number;
-                top: boolean; left: boolean;
-                bottom: boolean; right: boolean;
-                // tslint:disable-next-line:no-reserved-keywords
-                set: number;
-            }
-                = Object(this.sessionDataService.read('map')[this.currentX][this.currentY]);
-            // Set the new possible directions
-            const newDirections: Directions = new Directions(
-                currentMapMatrixPosition.top,
-                currentMapMatrixPosition.bottom,
-                currentMapMatrixPosition.right,
-                currentMapMatrixPosition.left);
-            // Create the new Place
-            this.currentPlace = new Place(newDirections.getAllDirections());
-            this.currentPlace.visited = true;
-            this.visitedPlaces[placeCoordinates] = this.currentPlace;
-        }
-    }
 
     public start(): void {
-        this.setCurrentPlace();
+        this.setNewPlace();
+        this.setCurrentChoices();
         console.log(this.currentPlace);
-        const nextCommand: Icommand = this.promptLoop.multiple(
-            [`Choose direction`, 'Please choose a valid direction'], this.currentPlace.directions);
-        this.setCurrentPlace();
+        const nextCommand: Ichoice = this.promptLoop.multiple(
+            [`Choose direction`, 'Please choose a valid direction'], this.currentChoices);
         console.log(nextCommand);
+    }
+
+    private setNewPlace(): void {
+        this.currentPlace = this.placeGenerator.setCurrentPlace(this.currentPlace, this.currentX, this._currentY);
+    }
+    private setCurrentChoices(): void {
+        this.currentChoices = [];
+        this.currentChoices.push(...this.currentPlace.directions);
     }
 }
