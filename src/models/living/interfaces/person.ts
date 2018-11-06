@@ -1,8 +1,7 @@
 import { IInventory } from '../../non-living/interfaces/inventory';
 import { IEquipment } from '../../non-living/interfaces/equipment';
-import { Ialive } from './alive';
-
-export interface Iperson extends Ialive {
+import { IAlive } from './alive';
+export interface IPerson extends IAlive {
     equipment: IEquipment;
     inventory: IInventory;
 }
