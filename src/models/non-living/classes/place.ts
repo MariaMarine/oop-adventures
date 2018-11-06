@@ -3,6 +3,8 @@ import { Randomizer } from './../../../core/constants/randomizer';
 import { IInventory } from '../interfaces/inventory';
 import { IPlace } from '../interfaces/place';
 import { Ialive } from '../../living/interfaces/alive';
+import { Directions } from '../../../core/commands/directions';
+import { Idirection } from '../../../core/commands/interface/direction';
 
 export class Place implements IPlace {
     private _visited: boolean;
@@ -11,9 +13,10 @@ export class Place implements IPlace {
     private _introText: string;
     private _loot: IInventory;
     private _nextVisitText: string = '';
-    public constructor(containsCreature?: boolean, introText?: string, loot?: IInventory) {
+    private _directions: Idirection[];
+    public constructor(directions: Idirection[], containsCreature?: boolean, introText?: string, loot?: IInventory) {
         this._visited = false;
-
+        this._directions = directions;
         this._containsCreature = containsCreature || Randomizer.GENERATERANDOMBOOLEAN();
         const newPlaceDescription: string = Randomizer.GETRANDOMENUMOPTION(PlaceDescription);
         this._introText = introText || `You enter ${newPlaceDescription}. What would you like to do next?`;
@@ -41,5 +44,9 @@ export class Place implements IPlace {
 
     public get loot(): IInventory {
         return this._loot;
+    }
+
+    public get directions(): Idirection[] {
+        return this._directions;
     }
 }

@@ -16,7 +16,6 @@ export class Init {
         this.engine = engine;
     }
     public initialize(): void {
-
         //   const userName: string = this.promptLoop.setName();
         // this.sessionDataService.write('username', userName);
         //   this.promptLoop.multiple(['Choose direction', 'Invalid direction'], ['North', 'South', 'East', 'West']);

@@ -1,5 +1,5 @@
 import { IInventory } from './inventory';
-import { ICollectable } from './collectable';
+import { Idirection } from '../../../core/commands/interface/direction';
 export interface IPlace {
     // Name: string;
     // MapPostionX: number;
@@ -8,4 +8,5 @@ export interface IPlace {
     containsCreature: boolean;
     introText: string;
     loot: IInventory;
+    directions: Idirection[];
 }

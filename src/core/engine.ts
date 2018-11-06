@@ -1,19 +1,17 @@
-import { Iparser } from './UI/interfaces/parser';
-import { Modes } from './modes/enums/modes';
 import { inject, injectable } from 'inversify';
 import { PromptLoop } from './UI/promptLoop';
 import { IsessionDataService } from '../session-data-service/interfaces/sessionDataService';
 import { Place } from '../models/non-living/classes/place';
 import { IPlace } from '../models/non-living/interfaces/place';
+import { Iengine } from './UI/interfaces/engine';
+import { Icommand } from './commands/interface/command';
+import { Directions } from './commands/directions';
 
 @injectable()
-export class MainEngine {
-    private readonly parser: Iparser;
-    private _currentMode: Modes;
+export class MainEngine implements Iengine {
     private readonly promptLoop: PromptLoop;
     private _currentX: number = 0;
     private _currentY: number = 0;
-    private readonly map: Object;
     private readonly sessionDataService: IsessionDataService;
     private currentPlace: IPlace;
     private visitedPlaces: any = new Map();
@@ -22,10 +20,6 @@ export class MainEngine {
         @inject('session-data') sessionDataService: IsessionDataService) {
         this.promptLoop = promptloop;
         this.sessionDataService = sessionDataService;
-    }
-
-    public set currentMode(mode: Modes) {
-        this._currentMode = mode;
     }
 
     public get currentY(): number {
@@ -45,7 +39,23 @@ export class MainEngine {
         if (this.visitedPlaces[placeCoordinates]) {
             this.currentPlace = this.visitedPlaces[placeCoordinates];
         } else {
-            this.currentPlace = new Place();
+            // Get the current map position
+            const currentMapMatrixPosition: {
+                x: number; y: number;
+                top: boolean; left: boolean;
+                bottom: boolean; right: boolean;
+                // tslint:disable-next-line:no-reserved-keywords
+                set: number;
+            }
+                = Object(this.sessionDataService.read('map')[this.currentX][this.currentY]);
+            // Set the new possible directions
+            const newDirections: Directions = new Directions(
+                currentMapMatrixPosition.top,
+                currentMapMatrixPosition.bottom,
+                currentMapMatrixPosition.right,
+                currentMapMatrixPosition.left);
+            // Create the new Place
+            this.currentPlace = new Place(newDirections.getAllDirections());
             this.currentPlace.visited = true;
             this.visitedPlaces[placeCoordinates] = this.currentPlace;
         }
@@ -54,14 +64,9 @@ export class MainEngine {
     public start(): void {
         this.setCurrentPlace();
         console.log(this.currentPlace);
-        this.currentPlace.loot.addCoins(1222);
-        this.currentX = 1;
-        this.currentY = 1;
+        const nextCommand: Icommand = this.promptLoop.multiple(
+            [`Choose direction`, 'Please choose a valid direction'], this.currentPlace.directions);
         this.setCurrentPlace();
-        console.log(`new current place\n`, this.currentPlace);
-        this.currentX = 0;
-        this.currentY = 0;
-        this.setCurrentPlace();
-        console.log(`new current place\n`, this.currentPlace);
+        console.log(nextCommand);
     }
 }
