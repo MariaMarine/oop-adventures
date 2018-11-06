@@ -1,7 +1,7 @@
-import { Randomizer } from './../../../core/constants/randomizer';
+import { Randomizer } from '../../../factory/randomizer';
 import { WeaponType } from '../enums/weaponTypes';
 import { IWeapon } from '../interfaces/weapon';
-import { Constants } from '../../../core/constants/constants';
+import { Constants } from '../../../core/namespaces/constants';
 
 export class Weapon implements IWeapon {
     private _physicalDamage: number;

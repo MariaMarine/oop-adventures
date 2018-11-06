@@ -15,7 +15,7 @@ export class PromptLoop {
         this.reader = reader;
         this.writer = writer;
     }
-    public multiple(promptStrings: string[], commands: Ichoice[]): Ichoice {
+    public multiple(promptStrings: string[], choices: Ichoice[]): Ichoice {
         let i: number = 0;
         let commandToReturn: Ichoice = {
             names: [],
@@ -29,20 +29,24 @@ export class PromptLoop {
 
             this.writer.write(currentPromptString);
 
-            const input: string = this.reader.read().toLowerCase();
-
-            commands.forEach((command: Ichoice) => {
-                command.names.forEach((commandName: string) => {
-                    if (commandName === input) {
-                        if (command.isPossible) {
-                            commandToReturn = command;
+            let input: string = this.reader.read().toLowerCase();
+            while (input === 'options') {
+            console.log(choices.reduce((acc: string, choice: Ichoice) => `${acc} ${choice.names[0]}`, 'You have the following options: '));
+            input = this.reader.read().toLowerCase();
+            }
+            choices.forEach((choice: Ichoice) => {
+                choice.names.forEach((choiceName: string) => {
+                    if (choiceName === input) {
+                        if (choice.isPossible) {
+                            commandToReturn = choice;
                             oneOfThePossibleChoicesInputed = true;
                         } else {
-                            this.writer.write(command.commandNotPossibleStrings[i] || command.commandNotPossibleStrings[0]);
+                            this.writer.write(choice.commandNotPossibleStrings[i] || choice.commandNotPossibleStrings[0]);
                         }
                     }
                 });
             });
+
             if (i < promptStrings.length - 1) {
                 i += 1;
             }

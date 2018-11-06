@@ -1,4 +1,4 @@
-import { Randomizer } from './../../../core/constants/randomizer';
+import { Randomizer } from '../../../factory/randomizer';
 import { IArmour } from './../interfaces/armour';
 import { IWeapon } from './../interfaces/weapon';
 import { IEquipment } from './../interfaces/equipment';

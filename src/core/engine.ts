@@ -42,7 +42,9 @@ export class MainEngine implements Iengine {
         this.setCurrentChoices();
         console.log(this.currentPlace);
         const nextCommand: Ichoice = this.promptLoop.multiple(
-            [`Choose direction`, 'Please choose a valid direction'], this.currentChoices);
+            [`What next?`, 'Can`t do that', 'For all possible choices type "options"', 'Well...', 'Invalid entry', 'Please try again'],
+            this.currentChoices);
+
         console.log(nextCommand);
     }
 

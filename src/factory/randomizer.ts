@@ -1,5 +1,5 @@
-import { Inventory } from './../../models/non-living/classes/inventory';
-import { IInventory } from './../../models/non-living/interfaces/inventory';
+import { Inventory } from '../models/non-living/classes/inventory';
+import { IInventory } from '../models/non-living/interfaces/inventory';
 
 export class Randomizer {
 

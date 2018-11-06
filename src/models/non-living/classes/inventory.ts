@@ -1,12 +1,12 @@
-import { Randomizer } from './../../../core/constants/randomizer';
+import { Randomizer } from '../../../factory/randomizer';
 import { IPotion } from './../interfaces/potion';
 import { IWeapon } from './../interfaces/weapon';
 import { IInventory } from './../interfaces/inventory';
 import { IArmour } from '../interfaces/armour';
-import { Constants } from '../../../core/constants/constants';
 import { Weapon } from './weapon';
 import { Armour } from './armour';
 import { Potion } from './potion';
+import { Constants } from '../../../core/namespaces/constants';
 export class Inventory implements IInventory {
     private _weapons: IWeapon[];
     private _armour: IArmour[];

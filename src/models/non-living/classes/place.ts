@@ -1,15 +1,14 @@
 import { PlaceDescription } from './../enums/placeDescriptions';
-import { Randomizer } from './../../../core/constants/randomizer';
+import { Randomizer } from '../../../factory/randomizer';
 import { IInventory } from '../interfaces/inventory';
 import { IPlace } from '../interfaces/place';
-import { Ialive } from '../../living/interfaces/alive';
-import { Directions } from '../../../core/commands/directions';
-import { Idirection } from '../../../core/commands/interface/direction';
+import { IAlive } from '../../living/interfaces/alive';
+import { Idirection } from '../../../core/choices/interface/direction';
 
 export class Place implements IPlace {
     private _visited: boolean;
     private _containsCreature: boolean;
-    private _creature: Ialive;
+    private _creature: IAlive;
     private _introText: string;
     private _loot: IInventory;
     private _nextVisitText: string = '';
