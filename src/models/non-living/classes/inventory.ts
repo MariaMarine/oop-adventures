@@ -1,3 +1,4 @@
+
 import { Randomizer } from '../../../factory/randomizer';
 import { IPotion } from './../interfaces/potion';
 import { IWeapon } from './../interfaces/weapon';
@@ -13,18 +14,14 @@ export class Inventory implements IInventory {
     private _potions: IPotion[];
     private _coins: number;
 
-    public constructor(weapons?: IWeapon[], armour?: IArmour[], potions?: IPotion[], coins?: number) {
-        this._weapons = weapons || [new Weapon()];
+    public constructor(difficultyCoef: number, weapons?: IWeapon[], armour?: IArmour[], potions?: IPotion[], coins?: number) {
+        this._weapons = weapons || [new Weapon(difficultyCoef)];
 
-        this._armour = armour || [new Armour()];
+        this._armour = armour || [new Armour(difficultyCoef)];
 
-        this._potions = potions || [new Potion()];
+        this._potions = potions || [new Potion(difficultyCoef)];
 
-        if (coins) {
-            this._coins = coins;
-        } else {
-            this._coins = Randomizer.GENERATERANDOMNUMBER(Constants.maxCoinLoot);
-        }
+        this._coins = coins || Randomizer.GENERATERANDOMNUMBER(Constants.maxCoinLoot * difficultyCoef);
     }
     public get weapons(): IWeapon[] {
         return this._weapons;
@@ -63,9 +60,48 @@ export class Inventory implements IInventory {
         this._coins += coins;
     }
 
-    // Add remove methods
+     public removeArmour(armourToRemove: string): IArmour[] {
+        const armournames: string[] = this._armour.map((el: IArmour) => el.name);
+        const index: number = armournames.indexOf(armourToRemove);
+        if (!armourToRemove || index < 0) {
+            throw new Error(`Current inventory does not include ${armourToRemove}!`);
+        }
+
+        return this._armour.splice(index, 1);
+    }
+
+    public removeWeapon(weaponToRemove: string): IWeapon[] {
+        const weaponames: string[] = this._weapons.map((el: IWeapon) => el.name);
+        const index: number = weaponames.indexOf(weaponToRemove);
+        if (!weaponToRemove || index < 0) {
+            throw new Error(`Current inventory does not include ${weaponToRemove}!`);
+        }
+
+        return this._weapons.splice(index, 1);
+    }
+    public removePotion(potionToRemove: string): IPotion[] {
+        const potionNames: string[] = this._potions.map((el: IPotion) => el.name);
+        const index: number = potionNames.indexOf(potionToRemove);
+        if (!potionToRemove || index < 0) {
+            throw new Error(`Current inventory does not include ${potionToRemove}!`);
+        }
+
+        return this._potions.splice(index, 1);
+    }
+    public subtractCoins(coinsToRemove: number): void {
+        if (!coinsToRemove || coinsToRemove < 0) {
+            throw new Error(`Not a valid amount of coins to remove!`);
+        }
+        if (this._coins < coinsToRemove) {
+            throw new Error (`Insufficient amount of coins!`);
+        }
+    }
 }
 /*
-const loot: IInventory = new Inventory ();
-console.log(loot);
+const rw: IWeapon = new Weapon(3);
+const loot: IInventory = new Inventory (3, [rw], [new Armour(3, 10, 10, 10, 'shd')]);
+//console.log(loot);
+const arm: IArmour[] = loot.removeArmour('shd');
+//console.log(arm);
+console.log(loot, arm);
 */

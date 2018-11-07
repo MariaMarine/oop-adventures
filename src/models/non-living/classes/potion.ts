@@ -8,9 +8,9 @@ export class Potion implements IPotion {
     private _price: number;
     private _name: string;
 
-    public constructor (power?: number, price?: number, name?: string) {
-            this._power = power || Randomizer.GENERATERANDOMNUMBER (Constants.maxPotionPower);
-            this._price = price || Randomizer.GENERATERANDOMNUMBER (Constants.maxItemPrice);
+    public constructor (difficultyCoef: number, power?: number, price?: number, name?: string) {
+            this._power = power || Randomizer.GENERATERANDOMNUMBER (Constants.maxPotionPower * difficultyCoef);
+            this._price = price || Randomizer.GENERATERANDOMNUMBER (Constants.maxItemPrice * difficultyCoef);
             this._name = name || Randomizer.GETRANDOMENUMOPTION (PotionType);
     }
 

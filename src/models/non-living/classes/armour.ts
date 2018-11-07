@@ -10,36 +10,27 @@ export class Armour implements IArmour {
     private _price: number;
     private _name: string;
 
-    public constructor (physicalResistance?: number, magicalResistance?: number,
+    public constructor (difficultyCoef: number, physicalResistance?: number, magicalResistance?: number,
                         price?: number, name?: string) {
-        if (physicalResistance) {
-            // Add validation
-            this._physicalResistance = physicalResistance;
-        } else {
-            this._physicalResistance = Randomizer.GENERATERANDOMNUMBER(Constants.maxPhysicalResistance);
+        if (physicalResistance !== null) {
+            this._physicalResistance = physicalResistance ||
+            Randomizer.GENERATERANDOMNUMBER(Constants.maxPhysicalResistance * difficultyCoef);
         }
-        if (magicalResistance) {
-            // Add validation
-            this._magicalResistance = magicalResistance;
-        } else {
-            this._magicalResistance = Randomizer.GENERATERANDOMNUMBER(Constants.maxMagicalResistance);
+        if (magicalResistance !== null) {
+            this._magicalResistance = magicalResistance || 
+            Randomizer.GENERATERANDOMNUMBER(Constants.maxMagicalResistance * difficultyCoef);
         }
-        if (price) {
-            // Add validation
-            this._price = price;
-        } else {
-            this._price = Randomizer.GENERATERANDOMNUMBER(Constants.maxItemPrice);
+        if (price !== null) {
+            this._price = price || 
+            Randomizer.GENERATERANDOMNUMBER(Constants.maxItemPrice * difficultyCoef);
         }
-        if (name) {
-            // Add validation
+        if (name && name !== '') {
             this._name = name;
         } else {
-            if (this._magicalResistance < 50) {
-                this._name = Randomizer.GETRANDOMENUMOPTION (ArmourType);
-            } else {
+            this._magicalResistance < Constants.maxMagicalResistance * difficultyCoef / 2 ?
+                this._name = Randomizer.GETRANDOMENUMOPTION (ArmourType) :
                 this._name = `Enchanted ${ Randomizer.GETRANDOMENUMOPTION (ArmourType)}`;
             }
-        }
     }
 
     public get physicalResistance (): number {
@@ -56,8 +47,8 @@ export class Armour implements IArmour {
     }
 }
 
-/* Test
-const armour1: IArmour = new Armour();
-const armour2: IArmour = new Armour(20, 50, 70, 'Average Overpriced Armour');
+/*
+const armour1: IArmour = new Armour(5);
+const armour2: IArmour = new Armour(1, 20, 50, 70, 'Average Overpriced Armour');
 console.log (armour1, armour2);
 */

@@ -16,10 +16,10 @@ export class Randomizer {
     public static GENERATERANDOMNUMBER(maxValue: number) : number {
         return Math.floor(Math.random() * (maxValue + 1));
     }
-    public static GENERATERANDOMLOOT() : IInventory {
-        return new Inventory();
+    public static GENERATERANDOMLOOT(difficultyCoef: number) : IInventory {
+        return new Inventory(difficultyCoef);
     }
     public static GENERATEDIFFICULTYCOEF(x: number, y: number): number {
-        return Math.sqrt(x * y);
+        return Math.sqrt((x + 1) * (y + 1));
     }
 }

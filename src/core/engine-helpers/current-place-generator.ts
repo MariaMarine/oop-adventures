@@ -1,3 +1,4 @@
+import { Randomizer } from './../../factory/randomizer';
 import { IPlace } from '../../models/non-living/interfaces/place';
 import { IsessionDataService } from '../../session-data-service/interfaces/sessionDataService';
 import { inject } from 'inversify';
@@ -35,7 +36,7 @@ export class PlaceGenerator {
                 currentMapMatrixPosition.right,
                 currentMapMatrixPosition.left);
             // Create the new Place
-            newPlace = new Place(newDirections.getAllDirections());
+            newPlace = new Place(Randomizer.GENERATEDIFFICULTYCOEF(currentX, currentY), newDirections.getAllDirections());
             newPlace.visited = true;
             this.visitedPlaces[placeCoordinates] = newPlace;
         }

@@ -11,4 +11,8 @@ export interface IInventory {
     addWeapon(weapon: IWeapon): void;
     addPotion(potion: IPotion): void;
     addCoins(coins: number): void;
+    removeArmour(armourToRemove: string): IArmour[];
+    removeWeapon(weaponToRemove: string): IWeapon[];
+    removePotion(potionToRemove: string): IPotion[];
+    subtractCoins(coinsToRemove: number): void;
 }

@@ -10,39 +10,31 @@ export class Weapon implements IWeapon {
     private _name: string;
     private _oneHanded: boolean;
 
-    constructor(oneHanded?: boolean, physicalDamage?: number, magicalDamage?: number, price?: number, name?: string) {
-        if (oneHanded !== undefined && oneHanded !== null) {
+    public constructor(difficultyCoef: number, oneHanded?: boolean,
+                       physicalDamage?: number, magicalDamage?: number, price?: number, name?: string) {
+        if (oneHanded !== null) {
             this._oneHanded = oneHanded || Randomizer.GENERATERANDOMBOOLEAN();
         }
-        if (physicalDamage) {
-            // Add validation
-            this._physicalDamage = physicalDamage;
-        } else {
-            this._physicalDamage = Randomizer.GENERATERANDOMNUMBER(Constants.maxPhysicalDamage);
+        if (physicalDamage !== null) {
+            this._physicalDamage = physicalDamage ||
+             Randomizer.GENERATERANDOMNUMBER(Constants.maxPhysicalDamage * difficultyCoef);
         }
-        if (magicalDamage) {
-            // Add validation
-            this._magicalDamage = magicalDamage;
-        } else {
-            this._magicalDamage = Randomizer.GENERATERANDOMNUMBER(Constants.maxMagicalDamage);
+        if (magicalDamage !== null) {
+            this._magicalDamage = magicalDamage ||
+             Randomizer.GENERATERANDOMNUMBER(Constants.maxMagicalDamage * difficultyCoef);
         }
-        if (price) {
-            // Add validation
-            this._price = price;
-        } else {
-            this._price = Randomizer.GENERATERANDOMNUMBER(Constants.maxItemPrice);
+        if (price !== null) {
+            this._price = price || 
+            Randomizer.GENERATERANDOMNUMBER(Constants.maxItemPrice * difficultyCoef);
         }
-        if (name) {
-            // Add validation
+        if (name && name !== '') {
             this._name = name;
         } else {
-            if (this._magicalDamage < 50) {
-                this._name = Randomizer.GETRANDOMENUMOPTION(WeaponType);
-            } else {
+            this._magicalDamage < Constants.maxMagicalDamage * difficultyCoef / 2 ?
+                this._name = Randomizer.GETRANDOMENUMOPTION(WeaponType) :
                 this._name = `Enchanted ${Randomizer.GETRANDOMENUMOPTION(WeaponType)}`;
             }
         }
-    }
 
     public get physicalDamage(): number {
         return this._physicalDamage;
@@ -63,9 +55,8 @@ export class Weapon implements IWeapon {
     }
 
 }
-
 /*
-const myWeapon: IWeapon = new Weapon(30, 50, 70, 'Wicked Wand');
-const randomWeapon: IWeapon = new Weapon();
+const myWeapon: IWeapon = new Weapon(1, true, 30, 50, 70, 'Wicked Wand');
+const randomWeapon: IWeapon = new Weapon(5);
 console.log(myWeapon, randomWeapon);
 */
