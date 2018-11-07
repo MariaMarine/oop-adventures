@@ -8,6 +8,7 @@ import { LocalStorageService } from './../session-data-service/implementations/l
 import { IsessionDataService } from './../session-data-service/interfaces/sessionDataService';
 import { PromptLoop } from '../core/UI/promptLoop';
 import { MainEngine } from '../core/engine';
+
 const container: Container = new Container();
 
 container.bind<Init>('init').to(Init);

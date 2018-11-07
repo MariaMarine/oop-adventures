@@ -12,7 +12,7 @@ export class NonHero extends LivingBeingModel implements IAlive {
         fearFactor: number) {
             super(name, life, strength, magicResistance, magicResistanceText, fearFactor);
         }
-        // To implement say()
+    // To implement say()
     public say(): string {
             return ('Hello');
           }
