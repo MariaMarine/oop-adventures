@@ -20,7 +20,7 @@ export class Place implements IPlace {
         this._containsCreature = containsCreature || Randomizer.GENERATERANDOMBOOLEAN();
         const newPlaceDescription: string = Randomizer.GETRANDOMENUMOPTION(PlaceDescription);
         this._introText = introText || `You enter ${newPlaceDescription}. What would you like to do next?`;
-        this._nextVisitText = introText || `You are back to the ${newPlaceDescription}. What do you do next?`;
+        this._nextVisitText = introText || `You are back to ${newPlaceDescription}. What do you do next?`;
         this._loot = loot || Randomizer.GENERATERANDOMLOOT(difficultyCoef);
 
     }

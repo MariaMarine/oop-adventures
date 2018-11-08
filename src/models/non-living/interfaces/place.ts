@@ -1,5 +1,6 @@
+import { Idirection } from './../../../core/choices/interface/direction';
 import { IInventory } from './inventory';
-import { Idirection } from '../../../core/commands/interface/direction';
+
 export interface IPlace {
     // Name: string;
     // MapPostionX: number;
