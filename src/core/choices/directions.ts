@@ -33,7 +33,7 @@ export class Directions {
             yDirection: -1
         };
         this.south = {
-            names: ['down', 'south'],
+            names: ['south', 'down'],
             commandNotPossibleStrings: notPossibleStrings,
             isPossible: possibleSouth,
             xDirection: 1,

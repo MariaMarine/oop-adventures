@@ -1,7 +1,11 @@
+import { injectable } from 'inversify';
 import { ConsoleWriter } from './writers/console-writer';
 import { MazeCell } from '../../models/non-living/classes/maze-cell';
 import { IMazePrinter } from './interfaces/maze-printer';
+@injectable()
 export class MazeDashPrinter extends ConsoleWriter implements IMazePrinter {
+
+    // Remove parameters when external maze no longer needed
     public visualize (maze: MazeCell[][], gameCols: number, gameRows: number) : void {
         let top: string = '';
         for (let i: number = 0; i < gameCols; i += 1) {

@@ -19,7 +19,10 @@ export class PlaceGenerator {
         const placeCoordinates: string = `${currentX}-${currentY}`;
         let newPlace: IPlace;
         if (this.visitedPlaces[placeCoordinates]) {
-            return this.visitedPlaces[placeCoordinates];
+            newPlace = this.visitedPlaces[placeCoordinates];
+            console.log(newPlace.introText);
+
+            return newPlace;
         } else {
             // Get the current map position
             const currentMapMatrixPosition: MazeCell
@@ -32,6 +35,7 @@ export class PlaceGenerator {
                 !currentMapMatrixPosition.left);
             // Create the new Place
             newPlace = new Place(Randomizer.GENERATEDIFFICULTYCOEF(currentX, currentY), newDirections.getAllDirections());
+            console.log(newPlace.introText);
             newPlace.visited = true;
             this.visitedPlaces[placeCoordinates] = newPlace;
         }

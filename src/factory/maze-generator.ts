@@ -1,6 +1,7 @@
 import { MazeDashPrinter } from './../core/UI/maze-printer';
 import { MazeCell } from '../models/non-living/classes/maze-cell';
 import { IMazePrinter } from '../core/UI/interfaces/maze-printer';
+import { inject } from 'inversify';
 
 export class Maze {
     private generator: any = require ('../../node_modules/generate-maze');
@@ -9,7 +10,7 @@ export class Maze {
     private _maze: MazeCell [][];
     private _printer: IMazePrinter;
 
-    public constructor (rows: number, cols: number, printer: IMazePrinter) {
+    public constructor (rows: number, cols: number, @inject('maze-printer') printer: IMazePrinter) {
         if (rows <= 0 || cols <= 0) {
             throw new Error ('Rows and columns can only be positive integeres!');
         }

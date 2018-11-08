@@ -23,7 +23,7 @@ export class LocalStorageService implements IsessionDataService {
 
         return JSON.parse(value);
     }
-    public write(key: string, value: string): void {
+    public write(key: string, value: any): void {
         if (!key) {
             throw new Error('Invalid key, please try again');
         }
