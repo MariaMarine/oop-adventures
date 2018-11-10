@@ -20,7 +20,7 @@ export class PlaceGenerator {
         let newPlace: IPlace;
         if (this.visitedPlaces[placeCoordinates]) {
             newPlace = this.visitedPlaces[placeCoordinates];
-            console.log(newPlace.introText);
+            console.log(`OK`);
 
             return newPlace;
         } else {
@@ -35,7 +35,8 @@ export class PlaceGenerator {
                 !currentMapMatrixPosition.left);
             // Create the new Place
             newPlace = new Place(Randomizer.GENERATEDIFFICULTYCOEF(currentX, currentY), newDirections.getAllDirections());
-            console.log(newPlace.introText);
+            const creatureText: string = newPlace.containsCreature ? 'someone' : 'no one';
+            console.log(`${newPlace.introText} You have the feeling that there is ${creatureText} here.`);
             newPlace.visited = true;
             this.visitedPlaces[placeCoordinates] = newPlace;
         }

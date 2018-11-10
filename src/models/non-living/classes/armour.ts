@@ -27,7 +27,7 @@ export class Armour implements IArmour {
         if (name && name !== '') {
             this._name = name;
         } else {
-            this._magicalResistance < Constants.maxMagicalResistance * difficultyCoef / 2 ?
+            this._magicalResistance < this._physicalResistance ?
                 this._name = Randomizer.GETRANDOMENUMOPTION (ArmourType) :
                 this._name = `Enchanted ${ Randomizer.GETRANDOMENUMOPTION (ArmourType)}`;
             }
