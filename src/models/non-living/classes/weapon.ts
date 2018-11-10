@@ -30,7 +30,7 @@ export class Weapon implements IWeapon {
         if (name && name !== '') {
             this._name = name;
         } else {
-            this._magicalDamage < Constants.maxMagicalDamage * difficultyCoef / 2 ?
+            this._magicalDamage < this._physicalDamage ?
                 this._name = Randomizer.GETRANDOMENUMOPTION(WeaponType) :
                 this._name = `Enchanted ${Randomizer.GETRANDOMENUMOPTION(WeaponType)}`;
             }

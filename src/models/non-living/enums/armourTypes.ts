@@ -2,6 +2,21 @@ export enum ArmourType {
     'Shiny Armour',
     'Leather Armour',
     'Chainmail',
+    'SOLID Principles Shield',
+    'Forcefield',
+    'Helmet and Breastplate',
+    'Cloak',
+    'Body Armour',
+    'Hooded Cape',
+    'Full Metal Jacket',
+    'Lucky Underwear',
+    'Superhero Bodysuit',
+    'Armadillo Coat',
+    'Instant Brickwall',
+    'Smelly Skunk',
+    'Giant Mutant Cat with More Than Nine Lives',
     'Oversized Shield',
-    'Forcefield'
+    'Trendy Rose Gold Armour',
+    'Sturdy Snail Shell',
+    'Semi-invisibility Suit'
 }

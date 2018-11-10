@@ -1,3 +1,5 @@
+import { Armour } from './../models/non-living/classes/armour';
+import { Actions } from './choices/actions';
 import { MazeDashPrinter } from './UI/maze-printer';
 import { inject, injectable } from 'inversify';
 import { PromptLoop } from './UI/promptLoop';
@@ -41,19 +43,33 @@ export class MainEngine implements Iengine {
     }
 
     public start(): void {
-        //only needed if working with external map JSON
-        //const mazeprinter: MazeDashPrinter = new MazeDashPrinter();
-        //mazeprinter.visualize(Object(this.sessionDataService.read('map')), 5, 5);
-        this.setNewPlace();
+        // Only needed if working with external map JSON
+        // Const mazeprinter: MazeDashPrinter = new MazeDashPrinter();
+        // Mazeprinter.visualize(Object(this.sessionDataService.read('map')), 5, 5);
+
         while (this._currentX !== Constants.gameRows - 1 || this.currentY !== Constants.gameCols - 1) {
-            this.setCurrentChoices();
-            //console.log(this.currentPlace.loot);
-            const nextCommand: Ichoice = this.promptLoop.multiple(
-                [`What next?`, 'Can`t do that', 'For all possible choices type "options"', 'Well...', 'Invalid entry', 'Please try again'],
-                this.currentChoices);
-            this._currentX += nextCommand.xDirection;
-            this._currentY += nextCommand.yDirection;
             this.setNewPlace();
+            this.setCurrentActions();
+            const actionCommand: Ichoice = this.promptLoop.multiple(
+                ['What would you like to do?', 'Well...', 'For all possible choices type "options"', 'Please try again'],
+                this.currentChoices);
+            // To implement: adding all items to current inventory
+            if (actionCommand.names[0] === 'search' && this.currentPlace.loot.armour[0]) {
+                console.log(`You found: ${this.currentPlace.loot.armour[0].name}.`);
+                const armour: string = this.currentPlace.loot.armour[0].name;
+                this.currentPlace.loot.removeArmour (armour);
+                this.setCurrentActions();
+            }
+            if (actionCommand.names[0] === 'exit') {
+                console.log(`You find your way out.`);
+                this.setCurrentChoices();
+                const nextCommand: Ichoice = this.promptLoop.multiple(
+                    [`Where to next?`, 'Can`t do that',
+                    'For all possible choices type "options"', 'Well...', 'Invalid entry', 'Please try again'],
+                    this.currentChoices);
+                this._currentX += nextCommand.xDirection;
+                this._currentY += nextCommand.yDirection;
+            }
         }
         console.log(`You win :)`);
     }
@@ -62,9 +78,13 @@ export class MainEngine implements Iengine {
         this.currentPlace = this.placeGenerator.setCurrentPlace(this.currentX, this._currentY);
     }
     private setCurrentChoices(): void {
-
-        // More code!!!!!!!!!!!!!!!!!!!
         this.currentChoices = [];
         this.currentChoices.push(...this.currentPlace.directions);
+    }
+    private setCurrentActions(): void {
+        const currentActions: Actions = new Actions (!(this.currentPlace.containsCreature || this.currentPlace.loot.armour.length === 0),
+                                                     true);
+        this.currentChoices = [];
+        this.currentChoices.push(...currentActions.getAllActions());
     }
 }
