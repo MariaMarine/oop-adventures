@@ -1,3 +1,4 @@
+// tslint:disable
 import { IMazePrinter } from './../core/UI/interfaces/maze-printer';
 import { Container } from 'inversify';
 import { Iwriter } from '../core/UI/interfaces/writer';
@@ -10,10 +11,11 @@ import { IsessionDataService } from './../session-data-service/interfaces/sessio
 import { PromptLoop } from '../core/UI/promptLoop';
 import { MainEngine } from '../core/engine';
 import { MazeDashPrinter } from '../core/UI/maze-printer';
+import { TYPES } from './types';
 
 const container: Container = new Container();
 
-container.bind<Init>('init').to(Init);
+container.bind<Init>(TYPES.init).to(Init);
 container.bind<Iwriter>('ui-writer').to(ConsoleWriter);
 container.bind<Ireader>('ui-reader').to(ConsoleReader);
 container.bind<IsessionDataService>('session-data').to(LocalStorageService);
