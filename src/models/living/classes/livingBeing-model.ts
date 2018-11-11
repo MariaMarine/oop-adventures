@@ -1,4 +1,3 @@
-import { maxMagicalResistance } from './../../../core/namespaces/constants';
 import { IAlive } from './../interfaces/alive';
 import { MagicResistanceText } from '../enums/magicResistance';
 
@@ -10,11 +9,10 @@ export abstract class LivingBeingModel implements IAlive {
     protected static _minFearFactor: number = 0;
     protected static _maxFearFactor: number = 1;
     private readonly _name: string;
-    private readonly _life: number;
+    private _life: number;
     private readonly _maxlife: number;
-    private readonly _strength: number; //between 0 and 300
+    private  _strength: number; //between 0 and 300
     private readonly _magicResistance: number; //betweeen 0 and 1
-
     private readonly _magicResistanceText: MagicResistanceText;
     private readonly _fearFactor: number; // between 0 and 1
 
@@ -46,8 +44,14 @@ public get name(): string {
   public get life(): number {
     return this._life;
   }
+  public set life(newLife: number) {
+    this._life = newLife;
+  }
   public get strength(): number {
     return this._strength;
+  }
+  public set strength(newStrength: number) {
+    this._strength = newStrength;
   }
   public get magicResistance(): number {
       return this._magicResistance;
@@ -58,6 +62,8 @@ public get name(): string {
 public get fearFactor(): number {
     return this._fearFactor;
 }
+
+
 // To implement say()
   public abstract say(): string;
 

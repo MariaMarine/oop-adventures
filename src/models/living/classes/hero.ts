@@ -28,6 +28,7 @@ export class Hero extends LivingBeingModel implements IPerson, IAlive {
     public get inventory(): IInventory {
         return this._inventory;
     }
+
     // To implement say()
     public say(): string {
         return ('Hello');
