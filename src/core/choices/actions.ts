@@ -1,11 +1,13 @@
-import { Ichoice } from './interface/choice';
+import { IChoice } from './interface/choice';
 
 export class Actions {
 
-    private loot: Ichoice;
-    private exit: Ichoice;
+    private loot: IChoice;
+    private exit: IChoice;
 
-    public constructor (possibleLoot: boolean, possibleExit: boolean) {
+    private currentInventory: IChoice;
+
+    public constructor (possibleLoot: boolean, possibleExit: boolean, possibleShowItems: boolean) {
         this.loot = {
             names: ['search', 'loot'],
             isPossible: possibleLoot,
@@ -20,9 +22,16 @@ export class Actions {
             yDirection: 0,
             commandNotPossibleStrings: ['You try to escape but...']
         };
+        this.currentInventory = {
+            names: ['items', 'show items', 'inventory', 'bag', 'display'],
+            isPossible: possibleShowItems,
+            xDirection: 0,
+            yDirection: 0,
+            commandNotPossibleStrings: ['Not now!']
+        };
     }
-    public getAllActions(): Ichoice[] {
-        return [this.loot, this.exit];
+    public getAllActions(): IChoice[] {
+        return [this.loot, this.exit, this.currentInventory];
     }
 
 }

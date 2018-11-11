@@ -1,7 +1,7 @@
-import { Ichoice } from './choice';
+import { IChoice } from './choice';
 // THESE PROPERTIES ARE NOW INCLUDED IN CHOICE INTERFACE in order to be usable on nextCommand
 // REMOVE?
-export interface Idirection extends Ichoice {
+export interface IDirection extends IChoice {
     xDirection: number;
     yDirection: number;
 }

@@ -1,4 +1,4 @@
-export interface Ichoice {
+export interface IChoice {
     names: string[];
     commandNotPossibleStrings: string[];
     isPossible: boolean;

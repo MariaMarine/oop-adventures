@@ -1,4 +1,4 @@
-import { Idirection } from './../../../core/choices/interface/direction';
+import { IDirection } from './../../../core/choices/interface/direction';
 import { IInventory } from './inventory';
 
 export interface IPlace {
@@ -9,5 +9,5 @@ export interface IPlace {
     containsCreature: boolean;
     introText: string;
     loot: IInventory;
-    directions: Idirection[];
+    directions: IDirection[];
 }

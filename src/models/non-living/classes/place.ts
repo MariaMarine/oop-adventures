@@ -3,7 +3,7 @@ import { Randomizer } from '../../../factory/randomizer';
 import { IInventory } from '../interfaces/inventory';
 import { IPlace } from '../interfaces/place';
 import { IAlive } from '../../living/interfaces/alive';
-import { Idirection } from '../../../core/choices/interface/direction';
+import { IDirection } from '../../../core/choices/interface/direction';
 
 export class Place implements IPlace {
     private _visited: boolean;
@@ -12,8 +12,8 @@ export class Place implements IPlace {
     private _introText: string;
     private _loot: IInventory;
     private _nextVisitText: string = '';
-    private _directions: Idirection[];
-    public constructor(difficultyCoef: number, directions?: Idirection[],
+    private _directions: IDirection[];
+    public constructor(difficultyCoef: number, directions?: IDirection[],
                        containsCreature?: boolean, introText?: string, loot?: IInventory) {
         this._visited = false;
         this._directions = directions || [];
@@ -46,7 +46,7 @@ export class Place implements IPlace {
         return this._loot;
     }
 
-    public get directions(): Idirection[] {
+    public get directions(): IDirection[] {
         return this._directions;
     }
 }

@@ -1,7 +1,7 @@
 import { Ireader } from './interfaces/reader';
 import { Iwriter } from './interfaces/writer';
 import { inject, injectable } from 'inversify';
-import { Ichoice } from '../choices/interface/choice';
+import { IChoice } from '../choices/interface/choice';
 
 @injectable()
 
@@ -15,12 +15,14 @@ export class PromptLoop {
         this.reader = reader;
         this.writer = writer;
     }
-    public multiple(promptStrings: string[], choices: Ichoice[]): Ichoice {
+    public multiple(promptStrings: string[], choices: IChoice[]): IChoice {
         let i: number = 0;
-        let commandToReturn: Ichoice = {
+        let commandToReturn: IChoice = {
             names: [],
             commandNotPossibleStrings: [],
-            isPossible: false
+            isPossible: false,
+            xDirection: 0,
+            yDirection: 0
         };
         let oneOfThePossibleChoicesInputed: boolean = false;
         // tslint:disable-next-line:no-constant-condition
@@ -31,10 +33,10 @@ export class PromptLoop {
 
             let input: string = this.reader.read().toLowerCase();
             while (input === 'options') {
-            console.log(choices.reduce((acc: string, choice: Ichoice) => `${acc} ${choice.names[0]}`, 'You have the following options: '));
+            console.log(choices.reduce((acc: string, choice: IChoice) => `${acc} ${choice.names[0]}`, 'You have the following options: '));
             input = this.reader.read().toLowerCase();
             }
-            choices.forEach((choice: Ichoice) => {
+            choices.forEach((choice: IChoice) => {
                 choice.names.forEach((choiceName: string) => {
                     if (choiceName === input) {
                         if (choice.isPossible) {

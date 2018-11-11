@@ -1,13 +1,13 @@
 import { injectable } from 'inversify';
-import { Idirection } from './interface/direction';
+import { IDirection } from './interface/direction';
 
 @injectable()
 export class Directions {
 
-    private north: Idirection;
-    private south: Idirection;
-    private east: Idirection;
-    private west: Idirection;
+    private north: IDirection;
+    private south: IDirection;
+    private east: IDirection;
+    private west: IDirection;
 
     constructor(possibleNorth: boolean, possibleSouth: boolean, possibleEast: boolean, possibleWest: boolean) {
         const notPossibleStrings: string[] = ['Path is blocked', 'There is a giant rock on the way', 'No path', 'Ooops', 'Can`t do that'];
@@ -40,7 +40,7 @@ export class Directions {
             yDirection: 0
         };
     }
-    public getAllDirections(): Idirection[] {
+    public getAllDirections(): IDirection[] {
         return [this.north, this.south, this.east, this.west];
     }
 
