@@ -1,3 +1,4 @@
+import { ICollectable } from './../interfaces/collectable';
 
 import { Randomizer } from '../../../factory/randomizer';
 import { IPotion } from './../interfaces/potion';
@@ -96,6 +97,37 @@ export class Inventory implements IInventory {
             throw new Error (`Insufficient amount of coins!`);
         }
     }
+
+    public removeAll () : void {
+        this._armour = [];
+        this._weapons = [];
+        this._potions = [];
+        this._coins = 0;
+    }
+    public listItems () : string {
+        let result: string = '';
+        // Sort out repetitions?!
+        if (this._weapons.length > 0) {
+            result += `Weapons:\n`;
+            this._weapons.forEach((weapon: IWeapon, index: number) => result +=
+            `${index}-${weapon.name} (Physical: ${weapon.physicalDamage}, Magic: ${weapon.magicalDamage})\n`);
+        }
+        if (this._armour.length > 0) {
+            result += `Armour:\n`;
+            this._armour.forEach((armour: IArmour, index: number) => result +=
+            `${index}-${armour.name} (Physical: ${armour.physicalResistance}, Magic: ${armour.magicalResistance})\n`);
+        }
+        if (this._potions.length > 0) {
+            result += `Potions:\n`;
+            this._potions.forEach((potion: IPotion, index: number) => result +=
+            `${index}-${potion.name} (Power: ${potion.power})\n`);
+        }
+        if (this._coins > 0) {
+            result += `Coins: ${this._coins}`;
+        }
+
+        return result;
+    }
 }
 /*
 const rw: IWeapon = new Weapon(3);
@@ -103,5 +135,5 @@ const loot: IInventory = new Inventory (3, [rw], [new Armour(3, 10, 10, 10, 'shd
 //console.log(loot);
 const arm: IArmour[] = loot.removeArmour('shd');
 //console.log(arm);
-console.log(loot, arm);
+console.log(loot.listItems);
 */

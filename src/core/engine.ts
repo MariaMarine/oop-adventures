@@ -1,3 +1,6 @@
+import { IWeapon } from './../models/non-living/interfaces/weapon';
+import { IArmour } from './../models/non-living/interfaces/armour';
+import { Inventory } from './../models/non-living/classes/inventory';
 import { Armour } from './../models/non-living/classes/armour';
 import { Actions } from './choices/actions';
 import { MazeDashPrinter } from './UI/maze-printer';
@@ -10,6 +13,8 @@ import { Ichoice } from './choices/interface/choice';
 import { PlaceGenerator } from './engine-helpers/current-place-generator';
 import { Directions } from './choices/directions';
 import { Constants } from './namespaces/constants';
+import { IInventory } from '../models/non-living/interfaces/inventory';
+import { IPotion } from '../models/non-living/interfaces/potion';
 
 @injectable()
 export class MainEngine implements Iengine {
@@ -20,6 +25,9 @@ export class MainEngine implements Iengine {
     private currentPlace: IPlace;
     private currentChoices: Ichoice[] = [];
     private placeGenerator: PlaceGenerator;
+
+    // For test purposes
+    private myInventory: IInventory = new Inventory(0);
 
     public constructor(
         @inject('prompt-loop') promptloop: PromptLoop,
@@ -43,22 +51,15 @@ export class MainEngine implements Iengine {
     }
 
     public start(): void {
-        // Only needed if working with external map JSON
-        // Const mazeprinter: MazeDashPrinter = new MazeDashPrinter();
-        // Mazeprinter.visualize(Object(this.sessionDataService.read('map')), 5, 5);
-
-        while (this._currentX !== Constants.gameRows - 1 || this.currentY !== Constants.gameCols - 1) {
+         while (this._currentX !== Constants.gameRows - 1 || this.currentY !== Constants.gameCols - 1) {
             this.setNewPlace();
             this.setCurrentActions();
             const actionCommand: Ichoice = this.promptLoop.multiple(
                 ['What would you like to do?', 'Well...', 'For all possible choices type "options"', 'Please try again'],
                 this.currentChoices);
-            // To implement: adding all items to current inventory
-            if (actionCommand.names[0] === 'search' && this.currentPlace.loot.armour[0]) {
-                console.log(`You found: ${this.currentPlace.loot.armour[0].name}.`);
-                const armour: string = this.currentPlace.loot.armour[0].name;
-                this.currentPlace.loot.removeArmour (armour);
-                this.setCurrentActions();
+            // To implement: adding all items to hero's inventory
+            if (actionCommand.names[0] === 'search') {
+                this.lootPlace();
             }
             if (actionCommand.names[0] === 'exit') {
                 console.log(`You find your way out.`);
@@ -71,7 +72,8 @@ export class MainEngine implements Iengine {
                 this._currentY += nextCommand.yDirection;
             }
         }
-        console.log(`You win :)`);
+         console.log(`You win :)`);
+         console.log(this.myInventory.listItems());
     }
 
     private setNewPlace(): void {
@@ -82,9 +84,19 @@ export class MainEngine implements Iengine {
         this.currentChoices.push(...this.currentPlace.directions);
     }
     private setCurrentActions(): void {
-        const currentActions: Actions = new Actions (!(this.currentPlace.containsCreature || this.currentPlace.loot.armour.length === 0),
+        const currentActions: Actions = new Actions (!(this.currentPlace.containsCreature ||
+            this.currentPlace.loot.listItems().length === 0),
                                                      true);
         this.currentChoices = [];
         this.currentChoices.push(...currentActions.getAllActions());
+    }
+    private lootPlace (): void {
+        console.log(`You found: \n${this.currentPlace.loot.listItems()}.`);
+        this.currentPlace.loot.armour.forEach((armour: IArmour) => this.myInventory.addArmour(armour));
+        this.currentPlace.loot.weapons.forEach((weapon: IWeapon) => this.myInventory.addWeapon(weapon));
+        this.currentPlace.loot.potions.forEach((potion: IPotion) => this.myInventory.addPotion(potion));
+        this.myInventory.addCoins(this.currentPlace.loot.coins);
+        this.currentPlace.loot.removeAll();
+        this.setCurrentActions();
     }
 }

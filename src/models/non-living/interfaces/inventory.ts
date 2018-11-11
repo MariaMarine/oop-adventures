@@ -1,3 +1,4 @@
+import { ICollectable } from './collectable';
 import { IWeapon } from './weapon';
 import { IArmour } from './armour';
 import { IPotion } from './potion';
@@ -15,4 +16,6 @@ export interface IInventory {
     removeWeapon(weaponToRemove: string): IWeapon[];
     removePotion(potionToRemove: string): IPotion[];
     subtractCoins(coinsToRemove: number): void;
+    removeAll(): void;
+    listItems(): string;
 }
