@@ -1,3 +1,5 @@
+import { HeroFactory } from './../factory/hero-factory';
+import { IAlive } from './../models/living/interfaces/alive';
 import { IWeapon } from './../models/non-living/interfaces/weapon';
 import { IArmour } from './../models/non-living/interfaces/armour';
 import { Inventory } from './../models/non-living/classes/inventory';
@@ -12,6 +14,7 @@ import { PlaceGenerator } from './engine-helpers/current-place-generator';
 import { Constants } from './namespaces/constants';
 import { IInventory } from '../models/non-living/interfaces/inventory';
 import { IPotion } from '../models/non-living/interfaces/potion';
+import { IHeroFactory } from '../factory/hero-factory-interface';
 
 @injectable()
 export class MainEngine implements Iengine {
@@ -24,6 +27,9 @@ export class MainEngine implements Iengine {
     private placeGenerator: PlaceGenerator;
 
     // For test purposes
+
+    private _herofactory: IHeroFactory;
+    private player: IAlive;
     private myInventory: IInventory = new Inventory(0);
 
     public constructor(
@@ -32,6 +38,9 @@ export class MainEngine implements Iengine {
         this.promptLoop = promptloop;
         this.sessionDataService = sessionDataService;
         this.placeGenerator = new PlaceGenerator(sessionDataService);
+        this._herofactory = new HeroFactory();
+        this.player = this._herofactory.createPersonHero();
+
     }
 
     public get currentY(): number {
@@ -46,11 +55,15 @@ export class MainEngine implements Iengine {
     public set currentX(x: number) {
         this._currentX = x;
     }
+    public get heroFactory(): IHeroFactory {
+        return this._herofactory;
+    }
 
     public start(): void {
          while (this._currentX !== Constants.gameRows - 1 || this.currentY !== Constants.gameCols - 1) {
             this.setNewPlace();
             this.setCurrentActions();
+            console.log('HERO:', this.player);
             const actionCommand: IChoice = this.promptLoop.multiple(
                 ['What would you like to do?', 'Well...', 'For all possible choices type "options"', 'Please try again'],
                 this.currentChoices);
