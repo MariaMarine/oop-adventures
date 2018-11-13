@@ -2,7 +2,7 @@
 import { Randomizer } from '../../../factory/randomizer';
 import { ArmourType } from '../enums/armourTypes';
 import { IArmour } from '../interfaces/armour';
-import { Constants } from '../../../core/namespaces/constants';
+import { Constants } from '../../../core/constants/constants';
 
 export class Armour implements IArmour {
     private _physicalResistance: number;

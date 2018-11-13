@@ -1,5 +1,4 @@
 import { IFactory } from './../factory/hero-factory-interface';
-import { Factory } from '../factory/factory';
 import { IAlive } from './../models/living/interfaces/alive';
 import { IWeapon } from './../models/non-living/interfaces/weapon';
 import { IArmour } from './../models/non-living/interfaces/armour';
@@ -12,9 +11,9 @@ import { IPlace } from '../models/non-living/interfaces/place';
 import { Iengine } from './UI/interfaces/engine';
 import { IChoice } from './choices/interface/choice';
 import { PlaceGenerator } from './engine-helpers/current-place-generator';
-import { Constants } from './namespaces/constants';
 import { IInventory } from '../models/non-living/interfaces/inventory';
 import { IPotion } from '../models/non-living/interfaces/potion';
+import { Constants } from './constants/constants';
 @injectable()
 export class MainEngine implements Iengine {
     private readonly promptLoop: PromptLoop;
@@ -27,18 +26,18 @@ export class MainEngine implements Iengine {
 
     // For test purposes
 
-    private _Factory: IFactory;
+    private factory: IFactory;
     private player: IAlive;
     private myInventory: IInventory = new Inventory(0);
 
     public constructor(
+        @inject('factory') factory: IFactory,
         @inject('prompt-loop') promptloop: PromptLoop,
         @inject('session-data') sessionDataService: IsessionDataService) {
+        this.factory = factory;
         this.promptLoop = promptloop;
         this.sessionDataService = sessionDataService;
         this.placeGenerator = new PlaceGenerator(sessionDataService);
-        this._Factory = new Factory();
-      //  this.player = this._Factory.createHero();
 
     }
 
@@ -54,15 +53,12 @@ export class MainEngine implements Iengine {
     public set currentX(x: number) {
         this._currentX = x;
     }
-    public get Factory(): IFactory {
-        return this._Factory;
-    }
 
     public start(): void {
          while (this._currentX !== Constants.gameRows - 1 || this.currentY !== Constants.gameCols - 1) {
             this.setNewPlace();
             this.setCurrentActions();
-            console.log('HERO:', this.Factory.createHero('Gandalf'));
+            console.log('HERO:', this.factory.createHero('Gandalf'));
             const actionCommand: IChoice = this.promptLoop.multiple(
                 ['What would you like to do?', 'Well...', 'For all possible choices type "options"', 'Please try again'],
                 this.currentChoices);
@@ -96,7 +92,7 @@ export class MainEngine implements Iengine {
     }
     private setCurrentActions(): void {
         const currentActions: Actions = new Actions (!(this.currentPlace.containsCreature ||
-            this.currentPlace.loot.listItems().length === 0), true, true);
+            this.currentPlace.loot.listItems() === `No items`), true, true);
         this.currentChoices = [];
         this.currentChoices.push(...currentActions.getAllActions());
     }

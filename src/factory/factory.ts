@@ -1,20 +1,29 @@
 import { IFactory } from './hero-factory-interface';
-import { IHeroData } from '../core/namespaces/IHeroData';
 import { Ihero } from '../models/living/interfaces/hero';
 import { MagicResistanceText } from '../models/living/enums/magicResistance';
 import { Hero } from '../models/living/classes/hero';
-import { inject } from 'inversify';
-import { HeroesData } from '../core/namespaces/heroes';
+import { inject, injectable } from 'inversify';
+import { CollectionNames } from '../db/service/collection-names';
+import { IInventory } from '../models/non-living/interfaces/inventory';
+import { Inventory } from '../models/non-living/classes/inventory';
+import { Equipment } from '../models/non-living/classes/equipment';
+import { IEquipment } from '../models/non-living/interfaces/equipment';
+import { IDbService } from '../db/service/interfaces/db-service';
 
+@injectable()
 export class Factory implements IFactory {
-     private heroesData: IHeroData;
-    constructor() {
-        this.heroesData = new HeroesData();
+    private dbService: IDbService;
+    constructor(@inject('database-service') dbService: IDbService) {
+        this.dbService = dbService;
     }
-    public createHero(name: string): Ihero {
-        const heroData: Ihero = this.heroesData.getHeroData(name);
 
-        return new Hero(heroData.name, heroData.life, heroData.strength, heroData.magicResistance,
-                        MagicResistanceText.medium, heroData.fearFactor, heroData.equipment, heroData.inventory);
+    public createHero(name: string): Ihero {
+        const heroData: Ihero = <Ihero>this.dbService.readByKey(CollectionNames.heroes, name);
+        const heroInventory: IInventory = new Inventory(1);
+        heroInventory.addPotion(heroData.inventory.potions[0]);
+        const heroEquipment: IEquipment = new Equipment(heroData.equipment.weapon, heroData.equipment.armour);
+
+        return new Hero(heroData.name, heroData.info, heroData.life, heroData.strength, heroData.magicResistance,
+                        MagicResistanceText.medium, heroData.fearFactor, heroEquipment, heroInventory);
     }
 }

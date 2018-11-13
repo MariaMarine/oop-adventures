@@ -2,16 +2,22 @@ import { Ireader } from './interfaces/reader';
 import { Iwriter } from './interfaces/writer';
 import { inject, injectable } from 'inversify';
 import { IChoice } from '../choices/interface/choice';
+import { Ihero } from '../../models/living/interfaces/hero';
+import { IDbService } from '../../db/service/interfaces/db-service';
+import { CollectionNames } from '../../db/service/collection-names';
+import { Randomizer } from '../../factory/randomizer';
 
 @injectable()
 
 export class PromptLoop {
     private reader: Ireader;
     private writer: Iwriter;
-
+    private dbService: IDbService;
     public constructor(
         @inject('ui-writer') writer: Iwriter,
-        @inject('ui-reader') reader: Ireader) {
+        @inject('ui-reader') reader: Ireader,
+        @inject('database-service') dbService: IDbService) {
+        this.dbService = dbService;
         this.reader = reader;
         this.writer = writer;
     }
@@ -33,8 +39,8 @@ export class PromptLoop {
 
             let input: string = this.reader.read().toLowerCase();
             while (input === 'options') {
-            console.log(choices.reduce((acc: string, choice: IChoice) => `${acc} ${choice.names[0]}`, 'You have the following options: '));
-            input = this.reader.read().toLowerCase();
+                this.writer.write(choices.reduce((acc: string, choice: IChoice) => `${acc} ${choice.names[0]}`, `You have the following options: `));
+                input = this.reader.read().toLowerCase();
             }
             choices.forEach((choice: IChoice) => {
                 choice.names.forEach((choiceName: string) => {
@@ -80,5 +86,28 @@ export class PromptLoop {
         }
 
         return name;
+    }
+
+    public chooseHero(): Ihero {
+        const heroesPossibleNames: string[] = this.dbService.getCollectionsKeys(CollectionNames.heroes);
+
+        this.writer.write('It is time to choose the Hero you want to resurect from the dead to fight for you!');
+        this.writer.write(`You have the following options: \n`);
+        heroesPossibleNames.forEach((name: string) => {
+            const hero: Ihero = <Ihero>this.dbService.readByKey(CollectionNames.heroes, name);
+            this.writer.write(`${name}: ${hero.info}`);
+        });
+        let currentInput: string = '';
+        const promptStrings: string[] = ['Try again!', 'Invalid name', 'No such Hero'];
+        while (!heroesPossibleNames.includes(currentInput)) {
+            currentInput = this.reader.read();
+            if (heroesPossibleNames.includes(currentInput)) {
+                continue;
+            }
+            currentInput = Randomizer.GETRANDOMARRAYELEMENT(promptStrings);
+            this.writer.write(currentInput);
+        }
+
+        return <Ihero>this.dbService.readByKey(CollectionNames.heroes, currentInput);
     }
 }
