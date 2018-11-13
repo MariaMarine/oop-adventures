@@ -1,0 +1,79 @@
+{
+    "Arthur": {
+        "info":"King Arthur is a medieval, mythological figure who was the head of the kingdom Camelot. Give him the chance to reborn and fuck those bastards!",
+        "name": "Arthur",
+        "life": 100,
+        "strength": 100,
+        "magicResistance": 0.5,
+        "fearFactor":1,
+        "equipment": {
+            "weapon":{
+                "oneHanded":true,
+                "physicalDamage":25,
+                "magicalDamage": null,
+                "price":null,
+                "name":"Rusty Knife"
+            },
+            "armour":{
+                "physicalResistance": 20,
+                "magicalResistance": 10,
+                "price": 88,
+                "name": "Shitty Overpriced armour"
+            }
+        },
+        "inventory": {
+            "weapons":[
+
+            ],
+            "armours":[
+
+            ],
+            "potions":[
+                {
+                    "power": 25,
+                    "name": "Strength Potion"
+                }
+
+            ],
+            "coins": null
+        }
+    },
+    "Gandalf": {
+        "info":"A mighty Lizard coming from the Old Times to rescue the world. He is a bit crazy, but powerful with the stuff",
+        "name": "Gandalf",
+        "life": 80,
+        "strength": 80,
+        "magicResistance": 0.5,
+        "fearFactor":1,
+        "equipment": {
+            "weapon":{
+                "oneHanded":true,
+                "physicalDamage":25,
+                "magicalDamage": null,
+                "price":null,
+                "name":"Rusty Knife"
+            },
+            "armour":{
+                "physicalResistance": 20,
+                "magicalResistance": 10,
+                "price": 88,
+                "name": "Shitty Overpriced armour"
+            }
+        },
+        "inventory": {
+            "weapons":[
+
+            ],
+            "armours":[
+                
+            ],
+            "potions":[
+                {
+                    "power":10,
+                    "name": "Magic Potion" 
+                }
+            ],
+            "coins": null
+        }
+    }
+}

@@ -1,7 +1,7 @@
 import { PotionType } from './../enums/potionTypes';
 import { Randomizer } from '../../../factory/randomizer';
 import { IPotion } from '../interfaces/potion';
-import { Constants } from '../../../core/namespaces/constants';
+import { Constants } from '../../../core/constants/constants';
 
 export class Potion implements IPotion {
     private _power: number;

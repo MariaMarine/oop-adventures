@@ -8,7 +8,7 @@ import { IArmour } from '../interfaces/armour';
 import { Weapon } from './weapon';
 import { Armour } from './armour';
 import { Potion } from './potion';
-import { Constants } from '../../../core/namespaces/constants';
+import { Constants } from '../../../core/constants/constants';
 export class Inventory implements IInventory {
     private _weapons: IWeapon[];
     private _armour: IArmour[];

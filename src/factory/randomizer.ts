@@ -20,6 +20,6 @@ export class Randomizer {
         return new Inventory(difficultyCoef);
     }
     public static GENERATEDIFFICULTYCOEF(x: number, y: number): number {
-        return Math.sqrt((x + 1) * (y + 1));
+        return Math.sqrt((x + 1) + (y + 1));
     }
 }
