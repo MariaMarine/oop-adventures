@@ -14,15 +14,19 @@ export class Inventory implements IInventory {
     private _armour: IArmour[];
     private _potions: IPotion[];
     private _coins: number;
+    private _difficultyCoef: number;
 
-    public constructor(difficultyCoef: number, weapons?: IWeapon[], armour?: IArmour[], potions?: IPotion[], coins?: number) {
-        this._weapons = weapons || [new Weapon(difficultyCoef)];
+    public constructor(difficultyCoef: number) {
+        if (difficultyCoef === null || difficultyCoef < 0) {
+            throw new Error ('Difficulty coefficient must be a positive number!');
+            }
+        this._difficultyCoef = difficultyCoef;
+        this._weapons = [];
+        this._armour = [];
 
-        this._armour = armour || [new Armour(difficultyCoef)];
+        this._potions = [];
 
-        this._potions = potions || [new Potion(difficultyCoef)];
-
-        this._coins = coins || Randomizer.GENERATERANDOMNUMBER(Constants.maxCoinLoot * difficultyCoef);
+        this._coins = 0;
     }
     public get weapons(): IWeapon[] {
         return this._weapons;
@@ -36,26 +40,30 @@ export class Inventory implements IInventory {
     public get coins(): number {
         return this._coins;
     }
+
+    public get difficultyCoef(): number {
+        return this._difficultyCoef;
+    }
     public addWeapon(weapon: IWeapon): void {
-        if (!weapon) {
+        if (weapon === null) {
             throw new Error('Not a valid weapon!');
         }
         this._weapons.push(weapon);
     }
     public addArmour(armour: IArmour): void {
-        if (!armour) {
+        if (armour === null) {
             throw new Error('Not a valid armour!');
         }
         this._armour.push(armour);
     }
     public addPotion(potion: IPotion): void {
-        if (!potion) {
+        if (potion === null) {
             throw new Error('Not a valid potion!');
         }
         this._potions.push(potion);
     }
     public addCoins(coins: number): void {
-        if (!coins || coins < 0) {
+        if (coins === null || coins < 0) {
             throw new Error('Coins must be a positive number!');
         }
         this._coins += coins;
@@ -104,9 +112,10 @@ export class Inventory implements IInventory {
         this._potions = [];
         this._coins = 0;
     }
+
+    // To inject console writer in constructor!
     public listItems () : string {
         let result: string = '';
-        // Sort out repetitions?!
         if (this._weapons.length > 0) {
             result += `Weapons:\n`;
             this._weapons.forEach((weapon: IWeapon, index: number) => result +=
@@ -126,14 +135,13 @@ export class Inventory implements IInventory {
             result += `Coins: ${this._coins}`;
         }
 
-        return result;
+        return result !== '' ? result : `No items`;
     }
 }
 /*
-const rw: IWeapon = new Weapon(3);
-const loot: IInventory = new Inventory (3, [rw], [new Armour(3, 10, 10, 10, 'shd')]);
-//console.log(loot);
-const arm: IArmour[] = loot.removeArmour('shd');
-//console.log(arm);
-console.log(loot.listItems);
+const start: IInventory = new Inventory(1);
+start.addArmour(new Armour(start.difficultyCoef));
+start.addWeapon(new Weapon(start.difficultyCoef));
+start.addPotion(new Potion(start.difficultyCoef));
+console.log(start.listItems());
 */

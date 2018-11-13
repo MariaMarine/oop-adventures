@@ -8,6 +8,7 @@ export interface IInventory {
     armour: IArmour[];
     potions: IPotion[];
     coins: number;
+    difficultyCoef: number;
     addArmour(armour: IArmour): void;
     addWeapon(weapon: IWeapon): void;
     addPotion(potion: IPotion): void;
