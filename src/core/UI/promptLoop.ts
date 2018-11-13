@@ -5,7 +5,7 @@ import { IChoice } from '../choices/interface/choice';
 import { Ihero } from '../../models/living/interfaces/hero';
 import { IDbService } from '../../db/service/interfaces/db-service';
 import { CollectionNames } from '../../db/service/collection-names';
-import { Hero } from '../../models/living/classes/hero';
+import { Randomizer } from '../../factory/randomizer';
 
 @injectable()
 
@@ -88,12 +88,26 @@ export class PromptLoop {
         return name;
     }
 
-    public chooseHero(): void {
+    public chooseHero(): Ihero {
         const heroesPossibleNames: string[] = this.dbService.getCollectionsKeys(CollectionNames.heroes);
-        const heroesInformation: string[] = [];
+
+        this.writer.write('It is time to choose the Hero you want to resurect from the dead to fight for you!');
+        this.writer.write(`You have the following options: \n`);
         heroesPossibleNames.forEach((name: string) => {
-            const hero: Ihero =  <Ihero>this.dbService.readByKey(CollectionNames.heroes, name);
-            heroesInformation.push(hero.info);
+            const hero: Ihero = <Ihero>this.dbService.readByKey(CollectionNames.heroes, name);
+            this.writer.write(`${name}: ${hero.info}`);
         });
+        let currentInput: string = '';
+        const promptStrings: string[] = ['Try again!', 'Invalid name', 'No such Hero'];
+        while (!heroesPossibleNames.includes(currentInput)) {
+            currentInput = this.reader.read();
+            if (heroesPossibleNames.includes(currentInput)) {
+                continue;
+            }
+            currentInput = Randomizer.GETRANDOMARRAYELEMENT(promptStrings);
+            this.writer.write(currentInput);
+        }
+
+        return <Ihero>this.dbService.readByKey(CollectionNames.heroes, currentInput);
     }
 }
