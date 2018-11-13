@@ -1,3 +1,5 @@
+import { HeroesData } from './../core/namespaces/heroes';
+import { IHeroData } from './../core/namespaces/IHeroData';
 // tslint:disable
 import { IMazePrinter } from './../core/UI/interfaces/maze-printer';
 import { Container } from 'inversify';
@@ -22,5 +24,6 @@ container.bind<IsessionDataService>('session-data').to(LocalStorageService);
 container.bind<PromptLoop>('prompt-loop').to(PromptLoop);
 container.bind<MainEngine>('main-engine').to(MainEngine).inSingletonScope();
 container.bind<IMazePrinter>('maze-printer').to(MazeDashPrinter);
+container.bind<IHeroData>('heroes-data').to(HeroesData);
 
 export { container };

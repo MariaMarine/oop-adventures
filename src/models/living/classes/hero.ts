@@ -4,7 +4,8 @@ import { IInventory } from '../../non-living/interfaces/inventory';
 import { IAlive } from '../interfaces/alive';
 import { MagicResistanceText } from '../enums/magicResistance';
 import { LivingBeingModel } from './livingBeing-model';
-export class Hero extends LivingBeingModel implements IPerson, IAlive {
+import { Ihero } from '../interfaces/hero';
+export class Hero extends LivingBeingModel implements IPerson, IAlive, Ihero {
     private readonly _equipment: IEquipment;
     private readonly _inventory: IInventory;
 

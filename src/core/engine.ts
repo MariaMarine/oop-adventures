@@ -1,4 +1,5 @@
-import { HeroFactory } from './../factory/hero-factory';
+import { IFactory } from './../factory/hero-factory-interface';
+import { Factory } from '../factory/factory';
 import { IAlive } from './../models/living/interfaces/alive';
 import { IWeapon } from './../models/non-living/interfaces/weapon';
 import { IArmour } from './../models/non-living/interfaces/armour';
@@ -14,8 +15,6 @@ import { PlaceGenerator } from './engine-helpers/current-place-generator';
 import { Constants } from './namespaces/constants';
 import { IInventory } from '../models/non-living/interfaces/inventory';
 import { IPotion } from '../models/non-living/interfaces/potion';
-import { IHeroFactory } from '../factory/hero-factory-interface';
-
 @injectable()
 export class MainEngine implements Iengine {
     private readonly promptLoop: PromptLoop;
@@ -28,7 +27,7 @@ export class MainEngine implements Iengine {
 
     // For test purposes
 
-    private _herofactory: IHeroFactory;
+    private _Factory: IFactory;
     private player: IAlive;
     private myInventory: IInventory = new Inventory(0);
 
@@ -38,8 +37,8 @@ export class MainEngine implements Iengine {
         this.promptLoop = promptloop;
         this.sessionDataService = sessionDataService;
         this.placeGenerator = new PlaceGenerator(sessionDataService);
-        this._herofactory = new HeroFactory();
-        this.player = this._herofactory.createPersonHero();
+        this._Factory = new Factory();
+      //  this.player = this._Factory.createHero();
 
     }
 
@@ -55,15 +54,15 @@ export class MainEngine implements Iengine {
     public set currentX(x: number) {
         this._currentX = x;
     }
-    public get heroFactory(): IHeroFactory {
-        return this._herofactory;
+    public get Factory(): IFactory {
+        return this._Factory;
     }
 
     public start(): void {
          while (this._currentX !== Constants.gameRows - 1 || this.currentY !== Constants.gameCols - 1) {
             this.setNewPlace();
             this.setCurrentActions();
-            console.log('HERO:', this.player);
+            console.log('HERO:', this.Factory.createHero('Gandalf'));
             const actionCommand: IChoice = this.promptLoop.multiple(
                 ['What would you like to do?', 'Well...', 'For all possible choices type "options"', 'Please try again'],
                 this.currentChoices);
