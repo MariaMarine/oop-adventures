@@ -19,11 +19,8 @@ export class Factory implements IFactory {
 
     public createHero(name: string): Ihero {
         const heroData: Ihero = <Ihero>this.dbService.readByKey(CollectionNames.heroes, name);
-        const heroInventory: IInventory = new Inventory(1,
-                                                        heroData.inventory.weapons,
-                                                        heroData.inventory.armour,
-                                                        heroData.inventory.potions,
-                                                        heroData.inventory.coins);
+        const heroInventory: IInventory = new Inventory(1);
+        heroInventory.addPotion(heroData.inventory.potions[0]);
         const heroEquipment: IEquipment = new Equipment(heroData.equipment.weapon, heroData.equipment.armour);
 
         return new Hero(heroData.name, heroData.info, heroData.life, heroData.strength, heroData.magicResistance,
