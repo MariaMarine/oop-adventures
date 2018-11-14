@@ -19,7 +19,7 @@ export class Hero extends LivingBeingModel implements IPerson, IAlive, Ihero {
         fearFactor: number,
         equipment: IEquipment,
         inventory: IInventory) {
-        super(name, life, strength, magicResistance, magicResistanceText, fearFactor);
+        super(name, life, strength, magicResistance, fearFactor);
         this._equipment = equipment;
         this._inventory = inventory;
     }

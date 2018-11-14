@@ -13,12 +13,11 @@ export class Enemy extends LivingBeingModel implements IAlive, IMagical {
         life: number,
         strength: number,
         magicResistance: number,
-        magicResistanceText: MagicResistanceText,
         fearFactor: number,
         equipment: IEquipment,
         magicAttach: MagicType
     ) {
-            super(name, life, strength, magicResistance, magicResistanceText, fearFactor);
+            super(name, life, strength, magicResistance, fearFactor);
             this._equipment = equipment;
             this._magicAttach = magicAttach;
         }

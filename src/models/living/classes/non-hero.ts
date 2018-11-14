@@ -8,9 +8,8 @@ export class NonHero extends LivingBeingModel implements IAlive {
         life: number,
         strength: number,
         magicResistance: number,
-        magicResistanceText: MagicResistanceText,
         fearFactor: number) {
-            super(name, life, strength, magicResistance, magicResistanceText, fearFactor);
+            super(name, life, strength, magicResistance, fearFactor);
         }
     // To implement say()
     public say(): string {

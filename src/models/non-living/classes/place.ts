@@ -35,6 +35,9 @@ export class Place implements IPlace {
     public get containsCreature(): boolean {
         return this._containsCreature;
     }
+    public set containsCreature(bool: boolean) {
+        this._containsCreature = bool;
+    }
     public get introText(): string {
         if (this.visited) {
             return this._nextVisitText;
@@ -52,5 +55,11 @@ export class Place implements IPlace {
     }
     public get nextVisitText(): string {
         return this._nextVisitText;
+    }
+    public get creature(): IAlive {
+        return this._creature;
+    }
+    public set creature(creature: IAlive) {
+        this._creature = creature;
     }
 }

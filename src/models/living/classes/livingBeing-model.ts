@@ -1,5 +1,4 @@
 import { IAlive } from './../interfaces/alive';
-import { MagicResistanceText } from '../enums/magicResistance';
 
 export abstract class LivingBeingModel implements IAlive {
     protected static _minStrength: number = 0;
@@ -11,17 +10,15 @@ export abstract class LivingBeingModel implements IAlive {
     private readonly _name: string;
     private _life: number;
     private readonly _maxlife: number;
-    private  _strength: number; //between 0 and 300
-    private readonly _magicResistance: number; //betweeen 0 and 1
-    private readonly _magicResistanceText: MagicResistanceText;
-    private readonly _fearFactor: number; // between 0 and 1
+    private  _strength: number;
+    private readonly _magicResistance: number;
+    private readonly _fearFactor: number;
 
     public constructor(
     name: string,
     life: number,
     strength: number,
     magicResistance: number,
-    magicResistanceText: MagicResistanceText,
     fearFactor: number
 ) {
     this._name = name;
@@ -32,8 +29,6 @@ export abstract class LivingBeingModel implements IAlive {
 
     this.validateMagicResistance(magicResistance);
     this._magicResistance = magicResistance;
-
-    this._magicResistanceText = magicResistanceText;
 
     this.validateFearFactor(fearFactor);
     this._fearFactor = fearFactor;
@@ -56,13 +51,9 @@ public get name(): string {
   public get magicResistance(): number {
       return this._magicResistance;
   }
-  public get magicResistanceText(): MagicResistanceText {
-    return this._magicResistanceText;
-}
 public get fearFactor(): number {
     return this._fearFactor;
 }
-
 
 // To implement say()
   public abstract say(): string;

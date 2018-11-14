@@ -1,0 +1,23 @@
+{
+    "Trader": ["Bella Donna","Mascarpone","Old gypsi"],
+   "Creature":  ["Wolf","Bear","Mountain Lion"],
+    "Humanoid":["Skeleton","Troll","Giant"],
+    
+"Strengths":{
+   "weak": {
+   "names": ["Shabby", "Weak", "Starving"],
+    "fearFactor":0.9
+    },
+
+    "medium": {
+        "names": ["Average", "Brown", "Silver"],
+        "fearFactor":0.7
+        },
+
+    "strong": {
+         "names": ["Golden", "Mega", "Incredible"],
+         "fearFactor":0.2
+         }
+}
+}
+

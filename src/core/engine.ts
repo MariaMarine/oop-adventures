@@ -1,4 +1,4 @@
-import { IFactory } from './../factory/hero-factory-interface';
+
 import { IWeapon } from './../models/non-living/interfaces/weapon';
 import { IArmour } from './../models/non-living/interfaces/armour';
 import { Inventory } from './../models/non-living/classes/inventory';
@@ -15,6 +15,7 @@ import { Constants } from './constants/constants';
 import { Direction } from './choices/direction';
 import { Ihero } from '../models/living/interfaces/hero';
 import { MazeCell } from '../models/non-living/classes/maze-cell';
+import { Ifactory } from '../factory/interface/Ifactory';
 @injectable()
 export class MainEngine implements Iengine {
     private readonly promptLoop: PromptLoop;
@@ -26,18 +27,18 @@ export class MainEngine implements Iengine {
     private actions: { loot: IChoice; exit: IChoice; inventory: IChoice };
     // For test purposes
     private map: MazeCell[][];
-    private factory: IFactory;
+    private factory: Ifactory;
     private myInventory: IInventory = new Inventory(0);
     private hero: Ihero;
 
     public constructor(
-        @inject('factory') factory: IFactory,
+        @inject('factory') factory: Ifactory,
         @inject('prompt-loop') promptloop: PromptLoop,
         @inject('actions') actions: Actions) {
         this.actions = actions.getAllActions();
         this.factory = factory;
         this.promptLoop = promptloop;
-        this.placeGenerator = new PlaceGenerator();
+        this.placeGenerator = new PlaceGenerator(factory);
 
     }
 
@@ -60,7 +61,7 @@ export class MainEngine implements Iengine {
         while (this._currentX !== Constants.gameRows - 1 || this.currentY !== Constants.gameCols - 1) {
             this.setNewPlace();
             this.setCurrentChoices();
-
+            console.log(this.currentPlace.creature);
             const nextChoice: IChoice = this.promptLoop.multiple(
                 ['What would you like to do?', 'Well...', 'For all possible choices type "options"', 'Please try again'],
                 this.currentChoices);

@@ -1,5 +1,6 @@
 import { IDirection } from './../../../core/choices/interface/direction';
 import { IInventory } from './inventory';
+import { IAlive } from '../../living/interfaces/alive';
 
 export interface IPlace {
     // Name: string;
@@ -11,4 +12,5 @@ export interface IPlace {
     loot: IInventory;
     directions: IDirection[];
     nextVisitText: string;
+    creature: IAlive;
 }

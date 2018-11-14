@@ -5,7 +5,6 @@ export interface IAlive {
     life: number;
     strength: number;
     magicResistance: number;
-    magicResistanceText: MagicResistanceText;
     fearFactor: number;
     say(): string;
 }

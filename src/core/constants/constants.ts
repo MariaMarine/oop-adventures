@@ -8,4 +8,7 @@ export namespace Constants {
     export const maxMagicalResistance: number = 100;
     export const maxPotionPower: number = 100;
     export const maxCoinLoot: number = 10;
+    export const baseLife: number = 100;
+    export const baseStrength: number = 20;
+    export const baseMagicResistance: number = 20;
 }
