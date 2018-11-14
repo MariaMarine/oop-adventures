@@ -26,9 +26,7 @@ export class PromptLoop {
         let commandToReturn: IChoice = {
             names: [],
             commandNotPossibleStrings: [],
-            isPossible: false,
-            xDirection: 0,
-            yDirection: 0
+            isPossible: false
         };
         let oneOfThePossibleChoicesInputed: boolean = false;
         // tslint:disable-next-line:no-constant-condition

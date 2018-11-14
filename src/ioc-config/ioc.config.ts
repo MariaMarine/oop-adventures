@@ -18,6 +18,7 @@ import { DbService } from '../db/service/db.service';
 import { IFactory } from '../factory/hero-factory-interface';
 import { Factory } from '../factory/factory';
 import { IDbService } from '../db/service/interfaces/db-service';
+import { Actions } from '../core/choices/actions';
 
 const container: Container = new Container();
 
@@ -31,4 +32,5 @@ container.bind<IMazePrinter>('maze-printer').to(MazeDashPrinter);
 container.bind<IdatabaseReader>('database-reader').to(FileReader);
 container.bind<IDbService>('database-service').to(DbService);
 container.bind<IFactory>('factory').to(Factory);
+container.bind<Actions>('actions').to(Actions);
 export { container };

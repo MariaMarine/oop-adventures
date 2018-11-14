@@ -1,5 +1,7 @@
 import { IChoice } from './interface/choice';
+import { injectable } from 'inversify';
 
+@injectable()
 export class Actions {
 
     private loot: IChoice;
@@ -7,31 +9,25 @@ export class Actions {
 
     private currentInventory: IChoice;
 
-    public constructor (possibleLoot: boolean, possibleExit: boolean, possibleShowItems: boolean) {
+    public constructor() {
         this.loot = {
             names: ['search', 'loot'],
-            isPossible: possibleLoot,
-            xDirection: 0,
-            yDirection: 0,
+            isPossible: false,
             commandNotPossibleStrings: ['You found nothing', 'You search for a while - in vain', 'Nothing here']
         };
         this.exit = {
             names: ['exit', 'continue'],
-            isPossible: possibleExit,
-            xDirection: 0,
-            yDirection: 0,
+            isPossible: false,
             commandNotPossibleStrings: ['You try to escape but...']
         };
         this.currentInventory = {
             names: ['items', 'show items', 'inventory', 'bag', 'display'],
-            isPossible: possibleShowItems,
-            xDirection: 0,
-            yDirection: 0,
+            isPossible: false,
             commandNotPossibleStrings: ['Not now!']
         };
     }
-    public getAllActions(): IChoice[] {
-        return [this.loot, this.exit, this.currentInventory];
+    public getAllActions(): { loot: IChoice; exit: IChoice; inventory: IChoice } {
+        return { loot: this.loot, exit: this.exit, inventory: this.currentInventory };
     }
 
 }

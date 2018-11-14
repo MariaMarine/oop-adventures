@@ -24,8 +24,8 @@ export class Init {
         this.engine = engine;
     }
     public initialize(): void {
-           const userName: string = this.promptLoop.setName();
-         this.sessionDataService.write('username', userName);
+        const userName: string = this.promptLoop.setName();
+        this.sessionDataService.write('username', userName);
         //  const difficulty: string = this.promptLoop.multiple(['Choose difficulty'], ['easy', 'intermediate', 'hard']);
         // here we will generate the map, but for now we use the test map
         // this.sessionDataService.write('map', JSON.parse(fs.readFileSync(__dirname.concat('/test-map.json'), 'UTF-8')));

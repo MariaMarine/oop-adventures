@@ -14,6 +14,8 @@ import { PlaceGenerator } from './engine-helpers/current-place-generator';
 import { IInventory } from '../models/non-living/interfaces/inventory';
 import { IPotion } from '../models/non-living/interfaces/potion';
 import { Constants } from './constants/constants';
+import { Factory } from '../factory/factory';
+import { Direction } from './choices/direction';
 @injectable()
 export class MainEngine implements Iengine {
     private readonly promptLoop: PromptLoop;
@@ -23,7 +25,7 @@ export class MainEngine implements Iengine {
     private currentPlace: IPlace;
     private currentChoices: IChoice[] = [];
     private placeGenerator: PlaceGenerator;
-
+    private actions: { loot: IChoice; exit: IChoice; inventory: IChoice };
     // For test purposes
 
     private factory: IFactory;
@@ -33,7 +35,9 @@ export class MainEngine implements Iengine {
     public constructor(
         @inject('factory') factory: IFactory,
         @inject('prompt-loop') promptloop: PromptLoop,
-        @inject('session-data') sessionDataService: IsessionDataService) {
+        @inject('session-data') sessionDataService: IsessionDataService,
+        @inject('actions') actions: Actions) {
+        this.actions = actions.getAllActions();
         this.factory = factory;
         this.promptLoop = promptloop;
         this.sessionDataService = sessionDataService;
@@ -55,32 +59,26 @@ export class MainEngine implements Iengine {
     }
 
     public start(): void {
-         while (this._currentX !== Constants.gameRows - 1 || this.currentY !== Constants.gameCols - 1) {
+        while (this._currentX !== Constants.gameRows - 1 || this.currentY !== Constants.gameCols - 1) {
             this.setNewPlace();
-            this.setCurrentActions();
-            console.log('HERO:', this.factory.createHero('Gandalf'));
-            const actionCommand: IChoice = this.promptLoop.multiple(
+            this.setCurrentChoices();
+
+            const nextChoice: IChoice = this.promptLoop.multiple(
                 ['What would you like to do?', 'Well...', 'For all possible choices type "options"', 'Please try again'],
                 this.currentChoices);
             // To implement: adding all items to hero's inventory
-            if (actionCommand.names[0] === 'search') {
+            if (nextChoice.names[0] === 'search') {
                 this.lootPlace();
             }
-            if (actionCommand.names[0] === 'items') {
+            if (nextChoice.names[0] === 'items') {
                 console.log(`You have the following items:\n${this.myInventory.listItems()}`);
             }
-            if (actionCommand.names[0] === 'exit') {
-                console.log(`You find your way out.`);
-                this.setCurrentChoices();
-                const nextCommand: IChoice = this.promptLoop.multiple(
-                    [`Where to next?`, 'Can`t do that',
-                    'For all possible choices type "options"', 'Well...', 'Invalid entry', 'Please try again'],
-                    this.currentChoices);
-                this._currentX += nextCommand.xDirection;
-                this._currentY += nextCommand.yDirection;
+            if (nextChoice instanceof Direction) {
+                this._currentX += nextChoice.xDirection;
+                this._currentY += nextChoice.yDirection;
             }
         }
-         console.log(`You win :)`);
+        console.log(`You win :)`);
     }
 
     private setNewPlace(): void {
@@ -88,21 +86,20 @@ export class MainEngine implements Iengine {
     }
     private setCurrentChoices(): void {
         this.currentChoices = [];
-        this.currentChoices.push(...this.currentPlace.directions);
+        this.actions.loot.isPossible = !this.currentPlace.containsCreature;
+        this.actions.exit.isPossible = true;
+        this.actions.inventory.isPossible = !this.currentPlace.containsCreature;
+
+        this.currentChoices.push(...this.currentPlace.directions, this.actions.inventory, this.actions.loot, this.actions.exit);
+
     }
-    private setCurrentActions(): void {
-        const currentActions: Actions = new Actions (!(this.currentPlace.containsCreature ||
-            this.currentPlace.loot.listItems().length === 0), true, true);
-        this.currentChoices = [];
-        this.currentChoices.push(...currentActions.getAllActions());
-    }
-    private lootPlace (): void {
+
+    private lootPlace(): void {
         console.log(`You found:\n${this.currentPlace.loot.listItems()}.\nYou put them in your bag.`);
         this.currentPlace.loot.armour.forEach((armour: IArmour) => this.myInventory.addArmour(armour));
         this.currentPlace.loot.weapons.forEach((weapon: IWeapon) => this.myInventory.addWeapon(weapon));
         this.currentPlace.loot.potions.forEach((potion: IPotion) => this.myInventory.addPotion(potion));
         this.myInventory.addCoins(this.currentPlace.loot.coins);
         this.currentPlace.loot.removeAll();
-        this.setCurrentActions();
     }
 }

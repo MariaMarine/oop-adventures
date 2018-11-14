@@ -28,6 +28,7 @@ export class Place implements IPlace {
     public get visited(): boolean {
         return this._visited;
     }
+
     public set visited(visited: boolean) {
         this._visited = visited;
     }
@@ -48,5 +49,8 @@ export class Place implements IPlace {
 
     public get directions(): IDirection[] {
         return this._directions;
+    }
+    public get nextVisitText(): string {
+        return this._nextVisitText;
     }
 }

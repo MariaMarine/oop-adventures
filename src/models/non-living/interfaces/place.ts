@@ -10,4 +10,5 @@ export interface IPlace {
     introText: string;
     loot: IInventory;
     directions: IDirection[];
+    nextVisitText: string;
 }

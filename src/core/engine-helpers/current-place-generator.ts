@@ -2,7 +2,7 @@ import { Randomizer } from './../../factory/randomizer';
 import { IPlace } from '../../models/non-living/interfaces/place';
 import { IsessionDataService } from '../../session-data-service/interfaces/sessionDataService';
 import { inject } from 'inversify';
-import { Directions } from '../choices/directions';
+import { Directions } from '../choices/all-directions';
 import { Place } from '../../models/non-living/classes/place';
 import { MazeCell } from '../../models/non-living/classes/maze-cell';
 
@@ -20,7 +20,7 @@ export class PlaceGenerator {
         let newPlace: IPlace;
         if (this.visitedPlaces[placeCoordinates]) {
             newPlace = this.visitedPlaces[placeCoordinates];
-            console.log(`OK`);
+            console.log(newPlace.nextVisitText);
 
             return newPlace;
         } else {
