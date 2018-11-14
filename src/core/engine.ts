@@ -1,12 +1,10 @@
 import { IFactory } from './../factory/hero-factory-interface';
-import { IAlive } from './../models/living/interfaces/alive';
 import { IWeapon } from './../models/non-living/interfaces/weapon';
 import { IArmour } from './../models/non-living/interfaces/armour';
 import { Inventory } from './../models/non-living/classes/inventory';
 import { Actions } from './choices/actions';
 import { inject, injectable } from 'inversify';
 import { PromptLoop } from './UI/promptLoop';
-import { IsessionDataService } from '../session-data-service/interfaces/sessionDataService';
 import { IPlace } from '../models/non-living/interfaces/place';
 import { Iengine } from './UI/interfaces/engine';
 import { IChoice } from './choices/interface/choice';
@@ -14,34 +12,32 @@ import { PlaceGenerator } from './engine-helpers/current-place-generator';
 import { IInventory } from '../models/non-living/interfaces/inventory';
 import { IPotion } from '../models/non-living/interfaces/potion';
 import { Constants } from './constants/constants';
-import { Factory } from '../factory/factory';
 import { Direction } from './choices/direction';
+import { Ihero } from '../models/living/interfaces/hero';
+import { MazeCell } from '../models/non-living/classes/maze-cell';
 @injectable()
 export class MainEngine implements Iengine {
     private readonly promptLoop: PromptLoop;
     private _currentX: number = 0;
     private _currentY: number = 0;
-    private readonly sessionDataService: IsessionDataService;
     private currentPlace: IPlace;
     private currentChoices: IChoice[] = [];
     private placeGenerator: PlaceGenerator;
     private actions: { loot: IChoice; exit: IChoice; inventory: IChoice };
     // For test purposes
-
+    private map: MazeCell[][];
     private factory: IFactory;
-    private player: IAlive;
     private myInventory: IInventory = new Inventory(0);
+    private hero: Ihero;
 
     public constructor(
         @inject('factory') factory: IFactory,
         @inject('prompt-loop') promptloop: PromptLoop,
-        @inject('session-data') sessionDataService: IsessionDataService,
         @inject('actions') actions: Actions) {
         this.actions = actions.getAllActions();
         this.factory = factory;
         this.promptLoop = promptloop;
-        this.sessionDataService = sessionDataService;
-        this.placeGenerator = new PlaceGenerator(sessionDataService);
+        this.placeGenerator = new PlaceGenerator();
 
     }
 
@@ -58,7 +54,9 @@ export class MainEngine implements Iengine {
         this._currentX = x;
     }
 
-    public start(): void {
+    public start(map: MazeCell[][], hero: Ihero): void {
+        this.map = map;
+        this.hero = hero;
         while (this._currentX !== Constants.gameRows - 1 || this.currentY !== Constants.gameCols - 1) {
             this.setNewPlace();
             this.setCurrentChoices();
@@ -82,7 +80,14 @@ export class MainEngine implements Iengine {
     }
 
     private setNewPlace(): void {
-        this.currentPlace = this.placeGenerator.setCurrentPlace(this.currentX, this._currentY);
+        if (this.map[this.currentX][this.currentY] && this.map[this.currentX][this.currentY].place) {
+            this.currentPlace = this.map[this.currentX][this.currentY].place;
+            console.log(this.currentPlace.nextVisitText);
+        } else {
+            this.currentPlace = this.placeGenerator.setCurrentPlace(this.map[this.currentX][this.currentY], this.currentX, this.currentY);
+            this.map[this.currentX][this.currentY].place = this.currentPlace;
+        }
+
     }
     private setCurrentChoices(): void {
         this.currentChoices = [];

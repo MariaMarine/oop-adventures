@@ -1,4 +1,3 @@
-import { MazeDashPrinter } from './../core/UI/maze-printer';
 import { MazeCell } from '../models/non-living/classes/maze-cell';
 import { IMazePrinter } from '../core/UI/interfaces/maze-printer';
 import { inject } from 'inversify';

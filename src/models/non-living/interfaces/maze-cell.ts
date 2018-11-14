@@ -1,3 +1,5 @@
+import { IPlace } from "./place";
+
 export interface IMazeCell {
     x: number;
     y: number;
@@ -7,4 +9,5 @@ export interface IMazeCell {
     right: boolean;
 // tslint:disable-next-line:no-reserved-keywords
     set: number;
+    place: IPlace;
 }

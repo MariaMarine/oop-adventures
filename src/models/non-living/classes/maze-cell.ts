@@ -1,4 +1,5 @@
 import { IMazeCell } from '../interfaces/maze-cell';
+import { IPlace } from '../interfaces/place';
 
 export class MazeCell implements IMazeCell {
     public x: number; // Column number!
@@ -9,4 +10,5 @@ export class MazeCell implements IMazeCell {
     public right: boolean;
 // tslint:disable-next-line:no-reserved-keywords
     public set: number;
+    public place: IPlace;
 }
