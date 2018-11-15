@@ -22,7 +22,6 @@ export class Factory implements Ifactory {
     constructor(@inject('database-service') dbService: IDbService) {
         this.dbService = dbService;
         // tslint:disable-next-line:max-line-length
-        console.log(this.dbService.readByKey(CollectionNames.settings, 'Strengths'));
         const strengthStrings: Object[] = <Object[]>this.dbService.readByKey(CollectionNames.settings, 'Strengths');
         strengthStrings.forEach((strengthString: Object) => {
             this.nonHeroStrengthStrings.push(<{ names: string[]; fearFactor: number }>strengthString);

@@ -29,7 +29,7 @@ export class Init {
         const map: MazeCell[][] = randomMaze.maze;
         randomMaze.printer.visualize(randomMaze.maze, Constants.gameCols, Constants.gameRows);
         const hero: Ihero = this.promptLoop.chooseHero();
-        this.engine.start(map, hero);
+        this.engine.start(map, hero, userName);
     }
 
 }

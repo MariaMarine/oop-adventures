@@ -1,4 +1,4 @@
-import { IPlace } from "./place";
+import { IPlace } from './place';
 
 export interface IMazeCell {
     x: number;

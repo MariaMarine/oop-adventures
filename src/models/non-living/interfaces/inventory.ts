@@ -1,4 +1,3 @@
-import { ICollectable } from './collectable';
 import { IWeapon } from './weapon';
 import { IArmour } from './armour';
 import { IPotion } from './potion';

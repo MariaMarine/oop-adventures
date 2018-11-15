@@ -3,6 +3,7 @@ import { IMazePrinter } from '../core/UI/interfaces/maze-printer';
 import { inject } from 'inversify';
 
 export class Maze {
+    // tslint:disable-next-line:no-require-imports
     private generator: any = require ('../../node_modules/generate-maze');
     private _gameRows: number;
     private _gameCols: number;

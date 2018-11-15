@@ -6,7 +6,7 @@ import { Actions } from './choices/actions';
 import { inject, injectable } from 'inversify';
 import { PromptLoop } from './UI/promptLoop';
 import { IPlace } from '../models/non-living/interfaces/place';
-import { Iengine } from './UI/interfaces/engine';
+import { Iengine } from './interfaces/engine';
 import { IChoice } from './choices/interface/choice';
 import { PlaceGenerator } from './engine-helpers/current-place-generator';
 import { IInventory } from '../models/non-living/interfaces/inventory';
@@ -30,7 +30,7 @@ export class MainEngine implements Iengine {
     private factory: Ifactory;
     private myInventory: IInventory = new Inventory(0);
     private hero: Ihero;
-
+    private userName: string;
     public constructor(
         @inject('factory') factory: Ifactory,
         @inject('prompt-loop') promptloop: PromptLoop,
@@ -55,9 +55,10 @@ export class MainEngine implements Iengine {
         this._currentX = x;
     }
 
-    public start(map: MazeCell[][], hero: Ihero): void {
+    public start(map: MazeCell[][], hero: Ihero, userName: string): void {
         this.map = map;
         this.hero = hero;
+        this.userName = userName;
         while (this._currentX !== Constants.gameRows - 1 || this.currentY !== Constants.gameCols - 1) {
             this.setNewPlace();
             this.setCurrentChoices();

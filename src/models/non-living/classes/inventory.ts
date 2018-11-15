@@ -1,14 +1,8 @@
-import { ICollectable } from './../interfaces/collectable';
-
-import { Randomizer } from '../../../factory/randomizer';
 import { IPotion } from './../interfaces/potion';
 import { IWeapon } from './../interfaces/weapon';
 import { IInventory } from './../interfaces/inventory';
 import { IArmour } from '../interfaces/armour';
-import { Weapon } from './weapon';
-import { Armour } from './armour';
-import { Potion } from './potion';
-import { Constants } from '../../../core/constants/constants';
+
 export class Inventory implements IInventory {
     private _weapons: IWeapon[];
     private _armour: IArmour[];
