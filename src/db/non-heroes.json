@@ -13,8 +13,20 @@
             "sayStrings":["I like singing in the rain", "I am old, but good in bed", "I sell chinese stock only"]
          }
         ],
-    
-    "Creature":  ["Wolf","Bear","Mountain Lion"],
+        "Creature": [
+            {
+                "name":"Wolf",
+                "sayStrings":["Woof", "Woooooof"]
+             },
+             {
+                "name": "Bear",
+                "sayStrings":["Rooooarr", "Hey Leo", "Fear me"]
+             },
+             {
+                "name":  "Mountain Lion",
+                "sayStrings":["Mrrrrr", "Pst"]
+             }
+            ],
     
     "Humanoid":[
         {
