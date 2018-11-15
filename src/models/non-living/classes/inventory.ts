@@ -63,36 +63,30 @@ export class Inventory implements IInventory {
         this._coins += coins;
     }
 
-     public removeArmour(armourToRemove: string): IArmour[] {
-        const armournames: string[] = this._armour.map((el: IArmour) => el.name);
-        const index: number = armournames.indexOf(armourToRemove);
-        if (!armourToRemove || index < 0) {
-            throw new Error(`Current inventory does not include ${armourToRemove}!`);
+     public removeArmour(armourToRemoveIndex: number): IArmour {
+        if (armourToRemoveIndex === null || armourToRemoveIndex < 0) {
+            throw new Error(`Current inventory does not include that many armour!`);
         }
 
-        return this._armour.splice(index, 1);
+        return this._armour.splice(armourToRemoveIndex, 1)[0];
     }
 
-    public removeWeapon(weaponToRemove: string): IWeapon[] {
-        const weaponames: string[] = this._weapons.map((el: IWeapon) => el.name);
-        const index: number = weaponames.indexOf(weaponToRemove);
-        if (!weaponToRemove || index < 0) {
-            throw new Error(`Current inventory does not include ${weaponToRemove}!`);
+    public removeWeapon(weaponToRemoveIndex: number): IWeapon {
+        if (weaponToRemoveIndex === null || weaponToRemoveIndex < 0) {
+            throw new Error(`Current inventory does not include that many weapons!`);
         }
 
-        return this._weapons.splice(index, 1);
+        return this._weapons.splice(weaponToRemoveIndex, 1)[0];
     }
-    public removePotion(potionToRemove: string): IPotion[] {
-        const potionNames: string[] = this._potions.map((el: IPotion) => el.name);
-        const index: number = potionNames.indexOf(potionToRemove);
-        if (!potionToRemove || index < 0) {
-            throw new Error(`Current inventory does not include ${potionToRemove}!`);
+    public removePotion(potionToRemoveIndex: number): IPotion {
+        if (potionToRemoveIndex === null  || potionToRemoveIndex < 0) {
+            throw new Error(`Current inventory does not include that many potions!`);
         }
 
-        return this._potions.splice(index, 1);
+        return this._potions.splice(potionToRemoveIndex, 1)[0];
     }
     public subtractCoins(coinsToRemove: number): void {
-        if (!coinsToRemove || coinsToRemove < 0) {
+        if (coinsToRemove === null || coinsToRemove < 0) {
             throw new Error(`Not a valid amount of coins to remove!`);
         }
         if (this._coins < coinsToRemove) {
@@ -113,17 +107,17 @@ export class Inventory implements IInventory {
         if (this._weapons.length > 0) {
             result += `Weapons:\n`;
             this._weapons.forEach((weapon: IWeapon, index: number) => result +=
-            `w${index}-${weapon.name} (Physical: ${weapon.physicalDamage}, Magic: ${weapon.magicalDamage})\n`);
+            `w${index}-${weapon.name} (Physical: ${weapon.physicalDamage}, Magic: ${weapon.magicalDamage}, Price: ${weapon.price})\n`);
         }
         if (this._armour.length > 0) {
             result += `Armour:\n`;
-            this._armour.forEach((armour: IArmour, index: number) => result +=
-            `a${index}-${armour.name} (Physical: ${armour.physicalResistance}, Magic: ${armour.magicalResistance})\n`);
+            // tslint:disable-next-line:max-line-length
+            this._armour.forEach((armour: IArmour, index: number) => result += `a${index}-${armour.name} (Physical: ${armour.physicalResistance}, Magic: ${armour.magicalResistance}, Price: ${armour.price})\n`);
         }
         if (this._potions.length > 0) {
             result += `Potions:\n`;
             this._potions.forEach((potion: IPotion, index: number) => result +=
-            `p${index}-${potion.name} (Power: ${potion.power})\n`);
+            `p${index}-${potion.name} (Power: ${potion.power}, Price: ${potion.price})\n`);
         }
         if (this._coins > 0) {
             result += `Coins: ${this._coins}`;

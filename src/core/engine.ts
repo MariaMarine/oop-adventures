@@ -1,3 +1,4 @@
+import { ICollectable } from './../models/non-living/interfaces/collectable';
 import { Potion } from '../models/non-living/classes/potion';
 import { Weapon } from '../models/non-living/classes/weapon';
 import { Armour } from '../models/non-living/classes/armour';
@@ -67,7 +68,7 @@ export class MainEngine implements Iengine {
         this.setNewPlace();
         while (this._currentX !== Constants.gameRows - 1 || this.currentY !== Constants.gameCols - 1) {
             this.setCurrentChoices();
-            console.log(this.currentPlace.creature);
+            // console.log(this.currentPlace.creature);
             const nextChoice: IChoice = this.promptLoop.multiple(
                 ['What would you like to do?', 'Well...', 'For all possible choices type "options"', 'Please try again'],
                 this.currentChoices);
@@ -79,7 +80,7 @@ export class MainEngine implements Iengine {
                 console.log(`You have the following items:\n${this.myInventory.listItems()}`);
             }
             if (nextChoice.names[0] === 'trade') {
-                this.trade();
+                this.setTradeItem();
             }
             if (nextChoice instanceof Direction) {
                 this._currentX += nextChoice.xDirection;
@@ -104,7 +105,7 @@ export class MainEngine implements Iengine {
         this.currentChoices = [];
         this.actions.loot.isPossible = !this.currentPlace.containsCreature;
         this.actions.exit.isPossible = true;
-        this.actions.inventory.isPossible = !this.currentPlace.containsCreature;
+        this.actions.inventory.isPossible = true;
         // Add public creature type to non-hero?
         this.actions.trade.isPossible = this.currentPlace.containsCreature;
 
@@ -121,10 +122,10 @@ export class MainEngine implements Iengine {
         this.myInventory.addCoins(this.currentPlace.loot.coins);
         this.currentPlace.loot.removeAll();
     }
-    private trade(): void {
+    private setTradeItem(): void {
         // Reaplce with hero inventory
         console.log(`You have the following items:\n${this.myInventory.listItems()}`);
-        // TEST INVENTORY To be reaplced with trader inventory??
+        // TEST INVENTORY To be repalced with trader inventory??
         const currentDifficultyCoef: number = Randomizer.GENERATEDIFFICULTYCOEF(this.currentX, this.currentY);
         const traderInventory: IInventory = new Inventory(currentDifficultyCoef);
         traderInventory.addArmour(new Armour(currentDifficultyCoef));
@@ -135,6 +136,7 @@ export class MainEngine implements Iengine {
         traderInventory.addWeapon(new Weapon(currentDifficultyCoef));
         traderInventory.addPotion(new Potion(currentDifficultyCoef));
         traderInventory.addPotion(new Potion(currentDifficultyCoef));
+
         console.log(`Trader has the following items:\n${traderInventory.listItems()}`);
         const possibleBuys: string[] = [...traderInventory.armour.map((item: IArmour, index: number) => `buy a${index}`),
         ...traderInventory.weapons.map((item: IWeapon, index: number) => `buy w${index}`),
@@ -142,6 +144,21 @@ export class MainEngine implements Iengine {
         const possibleSells: string[] = [...this.myInventory.armour.map((item: IArmour, index: number) => `sell a${index}`),
         ...this.myInventory.weapons.map((item: IWeapon, index: number) => `sell w${index}`),
         ...this.myInventory.potions.map((item: IPotion, index: number) => `sell p${index}`)];
-        console.log(this.promptLoop.chooseTradeItem([...possibleBuys, ...possibleSells]));
+        const result: string[] = this.promptLoop.chooseTradeItem([...possibleBuys, ...possibleSells]).split(' ');
+        result[0] === 'sell' ? this.sellItem(result[1]) : console.log(`Buying to be implemented`);
+    }
+
+    private sellItem(itemToSell: string): void {
+        const itemType: string = itemToSell[0];
+        const itemIndex: number = +itemToSell.substr(1, itemToSell.length);
+        let soldItem: ICollectable;
+        if (itemType === 'a') {
+            soldItem = this.myInventory.removeArmour(itemIndex);
+        } else if (itemType === 'w') {
+            soldItem = this.myInventory.removeWeapon(itemIndex);
+        } else {
+            soldItem = this.myInventory.removePotion(itemIndex);
+        }
+        this.myInventory.addCoins(soldItem.price);
     }
 }
