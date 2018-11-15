@@ -35,7 +35,7 @@ export class Factory implements Ifactory {
         const heroEquipment: IEquipment = new Equipment(heroData.equipment.weapon, heroData.equipment.armour);
 
         return new Hero(heroData.name, heroData.info, heroData.life, heroData.strength, heroData.magicResistance,
-                        heroData.fearFactor, heroEquipment, heroInventory);
+            heroData.fearFactor, heroEquipment, heroInventory);
     }
 
     public createNonHero(difficultyCoef: number): IAlive {
@@ -49,20 +49,25 @@ export class Factory implements Ifactory {
         const nonHeroSayStrings: string[] = nonHero.sayStrings;
         let fearFactor: number = 0;
         let nonHeroStrengthString: string = '';
-        if (difficultyCoef < 5) {
+        if (difficultyCoef < 4) {
             nonHeroStrengthString = Randomizer.GETRANDOMARRAYELEMENT(this.nonHeroStrengthStrings[0].names);
             fearFactor = this.nonHeroStrengthStrings[0].fearFactor;
         }
-        if (difficultyCoef > 5 && difficultyCoef < 8) {
+        if (difficultyCoef > 4 && difficultyCoef < 7) {
             nonHeroStrengthString = Randomizer.GETRANDOMARRAYELEMENT(this.nonHeroStrengthStrings[1].names);
             fearFactor = this.nonHeroStrengthStrings[1].fearFactor;
         }
-        if (difficultyCoef > 7) {
+        if (difficultyCoef > 6) {
             nonHeroStrengthString = Randomizer.GETRANDOMARRAYELEMENT(this.nonHeroStrengthStrings[2].names);
             fearFactor = this.nonHeroStrengthStrings[2].fearFactor;
         }
+        let nonHeroName: string = '';
+        if (nonHeroType !== 'Trader') {
+            nonHeroName = `${nonHeroStrengthString} ${nonHero.name}`;
+        } else {
+            nonHeroName = nonHero.name;
+        }
 
-        const nonHeroName: string = `${nonHeroStrengthString} ${nonHero.name}`;
         const randomCoef: number = Randomizer.GENERATERANDOMNUMBER(10) / 10;
         const nonHeroLife: number = difficultyCoef * randomCoef * Constants.baseLife;
         const nonHeroStrength: number = difficultyCoef * randomCoef * Constants.baseStrength;
