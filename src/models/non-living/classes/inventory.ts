@@ -113,17 +113,17 @@ export class Inventory implements IInventory {
         if (this._weapons.length > 0) {
             result += `Weapons:\n`;
             this._weapons.forEach((weapon: IWeapon, index: number) => result +=
-            `${index}-${weapon.name} (Physical: ${weapon.physicalDamage}, Magic: ${weapon.magicalDamage})\n`);
+            `w${index}-${weapon.name} (Physical: ${weapon.physicalDamage}, Magic: ${weapon.magicalDamage})\n`);
         }
         if (this._armour.length > 0) {
             result += `Armour:\n`;
             this._armour.forEach((armour: IArmour, index: number) => result +=
-            `${index}-${armour.name} (Physical: ${armour.physicalResistance}, Magic: ${armour.magicalResistance})\n`);
+            `a${index}-${armour.name} (Physical: ${armour.physicalResistance}, Magic: ${armour.magicalResistance})\n`);
         }
         if (this._potions.length > 0) {
             result += `Potions:\n`;
             this._potions.forEach((potion: IPotion, index: number) => result +=
-            `${index}-${potion.name} (Power: ${potion.power})\n`);
+            `p${index}-${potion.name} (Power: ${potion.power})\n`);
         }
         if (this._coins > 0) {
             result += `Coins: ${this._coins}`;

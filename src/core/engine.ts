@@ -114,7 +114,7 @@ export class MainEngine implements Iengine {
     }
 
     private lootPlace(): void {
-        console.log(`You found:\n${this.currentPlace.loot.listItems()}.\nYou put them in your bag.`);
+        console.log(`You found:\n${this.currentPlace.loot.listItems()} \nYou put them in your bag.`);
         this.currentPlace.loot.armour.forEach((armour: IArmour) => this.myInventory.addArmour(armour));
         this.currentPlace.loot.weapons.forEach((weapon: IWeapon) => this.myInventory.addWeapon(weapon));
         this.currentPlace.loot.potions.forEach((potion: IPotion) => this.myInventory.addPotion(potion));
@@ -136,8 +136,12 @@ export class MainEngine implements Iengine {
         traderInventory.addPotion(new Potion(currentDifficultyCoef));
         traderInventory.addPotion(new Potion(currentDifficultyCoef));
         console.log(`Trader has the following items:\n${traderInventory.listItems()}`);
-        const possibleBuys: string[] = traderInventory.armour.map((item: IArmour, index: number) => `buy a${index}`);
-        //console.log(possibleBuys);
-        this.promptLoop.chooseTradeItem(possibleBuys);
+        const possibleBuys: string[] = [...traderInventory.armour.map((item: IArmour, index: number) => `buy a${index}`),
+        ...traderInventory.weapons.map((item: IWeapon, index: number) => `buy w${index}`),
+        ...traderInventory.potions.map((item: IPotion, index: number) => `buy p${index}`)];
+        const possibleSells: string[] = [...this.myInventory.armour.map((item: IArmour, index: number) => `sell a${index}`),
+        ...this.myInventory.weapons.map((item: IWeapon, index: number) => `sell w${index}`),
+        ...this.myInventory.potions.map((item: IPotion, index: number) => `sell p${index}`)];
+        console.log(this.promptLoop.chooseTradeItem([...possibleBuys, ...possibleSells]));
     }
 }

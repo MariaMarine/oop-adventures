@@ -25,17 +25,16 @@ export class Randomizer {
     }
     public static GENERATERANDOMLOOT(difficultyCoef: number): IInventory {
         const loot: IInventory = new Inventory(difficultyCoef);
-        loot.addCoins(Math.floor(difficultyCoef * Constants.maxCoinLoot));
         // tslint:disable-next-line:insecure-random
-        if (Math.random() < 0.3) {
+        if (Math.random() < 0.4) {
             loot.addArmour(new Armour (difficultyCoef));
         }
         // tslint:disable-next-line:insecure-random
-        if (Math.random() < 0.3) {
+        if (Math.random() < 0.4) {
             loot.addWeapon(new Weapon (difficultyCoef));
         }
         // tslint:disable-next-line:insecure-random
-        if (Math.random() < 0.3) {
+        if (Math.random() < 0.4) {
             loot.addPotion(new Potion (difficultyCoef));
         }
 
