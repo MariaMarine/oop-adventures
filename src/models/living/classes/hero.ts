@@ -2,7 +2,6 @@ import { IPerson } from './../interfaces/person';
 import { IEquipment } from '../../non-living/interfaces/equipment';
 import { IInventory } from '../../non-living/interfaces/inventory';
 import { IAlive } from '../interfaces/alive';
-import { MagicResistanceText } from '../enums/magicResistance';
 import { LivingBeingModel } from './livingBeing-model';
 import { Ihero } from '../interfaces/hero';
 export class Hero extends LivingBeingModel implements IPerson, IAlive, Ihero {
@@ -15,7 +14,6 @@ export class Hero extends LivingBeingModel implements IPerson, IAlive, Ihero {
         life: number,
         strength: number,
         magicResistance: number,
-        magicResistanceText: MagicResistanceText,
         fearFactor: number,
         equipment: IEquipment,
         inventory: IInventory) {

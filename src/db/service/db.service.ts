@@ -1,8 +1,8 @@
-import { CollectionNames } from "./collection-names";
-import { IdatabaseWriter } from "./interfaces/db-writer";
-import { IdatabaseReader } from "./interfaces/db-reader";
+import { CollectionNames } from './collection-names';
+import { IdatabaseWriter } from './interfaces/db-writer';
+import { IdatabaseReader } from './interfaces/db-reader';
 import { inject, injectable } from 'inversify';
-import { IDbService } from "./interfaces/db-service";
+import { IDbService } from './interfaces/db-service';
 @injectable()
 export class DbService implements IDbService {
 
@@ -20,7 +20,7 @@ export class DbService implements IDbService {
     }
 
     public write(collectionName: CollectionNames, key: string, value: Object): void {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 
 }

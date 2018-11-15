@@ -1,6 +1,5 @@
 
 import { Ihero } from '../models/living/interfaces/hero';
-import { MagicResistanceText } from '../models/living/enums/magicResistance';
 import { Hero } from '../models/living/classes/hero';
 import { inject, injectable } from 'inversify';
 import { CollectionNames } from '../db/service/collection-names';
@@ -19,33 +18,57 @@ import { Constants } from '../core/constants/constants';
 export class Factory implements Ifactory {
     private dbService: IDbService;
     private readonly nonHeroTypes: string[] = ['Trader', 'Creature', 'Humanoid'];
-
-constructor(@inject('database-service') dbService: IDbService) {
-    this.dbService = dbService;
-}
+    private readonly nonHeroStrengthStrings: { names: string[]; fearFactor: number }[] = [];
+    constructor(@inject('database-service') dbService: IDbService) {
+        this.dbService = dbService;
+        // tslint:disable-next-line:max-line-length
+        console.log(this.dbService.readByKey(CollectionNames.settings, 'Strengths'));
+        const strengthStrings: Object[] = <Object[]>this.dbService.readByKey(CollectionNames.settings, 'Strengths');
+        strengthStrings.forEach((strengthString: Object) => {
+            this.nonHeroStrengthStrings.push(<{ names: string[]; fearFactor: number }>strengthString);
+        });
+    }
 
     public createHero(name: string): Ihero {
-    const heroData: Ihero = <Ihero>this.dbService.readByKey(CollectionNames.heroes, name);
-    const heroInventory: IInventory = new Inventory(1);
-    heroInventory.addPotion(heroData.inventory.potions[0]);
-    const heroEquipment: IEquipment = new Equipment(heroData.equipment.weapon, heroData.equipment.armour);
+        const heroData: Ihero = <Ihero>this.dbService.readByKey(CollectionNames.heroes, name);
+        const heroInventory: IInventory = new Inventory(1);
+        heroInventory.addPotion(heroData.inventory.potions[0]);
+        const heroEquipment: IEquipment = new Equipment(heroData.equipment.weapon, heroData.equipment.armour);
 
-    return new Hero(heroData.name, heroData.info, heroData.life, heroData.strength, heroData.magicResistance,
-                    MagicResistanceText.medium, heroData.fearFactor, heroEquipment, heroInventory);
-}
+        return new Hero(heroData.name, heroData.info, heroData.life, heroData.strength, heroData.magicResistance,
+                        heroData.fearFactor, heroEquipment, heroInventory);
+    }
 
     public createNonHero(difficultyCoef: number): IAlive {
-    const nonHeroType: string = Randomizer.GETRANDOMARRAYELEMENT(this.nonHeroTypes);
-    const nonHeroNames: string[] = <string[]>this.dbService.readByKey(CollectionNames.nonHeroes, nonHeroType);
+        const nonHeroType: string = Randomizer.GETRANDOMARRAYELEMENT(this.nonHeroTypes);
+        const nonHeroes: Object[] = <Object[]>this.dbService.readByKey(CollectionNames.nonHeroes, nonHeroType);
+        const nonHero: {
+            name: string;
+            sayStrings: string[];
+        } = <{ name: string; sayStrings: string[] }>Randomizer.GETRANDOMARRAYELEMENT(nonHeroes);
 
-    const nonHeroName: string = Randomizer.GETRANDOMARRAYELEMENT(nonHeroNames);
+        const nonHeroSayStrings: string[] = nonHero.sayStrings;
+        let fearFactor: number = 0;
+        let nonHeroStrengthString: string = '';
+        if (difficultyCoef < 5) {
+            nonHeroStrengthString = Randomizer.GETRANDOMARRAYELEMENT(this.nonHeroStrengthStrings[0].names);
+            fearFactor = this.nonHeroStrengthStrings[0].fearFactor;
+        }
+        if (difficultyCoef > 5 && difficultyCoef < 8) {
+            nonHeroStrengthString = Randomizer.GETRANDOMARRAYELEMENT(this.nonHeroStrengthStrings[1].names);
+            fearFactor = this.nonHeroStrengthStrings[1].fearFactor;
+        }
+        if (difficultyCoef > 7) {
+            nonHeroStrengthString = Randomizer.GETRANDOMARRAYELEMENT(this.nonHeroStrengthStrings[2].names);
+            fearFactor = this.nonHeroStrengthStrings[2].fearFactor;
+        }
 
-    const randomCoef: number = Randomizer.GENERATERANDOMNUMBER(10) / 10;
-    const nonHeroLife: number = difficultyCoef * randomCoef * Constants.baseLife;
-    const nonHeroStrength: number = difficultyCoef * randomCoef * Constants.baseStrength;
-    const nonHeroMagicResistance: number = difficultyCoef * randomCoef * Constants.baseMagicResistance;
-    const fearFactor: number = 0.5;
+        const nonHeroName: string = `${nonHeroStrengthString} ${nonHero.name}`;
+        const randomCoef: number = Randomizer.GENERATERANDOMNUMBER(10) / 10;
+        const nonHeroLife: number = difficultyCoef * randomCoef * Constants.baseLife;
+        const nonHeroStrength: number = difficultyCoef * randomCoef * Constants.baseStrength;
+        const nonHeroMagicResistance: number = difficultyCoef * randomCoef * Constants.baseMagicResistance;
 
-    return new NonHero(nonHeroName, nonHeroLife, nonHeroStrength, nonHeroMagicResistance, fearFactor);
-}
+        return new NonHero(nonHeroType, nonHeroName, nonHeroLife, nonHeroStrength, nonHeroMagicResistance, nonHeroSayStrings, fearFactor);
+    }
 }

@@ -24,6 +24,8 @@ export class PlaceGenerator {
         newPlace.containsCreature = Randomizer.GENERATERANDOMBOOLEAN();
         if (newPlace.containsCreature) {
             newPlace.creature = this.factory.createNonHero(diffCoef);
+            console.log(newPlace.creature);
+            console.log(1)
         }
 
         return newPlace;

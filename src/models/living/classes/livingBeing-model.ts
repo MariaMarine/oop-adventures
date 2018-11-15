@@ -2,11 +2,11 @@ import { IAlive } from './../interfaces/alive';
 
 export abstract class LivingBeingModel implements IAlive {
     protected static _minStrength: number = 0;
-    protected static _maxStrength: number = 300;
+    protected static _maxStrength: number = 3000;
     protected static _minMagicResistance: number = 0;
-    protected static _maxMagicResistance: number = 1;
+    protected static _maxMagicResistance: number = 1000;
     protected static _minFearFactor: number = 0;
-    protected static _maxFearFactor: number = 1;
+    protected static _maxFearFactor: number = 1000;
     private readonly _name: string;
     private _life: number;
     private readonly _maxlife: number;

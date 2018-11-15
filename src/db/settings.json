@@ -1,0 +1,17 @@
+{
+    "Strengths":[
+    {
+        "names": ["Shabby", "Weak", "Starving"],
+        "fearFactor":0.9
+    },
+    {
+         "names": ["Average", "Brown", "Silver"],
+         "fearFactor":0.7
+     },
+        {
+     "names": ["Golden", "Mega", "Incredible"],
+     "fearFactor":0.2
+        }
+        ]
+ }
+    

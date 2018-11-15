@@ -1,23 +1,38 @@
 {
-    "Trader": ["Bella Donna","Mascarpone","Old gypsi"],
-   "Creature":  ["Wolf","Bear","Mountain Lion"],
-    "Humanoid":["Skeleton","Troll","Giant"],
-    
-"Strengths":{
-   "weak": {
-   "names": ["Shabby", "Weak", "Starving"],
-    "fearFactor":0.9
-    },
-
-    "medium": {
-        "names": ["Average", "Brown", "Silver"],
-        "fearFactor":0.7
-        },
-
-    "strong": {
-         "names": ["Golden", "Mega", "Incredible"],
-         "fearFactor":0.2
+    "Trader": [
+        {
+            "name":"Bella Donna",
+            "sayStrings":["I sell funky staff", "Trade with me"]
+         },
+         {
+            "name": "Mascarpone",
+            "sayStrings":["I am an old intalian cheese-seller", "Good for Tiramisu", "I have Parmesan as well"]
+         },
+         {
+            "name":  "Old gypsi",
+            "sayStrings":["I like singing in the rain", "I am old, but good in bed", "I sell chinese stock only"]
          }
+        ],
+    
+    "Creature":  ["Wolf","Bear","Mountain Lion"],
+    
+    "Humanoid":[
+        {
+            "name":"Skeleton",
+            "sayStrings":["I will bone you", "RIP", "I am hanging in the closet"]
+         },
+         {
+            "name": "Troll",
+            "sayStrings":["Internet is my stage", "Look at you", "You have nice haircut"]
+         },
+         {
+            "name":  "Giant",
+            "sayStrings":["But I have gentle heart", "I like roses", "Where are you little pug?"]
+         }
+        ]
+    
+
 }
-}
+
+
 
