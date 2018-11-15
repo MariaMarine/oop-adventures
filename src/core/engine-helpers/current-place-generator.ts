@@ -21,7 +21,6 @@ export class PlaceGenerator {
         const creatureText: string = newPlace.containsCreature ? 'someone' : 'no one';
         console.log(`${newPlace.introText} You have the feeling that there is ${creatureText} here.`);
         newPlace.visited = true;
-        newPlace.containsCreature = Randomizer.GENERATERANDOMBOOLEAN();
         if (newPlace.containsCreature) {
             newPlace.creature = this.factory.createNonHero(diffCoef);
         }

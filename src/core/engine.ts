@@ -1,3 +1,7 @@
+import { Potion } from '../models/non-living/classes/potion';
+import { Weapon } from '../models/non-living/classes/weapon';
+import { Armour } from '../models/non-living/classes/armour';
+import { Randomizer } from '../factory/randomizer';
 
 import { IWeapon } from './../models/non-living/interfaces/weapon';
 import { IArmour } from './../models/non-living/interfaces/armour';
@@ -16,6 +20,7 @@ import { Direction } from './choices/direction';
 import { Ihero } from '../models/living/interfaces/hero';
 import { MazeCell } from '../models/non-living/classes/maze-cell';
 import { Ifactory } from '../factory/interface/Ifactory';
+
 @injectable()
 export class MainEngine implements Iengine {
     private readonly promptLoop: PromptLoop;
@@ -24,7 +29,7 @@ export class MainEngine implements Iengine {
     private currentPlace: IPlace;
     private currentChoices: IChoice[] = [];
     private placeGenerator: PlaceGenerator;
-    private actions: { loot: IChoice; exit: IChoice; inventory: IChoice };
+    private actions: { loot: IChoice; exit: IChoice; inventory: IChoice; trade: IChoice };
     // For test purposes
     private map: MazeCell[][];
     private factory: Ifactory;
@@ -59,8 +64,8 @@ export class MainEngine implements Iengine {
         this.map = map;
         this.hero = hero;
         this.userName = userName;
+        this.setNewPlace();
         while (this._currentX !== Constants.gameRows - 1 || this.currentY !== Constants.gameCols - 1) {
-            this.setNewPlace();
             this.setCurrentChoices();
             console.log(this.currentPlace.creature);
             const nextChoice: IChoice = this.promptLoop.multiple(
@@ -73,9 +78,13 @@ export class MainEngine implements Iengine {
             if (nextChoice.names[0] === 'items') {
                 console.log(`You have the following items:\n${this.myInventory.listItems()}`);
             }
+            if (nextChoice.names[0] === 'trade') {
+                this.trade();
+            }
             if (nextChoice instanceof Direction) {
                 this._currentX += nextChoice.xDirection;
                 this._currentY += nextChoice.yDirection;
+                this.setNewPlace();
             }
         }
         console.log(`You win :)`);
@@ -96,8 +105,11 @@ export class MainEngine implements Iengine {
         this.actions.loot.isPossible = !this.currentPlace.containsCreature;
         this.actions.exit.isPossible = true;
         this.actions.inventory.isPossible = !this.currentPlace.containsCreature;
+        // Add public creature type to non-hero?
+        this.actions.trade.isPossible = this.currentPlace.containsCreature;
 
-        this.currentChoices.push(...this.currentPlace.directions, this.actions.inventory, this.actions.loot, this.actions.exit);
+        this.currentChoices.push(...this.currentPlace.directions, this.actions.inventory,
+                                 this.actions.loot, this.actions.exit, this.actions.trade);
 
     }
 
@@ -108,5 +120,24 @@ export class MainEngine implements Iengine {
         this.currentPlace.loot.potions.forEach((potion: IPotion) => this.myInventory.addPotion(potion));
         this.myInventory.addCoins(this.currentPlace.loot.coins);
         this.currentPlace.loot.removeAll();
+    }
+    private trade(): void {
+        // Reaplce with hero inventory
+        console.log(`You have the following items:\n${this.myInventory.listItems()}`);
+        // TEST INVENTORY To be reaplced with trader inventory??
+        const currentDifficultyCoef: number = Randomizer.GENERATEDIFFICULTYCOEF(this.currentX, this.currentY);
+        const traderInventory: IInventory = new Inventory(currentDifficultyCoef);
+        traderInventory.addArmour(new Armour(currentDifficultyCoef));
+        traderInventory.addArmour(new Armour(currentDifficultyCoef));
+        traderInventory.addArmour(new Armour(currentDifficultyCoef));
+        traderInventory.addWeapon(new Weapon(currentDifficultyCoef));
+        traderInventory.addWeapon(new Weapon(currentDifficultyCoef));
+        traderInventory.addWeapon(new Weapon(currentDifficultyCoef));
+        traderInventory.addPotion(new Potion(currentDifficultyCoef));
+        traderInventory.addPotion(new Potion(currentDifficultyCoef));
+        console.log(`Trader has the following items:\n${traderInventory.listItems()}`);
+        const possibleBuys: string[] = traderInventory.armour.map((item: IArmour, index: number) => `buy a${index}`);
+        //console.log(possibleBuys);
+        this.promptLoop.chooseTradeItem(possibleBuys);
     }
 }

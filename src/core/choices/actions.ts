@@ -5,9 +5,12 @@ import { injectable } from 'inversify';
 export class Actions {
 
     private loot: IChoice;
+
     private exit: IChoice;
 
     private currentInventory: IChoice;
+
+    private trade: IChoice;
 
     public constructor() {
         this.loot = {
@@ -25,9 +28,14 @@ export class Actions {
             isPossible: false,
             commandNotPossibleStrings: ['Not now!']
         };
+        this.trade = {
+            names: ['trade', 'buy', 'sell', 'exchange'],
+            isPossible: false,
+            commandNotPossibleStrings: ['No one to trade with!', 'You can`t trade with yourself!', 'Nobody wants to trade with you here.']
+        };
     }
-    public getAllActions(): { loot: IChoice; exit: IChoice; inventory: IChoice } {
-        return { loot: this.loot, exit: this.exit, inventory: this.currentInventory };
+    public getAllActions(): { loot: IChoice; exit: IChoice; inventory: IChoice; trade: IChoice } {
+        return { loot: this.loot, exit: this.exit, inventory: this.currentInventory, trade: this.trade };
     }
 
 }
