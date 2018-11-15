@@ -68,7 +68,7 @@ export class MainEngine implements Iengine {
         this.setNewPlace();
         while (this._currentX !== Constants.gameRows - 1 || this.currentY !== Constants.gameCols - 1) {
             this.setCurrentChoices();
-            // console.log(this.currentPlace.creature);
+            // Console.log(this.currentPlace.creature);
             const nextChoice: IChoice = this.promptLoop.multiple(
                 ['What would you like to do?', 'Well...', 'For all possible choices type "options"', 'Please try again'],
                 this.currentChoices);
@@ -129,12 +129,7 @@ export class MainEngine implements Iengine {
         const currentDifficultyCoef: number = Randomizer.GENERATEDIFFICULTYCOEF(this.currentX, this.currentY);
         const traderInventory: IInventory = new Inventory(currentDifficultyCoef);
         traderInventory.addArmour(new Armour(currentDifficultyCoef));
-        traderInventory.addArmour(new Armour(currentDifficultyCoef));
-        traderInventory.addArmour(new Armour(currentDifficultyCoef));
         traderInventory.addWeapon(new Weapon(currentDifficultyCoef));
-        traderInventory.addWeapon(new Weapon(currentDifficultyCoef));
-        traderInventory.addWeapon(new Weapon(currentDifficultyCoef));
-        traderInventory.addPotion(new Potion(currentDifficultyCoef));
         traderInventory.addPotion(new Potion(currentDifficultyCoef));
 
         console.log(`Trader has the following items:\n${traderInventory.listItems()}`);
@@ -145,10 +140,10 @@ export class MainEngine implements Iengine {
         ...this.myInventory.weapons.map((item: IWeapon, index: number) => `sell w${index}`),
         ...this.myInventory.potions.map((item: IPotion, index: number) => `sell p${index}`)];
         const result: string[] = this.promptLoop.chooseTradeItem([...possibleBuys, ...possibleSells]).split(' ');
-        result[0] === 'sell' ? this.sellItem(result[1]) : console.log(`Buying to be implemented`);
+        result[0] === 'sell' ? this.sellItem(traderInventory, result[1]) : this.buyItem(traderInventory, result[1]);
     }
 
-    private sellItem(itemToSell: string): void {
+    private sellItem(traderInventory: IInventory, itemToSell: string): void  {
         const itemType: string = itemToSell[0];
         const itemIndex: number = +itemToSell.substr(1, itemToSell.length);
         let soldItem: ICollectable;
@@ -160,5 +155,27 @@ export class MainEngine implements Iengine {
             soldItem = this.myInventory.removePotion(itemIndex);
         }
         this.myInventory.addCoins(soldItem.price);
+
+    }
+
+    private buyItem(traderInventory: IInventory, itemToBuy: string): void {
+        const itemType: string = itemToBuy[0];
+        const itemIndex: number = +itemToBuy.substr(1, itemToBuy.length);
+        let boughtItem: IArmour | IWeapon | IPotion;
+        if (itemType === 'a' && traderInventory.armour[itemIndex].price <= this.myInventory.coins) {
+            boughtItem = traderInventory.removeArmour(itemIndex);
+            this.myInventory.addArmour(boughtItem);
+            this.myInventory.subtractCoins(boughtItem.price);
+        } else if (itemType === 'w' && traderInventory.weapons[itemIndex].price <= this.myInventory.coins) {
+            boughtItem = traderInventory.removeWeapon(itemIndex);
+            this.myInventory.addWeapon(boughtItem);
+            this.myInventory.subtractCoins(boughtItem.price);
+        } else if (itemType === 'p' && traderInventory.potions[itemIndex].price <= this.myInventory.coins) {
+            boughtItem = traderInventory.removePotion(itemIndex);
+            this.myInventory.addPotion(boughtItem);
+            this.myInventory.subtractCoins(boughtItem.price);
+        } else {
+            console.log(`You cannot afford that!`);
+        }
     }
 }

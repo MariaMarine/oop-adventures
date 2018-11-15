@@ -92,6 +92,7 @@ export class Inventory implements IInventory {
         if (this._coins < coinsToRemove) {
             throw new Error (`Insufficient amount of coins!`);
         }
+        this._coins -= coinsToRemove;
     }
 
     public removeAll () : void {
