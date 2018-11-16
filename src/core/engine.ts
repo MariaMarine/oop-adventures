@@ -1,10 +1,3 @@
-import { ICollectable } from './../models/non-living/interfaces/collectable';
-import { Potion } from '../models/non-living/classes/potion';
-import { Weapon } from '../models/non-living/classes/weapon';
-import { Armour } from '../models/non-living/classes/armour';
-import { Randomizer } from '../factory/randomizer';
-import { IWeapon } from './../models/non-living/interfaces/weapon';
-import { IArmour } from './../models/non-living/interfaces/armour';
 import { Inventory } from './../models/non-living/classes/inventory';
 import { inject, injectable } from 'inversify';
 import { PromptLoop } from './UI/promptLoop';
@@ -13,7 +6,6 @@ import { Iengine } from './interfaces/engine';
 import { IChoice } from './choices/interface/choice';
 import { PlaceGenerator } from './engine-helpers/current-place-generator';
 import { IInventory } from '../models/non-living/interfaces/inventory';
-import { IPotion } from '../models/non-living/interfaces/potion';
 import { Constants } from './constants/constants';
 import { Direction } from './choices/direction';
 import { Ihero } from '../models/living/interfaces/hero';
@@ -21,6 +13,7 @@ import { MazeCell } from '../models/non-living/classes/maze-cell';
 import { Ifactory } from '../factory/interface/Ifactory';
 import { IActions } from './choices/interface/actions';
 import { Iwriter } from './UI/interfaces/writer';
+import { ItemService } from './engine-helpers/item-service';
 
 @injectable()
 export class MainEngine implements Iengine {
@@ -35,6 +28,7 @@ export class MainEngine implements Iengine {
     private map: MazeCell[][];
     private factory: Ifactory;
     private myInventory: IInventory = new Inventory(0);
+    private itemService: ItemService;
     private hero: Ihero;
     private userName: string;
     private writer: Iwriter;
@@ -49,6 +43,7 @@ export class MainEngine implements Iengine {
         this.factory = factory;
         this.promptLoop = promptloop;
         this.placeGenerator = new PlaceGenerator(factory);
+        this.itemService = new ItemService(this.promptLoop, this.writer);
 
     }
 
@@ -78,13 +73,13 @@ export class MainEngine implements Iengine {
                 this.currentChoices);
             // To implement: adding all items to hero's inventory
             if (nextChoice.names[0] === 'search') {
-                this.lootPlace();
+                this.itemService.lootPlace(this.currentPlace, this.myInventory);
             }
             if (nextChoice.names[0] === 'items') {
                 this.writer.write(`You have the following items:\n${this.myInventory.listItems()}`, '\x1b[34m');
             }
             if (nextChoice.names[0] === 'trade') {
-                this.setTradeItem();
+                this.itemService.setTradeItem(this.myInventory);
             }
             if (nextChoice instanceof Direction) {
                 this._currentX += nextChoice.xDirection;
@@ -116,68 +111,4 @@ export class MainEngine implements Iengine {
 
     }
 
-    private lootPlace(): void {
-        this.writer.write(`You found:\n${this.currentPlace.loot.listItems()} \nYou put them in your bag.`);
-        this.currentPlace.loot.armour.forEach((armour: IArmour) => this.myInventory.addArmour(armour));
-        this.currentPlace.loot.weapons.forEach((weapon: IWeapon) => this.myInventory.addWeapon(weapon));
-        this.currentPlace.loot.potions.forEach((potion: IPotion) => this.myInventory.addPotion(potion));
-        this.myInventory.addCoins(this.currentPlace.loot.coins);
-        this.currentPlace.loot.removeAll();
-    }
-    private setTradeItem(): void {
-        // Reaplce with hero inventory
-        this.writer.write(`You have the following items:\n${this.myInventory.listItems()}`);
-        // TEST INVENTORY To be repalced with trader inventory??
-        const currentDifficultyCoef: number = Randomizer.GENERATEDIFFICULTYCOEF(this.currentX, this.currentY);
-        const traderInventory: IInventory = new Inventory(currentDifficultyCoef);
-        traderInventory.addArmour(new Armour(currentDifficultyCoef));
-        traderInventory.addWeapon(new Weapon(currentDifficultyCoef));
-        traderInventory.addPotion(new Potion(currentDifficultyCoef));
-
-        this.writer.write(`Trader has the following items:\n${traderInventory.listItems()}`);
-        const possibleBuys: string[] = [...traderInventory.armour.map((item: IArmour, index: number) => `buy a${index}`),
-        ...traderInventory.weapons.map((item: IWeapon, index: number) => `buy w${index}`),
-        ...traderInventory.potions.map((item: IPotion, index: number) => `buy p${index}`)];
-        const possibleSells: string[] = [...this.myInventory.armour.map((item: IArmour, index: number) => `sell a${index}`),
-        ...this.myInventory.weapons.map((item: IWeapon, index: number) => `sell w${index}`),
-        ...this.myInventory.potions.map((item: IPotion, index: number) => `sell p${index}`)];
-        const result: string[] = this.promptLoop.chooseTradeItem([...possibleBuys, ...possibleSells]).split(' ');
-        result[0] === 'sell' ? this.sellItem(traderInventory, result[1]) : this.buyItem(traderInventory, result[1]);
-    }
-
-    private sellItem(traderInventory: IInventory, itemToSell: string): void {
-        const itemType: string = itemToSell[0];
-        const itemIndex: number = +itemToSell.substr(1, itemToSell.length);
-        let soldItem: ICollectable;
-        if (itemType === 'a') {
-            soldItem = this.myInventory.removeArmour(itemIndex);
-        } else if (itemType === 'w') {
-            soldItem = this.myInventory.removeWeapon(itemIndex);
-        } else {
-            soldItem = this.myInventory.removePotion(itemIndex);
-        }
-        this.myInventory.addCoins(soldItem.price);
-
-    }
-
-    private buyItem(traderInventory: IInventory, itemToBuy: string): void {
-        const itemType: string = itemToBuy[0];
-        const itemIndex: number = +itemToBuy.substr(1, itemToBuy.length);
-        let boughtItem: IArmour | IWeapon | IPotion;
-        if (itemType === 'a' && traderInventory.armour[itemIndex].price <= this.myInventory.coins) {
-            boughtItem = traderInventory.removeArmour(itemIndex);
-            this.myInventory.addArmour(boughtItem);
-            this.myInventory.subtractCoins(boughtItem.price);
-        } else if (itemType === 'w' && traderInventory.weapons[itemIndex].price <= this.myInventory.coins) {
-            boughtItem = traderInventory.removeWeapon(itemIndex);
-            this.myInventory.addWeapon(boughtItem);
-            this.myInventory.subtractCoins(boughtItem.price);
-        } else if (itemType === 'p' && traderInventory.potions[itemIndex].price <= this.myInventory.coins) {
-            boughtItem = traderInventory.removePotion(itemIndex);
-            this.myInventory.addPotion(boughtItem);
-            this.myInventory.subtractCoins(boughtItem.price);
-        } else {
-            this.writer.write(`You cannot afford that!`);
-        }
-    }
 }
