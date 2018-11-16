@@ -61,16 +61,16 @@ public get fearFactor(): number {
   protected validateStrength(strength: number): void {
     if (strength < LivingBeingModel._minStrength || strength > LivingBeingModel._maxStrength) {
       throw new Error(
-        `A living-being cannot have less than ${LivingBeingModel._minStrength} strength
-        or more than ${LivingBeingModel._maxStrength} strength.`
+        `A living-being cannot have less than ${LivingBeingModel._minStrength} strength \
+or more than ${LivingBeingModel._maxStrength} strength.`
       );
     }
   }
   protected validateMagicResistance(magicResistance: number): void {
     if (magicResistance < LivingBeingModel._minMagicResistance || magicResistance > LivingBeingModel._maxMagicResistance) {
       throw new Error(
-        `A living-being cannot have less than ${LivingBeingModel._minMagicResistance} magic resistance
-        or more than ${LivingBeingModel._maxMagicResistance} magic resistance.`
+        `A living-being cannot have less than ${LivingBeingModel._minMagicResistance} magic resistance \
+or more than ${LivingBeingModel._maxMagicResistance} magic resistance.`
       );
     }
   }
@@ -78,8 +78,8 @@ public get fearFactor(): number {
   protected validateFearFactor(fearFactor: number): void {
     if (fearFactor < LivingBeingModel._minFearFactor || fearFactor > LivingBeingModel._maxFearFactor) {
       throw new Error(
-        `A living-being cannot have less than ${LivingBeingModel._minFearFactor} fear factor
-        or more than ${LivingBeingModel._maxFearFactor} fear factor.`
+        `A living-being cannot have less than ${LivingBeingModel._minFearFactor} fear factor \
+or more than ${LivingBeingModel._maxFearFactor} fear factor.`
       );
     }
   }
