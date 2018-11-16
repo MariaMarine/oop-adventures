@@ -1,5 +1,6 @@
-import { inject } from "inversify";
-import { PromptLoop } from "../UI/promptLoop";
+import { inject } from 'inversify';
+import { PromptLoop } from '../UI/promptLoop';
+import { Ihero } from '../../models/living/interfaces/hero';
 
 export class Battle {
     private promptLoop: PromptLoop;
@@ -7,5 +8,8 @@ export class Battle {
         this.promptLoop = promptLoop;
     }
 
+    public start(hero, enemy):Ihero{
+
+    }
     
 }

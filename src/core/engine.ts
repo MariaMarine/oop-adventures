@@ -6,7 +6,6 @@ import { Randomizer } from '../factory/randomizer';
 import { IWeapon } from './../models/non-living/interfaces/weapon';
 import { IArmour } from './../models/non-living/interfaces/armour';
 import { Inventory } from './../models/non-living/classes/inventory';
-import { Actions } from './choices/actions';
 import { inject, injectable } from 'inversify';
 import { PromptLoop } from './UI/promptLoop';
 import { IPlace } from '../models/non-living/interfaces/place';
@@ -20,6 +19,8 @@ import { Direction } from './choices/direction';
 import { Ihero } from '../models/living/interfaces/hero';
 import { MazeCell } from '../models/non-living/classes/maze-cell';
 import { Ifactory } from '../factory/interface/Ifactory';
+import { IActions } from './choices/interface/actions';
+import { Iwriter } from './UI/interfaces/writer';
 
 @injectable()
 export class MainEngine implements Iengine {
@@ -29,18 +30,22 @@ export class MainEngine implements Iengine {
     private currentPlace: IPlace;
     private currentChoices: IChoice[] = [];
     private placeGenerator: PlaceGenerator;
-    private actions: { loot: IChoice; exit: IChoice; inventory: IChoice; trade: IChoice; attack: IChoice };
+    private actions: IActions;
     // For test purposes
     private map: MazeCell[][];
     private factory: Ifactory;
     private myInventory: IInventory = new Inventory(0);
     private hero: Ihero;
     private userName: string;
+    private writer: Iwriter;
     public constructor(
+        @inject('ui-writer') writer: Iwriter,
+        @inject('actions') actions: IActions,
         @inject('factory') factory: Ifactory,
-        @inject('prompt-loop') promptloop: PromptLoop,
-        @inject('actions') actions: Actions) {
-        this.actions = actions.getAllActions();
+        @inject('prompt-loop') promptloop: PromptLoop
+    ) {
+        this.writer = writer;
+        this.actions = actions;
         this.factory = factory;
         this.promptLoop = promptloop;
         this.placeGenerator = new PlaceGenerator(factory);
@@ -76,7 +81,7 @@ export class MainEngine implements Iengine {
                 this.lootPlace();
             }
             if (nextChoice.names[0] === 'items') {
-                console.log(`You have the following items:\n${this.myInventory.listItems()}`);
+                this.writer.write(`You have the following items:\n${this.myInventory.listItems()}`, '\x1b[34m');
             }
             if (nextChoice.names[0] === 'trade') {
                 this.setTradeItem();
@@ -87,13 +92,13 @@ export class MainEngine implements Iengine {
                 this.setNewPlace();
             }
         }
-        console.log(`You win :)`);
+        this.writer.write(`You win :)`);
     }
 
     private setNewPlace(): void {
         if (this.map[this.currentX][this.currentY] && this.map[this.currentX][this.currentY].place) {
             this.currentPlace = this.map[this.currentX][this.currentY].place;
-            console.log(this.currentPlace.nextVisitText);
+            this.writer.write(this.currentPlace.nextVisitText);
         } else {
             this.currentPlace = this.placeGenerator.setCurrentPlace(this.map[this.currentX][this.currentY], this.currentX, this.currentY);
             this.map[this.currentX][this.currentY].place = this.currentPlace;
@@ -104,7 +109,7 @@ export class MainEngine implements Iengine {
         this.currentChoices = [];
         this.actions.loot.isPossible = !this.currentPlace.containsCreature;
         this.actions.exit.isPossible = true;
-        this.actions.inventory.isPossible = true;
+        this.actions.currentInventory.isPossible = true;
         this.actions.trade.isPossible = this.currentPlace.containsCreature && this.currentPlace.creature.nonHeroType === 'Trader';
         this.actions.attack.isPossible = this.currentPlace.containsCreature && this.currentPlace.creature.nonHeroType !== 'Trader';
         this.currentChoices.push(...this.currentPlace.directions, ...Object.values(this.actions));
@@ -112,7 +117,7 @@ export class MainEngine implements Iengine {
     }
 
     private lootPlace(): void {
-        console.log(`You found:\n${this.currentPlace.loot.listItems()} \nYou put them in your bag.`);
+        this.writer.write(`You found:\n${this.currentPlace.loot.listItems()} \nYou put them in your bag.`);
         this.currentPlace.loot.armour.forEach((armour: IArmour) => this.myInventory.addArmour(armour));
         this.currentPlace.loot.weapons.forEach((weapon: IWeapon) => this.myInventory.addWeapon(weapon));
         this.currentPlace.loot.potions.forEach((potion: IPotion) => this.myInventory.addPotion(potion));
@@ -121,7 +126,7 @@ export class MainEngine implements Iengine {
     }
     private setTradeItem(): void {
         // Reaplce with hero inventory
-        console.log(`You have the following items:\n${this.myInventory.listItems()}`);
+        this.writer.write(`You have the following items:\n${this.myInventory.listItems()}`);
         // TEST INVENTORY To be repalced with trader inventory??
         const currentDifficultyCoef: number = Randomizer.GENERATEDIFFICULTYCOEF(this.currentX, this.currentY);
         const traderInventory: IInventory = new Inventory(currentDifficultyCoef);
@@ -129,7 +134,7 @@ export class MainEngine implements Iengine {
         traderInventory.addWeapon(new Weapon(currentDifficultyCoef));
         traderInventory.addPotion(new Potion(currentDifficultyCoef));
 
-        console.log(`Trader has the following items:\n${traderInventory.listItems()}`);
+        this.writer.write(`Trader has the following items:\n${traderInventory.listItems()}`);
         const possibleBuys: string[] = [...traderInventory.armour.map((item: IArmour, index: number) => `buy a${index}`),
         ...traderInventory.weapons.map((item: IWeapon, index: number) => `buy w${index}`),
         ...traderInventory.potions.map((item: IPotion, index: number) => `buy p${index}`)];
@@ -140,7 +145,7 @@ export class MainEngine implements Iengine {
         result[0] === 'sell' ? this.sellItem(traderInventory, result[1]) : this.buyItem(traderInventory, result[1]);
     }
 
-    private sellItem(traderInventory: IInventory, itemToSell: string): void  {
+    private sellItem(traderInventory: IInventory, itemToSell: string): void {
         const itemType: string = itemToSell[0];
         const itemIndex: number = +itemToSell.substr(1, itemToSell.length);
         let soldItem: ICollectable;
@@ -172,7 +177,7 @@ export class MainEngine implements Iengine {
             this.myInventory.addPotion(boughtItem);
             this.myInventory.subtractCoins(boughtItem.price);
         } else {
-            console.log(`You cannot afford that!`);
+            this.writer.write(`You cannot afford that!`);
         }
     }
 }
