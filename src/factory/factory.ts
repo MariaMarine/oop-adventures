@@ -8,7 +8,6 @@ import { Inventory } from '../models/non-living/classes/inventory';
 import { Equipment } from '../models/non-living/classes/equipment';
 import { IEquipment } from '../models/non-living/interfaces/equipment';
 import { IDbService } from '../db/service/interfaces/db-service';
-import { IAlive } from '../models/living/interfaces/alive';
 import { NonHero } from '../models/living/classes/non-hero';
 import { Ifactory } from './interface/Ifactory';
 import { Randomizer } from './randomizer';
@@ -38,7 +37,7 @@ export class Factory implements Ifactory {
                         heroData.fearFactor, heroEquipment, heroInventory);
     }
 
-    public createNonHero(difficultyCoef: number): IAlive {
+    public createNonHero(difficultyCoef: number): NonHero {
         const nonHeroType: string = Randomizer.GETRANDOMARRAYELEMENT(this.nonHeroTypes);
         const nonHeroes: Object[] = <Object[]>this.dbService.readByKey(CollectionNames.nonHeroes, nonHeroType);
         const nonHero: {

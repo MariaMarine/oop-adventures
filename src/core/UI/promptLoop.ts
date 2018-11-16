@@ -38,7 +38,7 @@ export class PromptLoop {
             let input: string = this.reader.read().toLowerCase();
             while (input === 'options') {
                 this.writer.write(choices.reduce((acc: string, choice: IChoice) =>
-                `${acc} ${choice.names[0]}`,     `You have the following options: `));
+                `${acc} ${choice.names[0]}`,     `You have the following options: `), '\x1b[31m');
                 input = this.reader.read().toLowerCase();
             }
             choices.forEach((choice: IChoice) => {
@@ -72,7 +72,7 @@ export class PromptLoop {
         // tslint:disable-next-line:no-constant-condition
         while (!correctNameChosen) {
             const currentPromptString: string = promptStrings[i];
-            this.writer.write(currentPromptString);
+            this.writer.write(currentPromptString, '\x1b[31m');
             const input: string = this.reader.read();
             const regEx: RegExp = /^[a-zA-Z]*$/;
             if (input.length > 4 && input.length < 16 && regEx.test(input)) {
@@ -90,11 +90,11 @@ export class PromptLoop {
     public chooseHero(): Ihero {
         const heroesPossibleNames: string[] = this.dbService.getCollectionsKeys(CollectionNames.heroes);
 
-        this.writer.write('It is time to choose the Hero you want to resurect from the dead to fight for you!');
-        this.writer.write(`You have the following options: \n`);
+        this.writer.write('It is time to choose the Hero you want to resurect from the dead to fight for you!', '\x1b[34m');
+        this.writer.write(`You have the following options: \n`, '\x1b[31m');
         heroesPossibleNames.forEach((name: string) => {
             const hero: Ihero = <Ihero>this.dbService.readByKey(CollectionNames.heroes, name);
-            this.writer.write(`${name}: ${hero.info}`);
+            this.writer.write(`${name}: ${hero.info}`, '\x1b[34m');
         });
         let currentInput: string = '';
         const promptStrings: string[] = ['Try again!', 'Invalid name', 'No such Hero'];
