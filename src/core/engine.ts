@@ -3,7 +3,6 @@ import { Potion } from '../models/non-living/classes/potion';
 import { Weapon } from '../models/non-living/classes/weapon';
 import { Armour } from '../models/non-living/classes/armour';
 import { Randomizer } from '../factory/randomizer';
-
 import { IWeapon } from './../models/non-living/interfaces/weapon';
 import { IArmour } from './../models/non-living/interfaces/armour';
 import { Inventory } from './../models/non-living/classes/inventory';
@@ -30,7 +29,7 @@ export class MainEngine implements Iengine {
     private currentPlace: IPlace;
     private currentChoices: IChoice[] = [];
     private placeGenerator: PlaceGenerator;
-    private actions: { loot: IChoice; exit: IChoice; inventory: IChoice; trade: IChoice };
+    private actions: { loot: IChoice; exit: IChoice; inventory: IChoice; trade: IChoice; attack: IChoice };
     // For test purposes
     private map: MazeCell[][];
     private factory: Ifactory;
@@ -106,11 +105,9 @@ export class MainEngine implements Iengine {
         this.actions.loot.isPossible = !this.currentPlace.containsCreature;
         this.actions.exit.isPossible = true;
         this.actions.inventory.isPossible = true;
-        // Add public creature type to non-hero?
-        this.actions.trade.isPossible = this.currentPlace.containsCreature;
-
-        this.currentChoices.push(...this.currentPlace.directions, this.actions.inventory,
-                                 this.actions.loot, this.actions.exit, this.actions.trade);
+        this.actions.trade.isPossible = this.currentPlace.containsCreature && this.currentPlace.creature.nonHeroType === 'Trader';
+        this.actions.attack.isPossible = this.currentPlace.containsCreature && this.currentPlace.creature.nonHeroType !== 'Trader';
+        this.currentChoices.push(...this.currentPlace.directions, ...Object.values(this.actions));
 
     }
 

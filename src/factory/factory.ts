@@ -35,7 +35,7 @@ export class Factory implements Ifactory {
         const heroEquipment: IEquipment = new Equipment(heroData.equipment.weapon, heroData.equipment.armour);
 
         return new Hero(heroData.name, heroData.info, heroData.life, heroData.strength, heroData.magicResistance,
-            heroData.fearFactor, heroEquipment, heroInventory);
+                        heroData.fearFactor, heroEquipment, heroInventory);
     }
 
     public createNonHero(difficultyCoef: number): IAlive {

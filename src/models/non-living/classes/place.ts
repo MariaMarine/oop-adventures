@@ -2,13 +2,13 @@ import { PlaceDescription } from './../enums/placeDescriptions';
 import { Randomizer } from '../../../factory/randomizer';
 import { IInventory } from '../interfaces/inventory';
 import { IPlace } from '../interfaces/place';
-import { IAlive } from '../../living/interfaces/alive';
 import { IDirection } from '../../../core/choices/interface/direction';
+import { NonHero } from '../../living/classes/non-hero';
 
 export class Place implements IPlace {
     private _visited: boolean;
     private _containsCreature: boolean;
-    private _creature: IAlive;
+    private _creature: NonHero;
     private _introText: string;
     private _loot: IInventory;
     private _nextVisitText: string = '';
@@ -56,10 +56,10 @@ export class Place implements IPlace {
     public get nextVisitText(): string {
         return this._nextVisitText;
     }
-    public get creature(): IAlive {
+    public get creature(): NonHero {
         return this._creature;
     }
-    public set creature(creature: IAlive) {
+    public set creature(creature: NonHero) {
         this._creature = creature;
     }
 }
