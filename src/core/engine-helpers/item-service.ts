@@ -22,7 +22,7 @@ export class ItemService {
         this.writer = writer;
     }
     public lootPlace(currentPlace: IPlace, myInventory: IInventory): void {
-        this.writer.write(`You found:\n${currentPlace.loot.listItems()} \nYou put them in your bag.`);
+        this.writer.write(`You found:\n${currentPlace.loot.listItems()}`);
         currentPlace.loot.armour.forEach((armour: IArmour) => myInventory.addArmour(armour));
         currentPlace.loot.weapons.forEach((weapon: IWeapon) => myInventory.addWeapon(weapon));
         currentPlace.loot.potions.forEach((potion: IPotion) => myInventory.addPotion(potion));
@@ -40,9 +40,13 @@ export class ItemService {
         const possibleSells: string[] = [...myInventory.armour.map((item: IArmour, index: number) => `sell a${index}`),
         ...myInventory.weapons.map((item: IWeapon, index: number) => `sell w${index}`),
         ...myInventory.potions.map((item: IPotion, index: number) => `sell p${index}`)];
-        const result: string[] = this.promptLoop.chooseTradeItem([...possibleBuys, ...possibleSells]).split(' ');
-        result[0] === 'sell' ? this.sellItem(traderInventory, myInventory, result[1]) :
+        const result: string[] = this.promptLoop.chooseTradeItem([...possibleBuys, ...possibleSells, 'exit']).split(' ');
+        if (result[0] === 'sell') {
+            this.sellItem(traderInventory, myInventory, result[1]);
+        }
+        if (result[0] === 'buy') {
         this.buyItem(traderInventory, myInventory, result[1]);
+        }
     }
     private sellItem(traderInventory: IInventory, myInventory: IInventory, itemToSell: string): void {
         const itemType: string = itemToSell[0];

@@ -20,8 +20,8 @@ export class Actions implements IActions {
         this._loot = new Choice(['search', 'loot'], ['You found nothing', 'You search for a while - in vain', 'Nothing here']);
         this._exit = new Choice(['exit', 'continue'], ['You try to escape but...']);
         this._currentInventory = new Choice(['items', 'show items', 'inventory', 'bag', 'display'], ['Not now!']);
-        this._trade = new Choice(['trade', 'buy', 'sell', 'exchange'],
-                                 ['No one to trade with!', 'You can`t trade with yourself!', 'Nobody wants to trade with you here.']);
+        this._trade = new Choice(['trade', 'buy', 'sell', 'exchange'], ['No one to trade with!',
+        'You can`t see anyone willing to trade.', 'Nobody wants to trade with you here.']);
         this._attack = new Choice(['attack', 'kill', 'battle'], ['Can`t attack right now', 'Atack who??!', 'Noone here right now']);
     }
 

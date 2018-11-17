@@ -57,6 +57,6 @@ export class Randomizer {
         const max: number = Array.length + 1;
 
         // tslint:disable-next-line:insecure-random
-        return array[Math.floor(Math.random() * (max + 1))];
+        return array[Math.floor(Math.random() * max)];
     }
 }

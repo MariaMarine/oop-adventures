@@ -2,15 +2,15 @@
     "Trader": [
         {
             "name":"Bella Donna",
-            "sayStrings":["I sell funky staff", "Trade with me"]
+            "sayStrings":["I sell funky stuff", "Trade with me"]
          },
          {
             "name": "Mascarpone",
-            "sayStrings":["I am an old intalian cheese-seller", "Good for Tiramisu", "I have Parmesan as well"]
+            "sayStrings":["I am an old Italian cheese-seller", "Good for Tiramisu", "I have Parmesan as well"]
          },
          {
-            "name":  "Old gypsi",
-            "sayStrings":["I like singing in the rain", "I am old, but good in bed", "I sell chinese stock only"]
+            "name":  "Old gypsy",
+            "sayStrings":["I like singing in the rain", "I am old, but good in bed", "I sell Chinese stock only"]
          }
         ],
         "Creature": [
@@ -35,11 +35,11 @@
          },
          {
             "name": "Troll",
-            "sayStrings":["Internet is my stage", "Look at you", "You have nice haircut"]
+            "sayStrings":["Internet is my stage", "Look at you", "You have a nice haircut"]
          },
          {
             "name":  "Giant",
-            "sayStrings":["But I have gentle heart", "I like roses", "Where are you little pug?"]
+            "sayStrings":["But I have gentle heart", "I like roses", "Where are you, little pug?"]
          }
         ]
     

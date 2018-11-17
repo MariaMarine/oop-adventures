@@ -113,6 +113,7 @@ export class PromptLoop {
 
     public chooseTradeItem(possibleDeals: string[]): string {
         this.writer.write(`To trade, type 'buy' or 'sell' followed by the item code \n`);
+        this.writer.write(`If you don't want to trade, type 'exit' \n`);
         let currentInput: string = '';
         const promptStrings: string[] = ['Try again!', 'Invalid name', 'No such item'];
         while (!possibleDeals.includes(currentInput)) {
