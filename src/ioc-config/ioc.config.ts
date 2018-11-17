@@ -18,6 +18,9 @@ import { IDbService } from '../db/service/interfaces/db-service';
 import { Actions } from '../core/choices/actions';
 import { Ifactory } from '../factory/interface/Ifactory';
 import { IActions } from '../core/choices/interface/actions';
+import { IbattleChoices } from '../core/choices/interface/battle-choices';
+import { BattleChoices } from '../core/choices/battle-choices';
+import { Battle } from '../core/modes/battle';
 
 const container: Container = new Container();
 
@@ -31,4 +34,6 @@ container.bind<IdatabaseReader>('database-reader').to(FileReader);
 container.bind<IDbService>('database-service').to(DbService);
 container.bind<Ifactory>('factory').to(Factory);
 container.bind<IActions>('actions').to(Actions);
+container.bind<IbattleChoices>('battle-choices').to(BattleChoices);
+container.bind<Battle>('battle').to(Battle);
 export { container };

@@ -12,8 +12,11 @@ export class NonHero extends LivingBeingModel implements IAlive {
         strength: number,
         magicResistance: number,
         sayStrings: string[],
-        fearFactor: number) {
-            super(name, life, strength, magicResistance, fearFactor);
+        fearFactor: number,
+        isMagical: boolean,
+        magicStrings?: string[]
+        ) {
+            super(name, life, strength, magicResistance, fearFactor, isMagical, magicStrings);
             this.sayStrings = sayStrings;
             this._nonHeroType = nonHeroType;
         }

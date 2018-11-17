@@ -9,4 +9,6 @@ export interface Ihero {
     equipment: IEquipment;
     inventory: IInventory;
     info: string;
+    isMagical: boolean;
+    magicStrings: string[];
 }

@@ -3,9 +3,10 @@
         "info":"King Arthur is a medieval, mythological figure who was the head of the kingdom Camelot. Give him the chance to reborn and fuck those bastards!",
         "name": "Arthur",
         "life": 100,
-        "strength": 100,
+        "strength": 10,
         "magicResistance": 0.5,
         "fearFactor":1,
+        "isMagical": false,
         "equipment": {
             "weapon":{
                 "oneHanded":true,
@@ -41,17 +42,19 @@
     "Gandalf": {
         "info":"A mighty Lizard coming from the Old Times to rescue the world. He is a bit crazy, but powerful with the stuff",
         "name": "Gandalf",
-        "life": 80,
-        "strength": 80,
+        "life": 70,
+        "strength": 8,
         "magicResistance": 0.5,
         "fearFactor":1,
+        "isMagical": true,
+        "magicStrings": ["Ball of Fire", "Lightening Touch", "Crazy Piglet", "Randomized Face"],
         "equipment": {
             "weapon":{
                 "oneHanded":true,
-                "physicalDamage":25,
-                "magicalDamage": null,
+                "physicalDamage":null,
+                "magicalDamage": 30,
                 "price":null,
-                "name":"Rusty Knife"
+                "name":"Broken Wand"
             },
             "armour":{
                 "physicalResistance": 20,

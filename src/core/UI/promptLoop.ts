@@ -6,6 +6,7 @@ import { Ihero } from '../../models/living/interfaces/hero';
 import { IDbService } from '../../db/service/interfaces/db-service';
 import { CollectionNames } from '../../db/service/collection-names';
 import { Randomizer } from '../../factory/randomizer';
+import { IPotion } from '../../models/non-living/interfaces/potion';
 
 @injectable()
 
@@ -38,7 +39,7 @@ export class PromptLoop {
             let input: string = this.reader.read().toLowerCase();
             while (input === 'options') {
                 this.writer.write(choices.reduce((acc: string, choice: IChoice) =>
-                `${acc} ${choice.names[0]}`,     `You have the following options: `), '\x1b[31m');
+                    `${acc} ${choice.names[0]}`, `You have the following options: `), '\x1b[31m');
                 input = this.reader.read().toLowerCase();
             }
             choices.forEach((choice: IChoice) => {
@@ -125,5 +126,20 @@ export class PromptLoop {
         }
 
         return currentInput;
+    }
+
+    public choosePotion(potions: IPotion[]): number {
+        this.writer.write('To choose the potion you want to drink, enter it`s number:\n', '\x1b[34m');
+        potions.forEach((potion: IPotion, index: number) => {
+            this.writer.write(`${index}) ${potion.name}, power: ${potion.power}`);
+        });
+        let currentInput: string = '';
+        const promptStrings: string[] = ['Try again!', 'Invalid potion', 'No such Potion'];
+        while (+currentInput > potions.length - 1 && +currentInput < 0) {
+            currentInput = this.reader.read();
+            Randomizer.GETRANDOMARRAYELEMENT(promptStrings);
+        }
+
+        return +currentInput;
     }
 }

@@ -12,6 +12,7 @@ import { NonHero } from '../models/living/classes/non-hero';
 import { Ifactory } from './interface/Ifactory';
 import { Randomizer } from './randomizer';
 import { Constants } from '../core/constants/constants';
+import { MagicType } from '../models/living/enums/magicType';
 
 @injectable()
 export class Factory implements Ifactory {
@@ -27,14 +28,13 @@ export class Factory implements Ifactory {
         });
     }
 
-    public createHero(name: string): Ihero {
-        const heroData: Ihero = <Ihero>this.dbService.readByKey(CollectionNames.heroes, name);
+    public createHero(heroData: Ihero): Ihero {
         const heroInventory: IInventory = new Inventory(1);
         heroInventory.addPotion(heroData.inventory.potions[0]);
         const heroEquipment: IEquipment = new Equipment(heroData.equipment.weapon, heroData.equipment.armour);
 
         return new Hero(heroData.name, heroData.info, heroData.life, heroData.strength, heroData.magicResistance,
-                        heroData.fearFactor, heroEquipment, heroInventory);
+                        heroData.fearFactor, heroEquipment, heroInventory, heroData.isMagical, heroData.magicStrings || null);
     }
 
     public createNonHero(difficultyCoef: number): NonHero {
@@ -71,7 +71,10 @@ export class Factory implements Ifactory {
         const nonHeroLife: number = difficultyCoef * randomCoef * Constants.baseLife;
         const nonHeroStrength: number = difficultyCoef * randomCoef * Constants.baseStrength;
         const nonHeroMagicResistance: number = difficultyCoef * randomCoef * Constants.baseMagicResistance;
+        const isMagical: boolean = false;
+        const magicStrings: string[] = Array(Randomizer.GETRANDOMENUMOPTION(MagicType));
 
-        return new NonHero(nonHeroType, nonHeroName, nonHeroLife, nonHeroStrength, nonHeroMagicResistance, nonHeroSayStrings, fearFactor);
+        return new NonHero(nonHeroType, nonHeroName, nonHeroLife, nonHeroStrength, nonHeroMagicResistance,
+                           nonHeroSayStrings, fearFactor, isMagical, magicStrings);
     }
 }

@@ -14,6 +14,7 @@ import { Ifactory } from '../factory/interface/Ifactory';
 import { IActions } from './choices/interface/actions';
 import { Iwriter } from './UI/interfaces/writer';
 import { ItemService } from './engine-helpers/item-service';
+import { Battle } from './modes/battle';
 
 @injectable()
 export class MainEngine implements Iengine {
@@ -32,15 +33,18 @@ export class MainEngine implements Iengine {
     private hero: Ihero;
     private userName: string;
     private writer: Iwriter;
+    private battle: Battle;
     public constructor(
         @inject('ui-writer') writer: Iwriter,
         @inject('actions') actions: IActions,
         @inject('factory') factory: Ifactory,
-        @inject('prompt-loop') promptloop: PromptLoop
+        @inject('prompt-loop') promptloop: PromptLoop,
+        @inject('battle') battle: Battle
     ) {
         this.writer = writer;
         this.actions = actions;
         this.factory = factory;
+        this.battle = battle;
         this.promptLoop = promptloop;
         this.placeGenerator = new PlaceGenerator(factory);
         this.itemService = new ItemService(this.promptLoop, this.writer);
@@ -77,6 +81,11 @@ export class MainEngine implements Iengine {
             }
             if (nextChoice.names[0] === 'items') {
                 this.writer.write(`You have the following items:\n${this.myInventory.listItems()}`, '\x1b[34m');
+            }
+            if (nextChoice.names[0] === 'attack') {
+                this.writer.write(`You decided to attack!!`, '\x1b[34m');
+                this.hero = this.battle.start(this.hero, this.currentPlace.creature);
+                this.currentPlace.containsCreature = false;
             }
             if (nextChoice.names[0] === 'trade') {
                 this.itemService.setTradeItem(this.myInventory);
