@@ -132,6 +132,7 @@ export class Battle {
             this.writer.write(`The ${this.enemy.name} is now dead!!`, '\x1b[34m');
             this.writer.write(`It dropped some stuff`, '\x1b[34m');
             this.repository.currentPlace.loot.consumeInventory(this.enemy.inventory);
+            this.repository.currentPlace.containsCreature = false;
         } else {
             // tslint:disable-next-line:max-line-length
             this.writer.write(`The ${this.enemy.name} is left with ${this.enemy.life} health, you have ${this.repository.hero.life}!`, '\x1b[34m');
@@ -144,10 +145,20 @@ export class Battle {
         const magicString: string = Randomizer.GETRANDOMARRAYELEMENT(this.repository.hero.magicStrings);
         this.enemy.life -= heroMagicDamage;
         this.writer.write(`You performed ${magicString} and the ${this.enemy.name} takes ${heroMagicDamage} damage!`, '\x1b[35m');
+        if (this.repository.hero.life === 0) {
+            let i: number = 500;
+            let output: string = '';
+            while (i !== 0) {
+                output += `YOU ARE DEAD `;
+                this.writer.write(output, '\x1b[32m');
+                i += 1;
+            }
+        }
         if (this.enemy.life === 0) {
             this.writer.write(`The ${this.enemy.name} is now dead!!`, '\x1b[34m');
             this.writer.write(`It dropped some stuff`, '\x1b[34m');
             this.repository.currentPlace.loot.consumeInventory(this.enemy.inventory);
+            this.repository.currentPlace.containsCreature = false;
         } else {
             this.writer.write(`The ${this.enemy.name} looks shocked, but approaches you nevertheless!!!`, '\x1b[35m');
             // tslint:disable-next-line:max-line-length

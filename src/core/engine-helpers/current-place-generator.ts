@@ -27,9 +27,12 @@ export class PlaceGenerator {
         if (this.repository.map[this.repository.currentX][this.repository.currentY] &&
             this.repository.map[this.repository.currentX][this.repository.currentY].place) {
             this.repository.currentPlace = this.repository.map[this.repository.currentX][this.repository.currentY].place;
-            this.writer.write(this.repository.currentPlace.nextVisitText, '\x1b[34m');
-            this.writer.write(`${this.repository.currentPlace.creature.name} says ${this.repository.currentPlace.creature.say()}`,
-                              '\x1b[34m');
+            this.writer.write(this.repository.currentPlace.nextVisitText, '\x1b[32m');
+            if (this.repository.currentPlace.containsCreature) {
+                this.writer.write(`${this.repository.currentPlace.creature.name} says ${this.repository.currentPlace.creature.say()}`,
+                '\x1b[32m');
+            }
+
         } else {
             this.generateNewPlace();
         }
@@ -69,7 +72,7 @@ export class PlaceGenerator {
                     `You have the chance to trade with the ${creature.name}`]),
                     `\x1b[32m`);
             } else {
-               this.writer.write(`You reckon the ${creature.name} has ${creature.life} life and ${creature.strength} strength`, '\x1b[32m');
+                this.writer.write(`You reckon the ${creature.name} has ${creature.life} life and ${creature.strength} strength`, '\x1b[32m');
             }
         }
     }

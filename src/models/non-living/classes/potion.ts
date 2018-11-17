@@ -12,7 +12,7 @@ export class Potion implements IPotion {
         if (difficultyCoef === null || difficultyCoef < 0) {
             throw new Error ('Difficulty coefficient must be a positive number!');
             }
-        this.power = power || Math.floor(Math.sqrt(Randomizer.GENERATERANDOMNUMBER (Constants.maxPotionPower * difficultyCoef)));
+        this.power = power || Randomizer.GENERATERANDOMNUMBER (Constants.maxPotionPower * difficultyCoef);
         this.price = price || Randomizer.GENERATERANDOMNUMBER (Constants.maxItemPrice * difficultyCoef);
         this.name = name || Randomizer.GETRANDOMENUMOPTION (PotionType);
     }
