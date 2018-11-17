@@ -1,11 +1,12 @@
 import { Randomizer } from './../../factory/randomizer';
 import { IPlace } from '../../models/non-living/interfaces/place';
-import { Directions } from '../choices/all-directions';
+import { Directions } from '../choices/directions';
 import { Place } from '../../models/non-living/classes/place';
 import { MazeCell } from '../../models/non-living/classes/maze-cell';
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { Ifactory } from '../../factory/interface/Ifactory';
 
+@injectable()
 export class PlaceGenerator {
 
     private readonly factory: Ifactory;

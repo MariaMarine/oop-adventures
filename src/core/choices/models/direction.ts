@@ -1,4 +1,4 @@
-import { IChoice } from "./interface/choice";
+import { IChoice } from "../interface/choice";
 
 export class Direction implements IChoice {
     private _xDirection: number;

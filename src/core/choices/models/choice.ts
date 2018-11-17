@@ -1,4 +1,4 @@
-import { IChoice } from './interface/choice';
+import { IChoice } from '../interface/choice';
 
 export class Choice implements IChoice {
     private readonly _names: string[];

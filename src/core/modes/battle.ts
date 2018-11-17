@@ -5,8 +5,6 @@ import { IbattleChoices } from '../choices/interface/battle-choices';
 import { NonHero } from '../../models/living/classes/non-hero';
 import { IChoice } from '../choices/interface/choice';
 import { IPotion } from '../../models/non-living/interfaces/potion';
-import { Choice } from '../choices/choice';
-import { Potion } from '../../models/non-living/classes/potion';
 import { PotionType } from '../../models/non-living/enums/potionTypes';
 
 @injectable()
@@ -92,6 +90,10 @@ export class Battle {
         if (potionToDrink.name === PotionType[2]) { //strength
             this.tempStrengthBoost = potionToDrink.power;
         }
+    }
+
+    private hitRound(): void {
+
     }
 
     private setCurrentChoices(): void {

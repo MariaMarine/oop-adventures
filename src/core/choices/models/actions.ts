@@ -1,7 +1,7 @@
-import { IChoice } from './interface/choice';
+import { IChoice } from '../interface/choice';
 import { injectable } from 'inversify';
-import { Choice } from './models/choice';
-import { IActions } from './interface/actions';
+import { Choice } from './choice';
+import { IActions } from '../interface/actions';
 
 @injectable()
 export class Actions implements IActions {

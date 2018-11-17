@@ -1,6 +1,6 @@
 import { IbattleChoices } from './interface/battle-choices';
 import { IChoice } from './interface/choice';
-import { Choice } from './choice';
+import { Choice } from './models/choice';
 import { injectable } from 'inversify';
 
 @injectable()

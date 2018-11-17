@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 import { IDirection } from './interface/direction';
-import { Direction } from './direction';
+import { Direction } from './models/direction';
 
 @injectable()
 export class Directions {

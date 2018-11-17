@@ -7,7 +7,7 @@ import { IChoice } from './choices/interface/choice';
 import { PlaceGenerator } from './engine-helpers/current-place-generator';
 import { IInventory } from '../models/non-living/interfaces/inventory';
 import { Constants } from './constants/constants';
-import { Direction } from './choices/direction';
+import { Direction } from './choices/models/direction';
 import { Ihero } from '../models/living/interfaces/hero';
 import { MazeCell } from '../models/non-living/classes/maze-cell';
 import { Ifactory } from '../factory/interface/Ifactory';
@@ -35,6 +35,7 @@ export class MainEngine implements Iengine {
     private writer: Iwriter;
     private battle: Battle;
     public constructor(
+        @inject('current-place-generator') placeGenerator: PlaceGenerator,
         @inject('ui-writer') writer: Iwriter,
         @inject('actions') actions: IActions,
         @inject('factory') factory: Ifactory,
@@ -46,7 +47,7 @@ export class MainEngine implements Iengine {
         this.factory = factory;
         this.battle = battle;
         this.promptLoop = promptloop;
-        this.placeGenerator = new PlaceGenerator(factory);
+        this.placeGenerator = placeGenerator;
         this.itemService = new ItemService(this.promptLoop, this.writer);
 
     }
