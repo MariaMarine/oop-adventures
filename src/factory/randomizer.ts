@@ -1,5 +1,4 @@
 import { Armour } from './../models/non-living/classes/armour';
-import { Constants } from './../core/constants/constants';
 import { Inventory } from '../models/non-living/classes/inventory';
 import { IInventory } from '../models/non-living/interfaces/inventory';
 import { Weapon } from '../models/non-living/classes/weapon';

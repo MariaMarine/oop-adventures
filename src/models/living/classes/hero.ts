@@ -4,6 +4,8 @@ import { IInventory } from '../../non-living/interfaces/inventory';
 import { IAlive } from '../interfaces/alive';
 import { LivingBeingModel } from './livingBeing-model';
 import { Ihero } from '../interfaces/hero';
+import { injectable } from 'inversify';
+@injectable()
 export class Hero extends LivingBeingModel implements IPerson, IAlive, Ihero {
     private readonly _equipment: IEquipment;
     private readonly _inventory: IInventory;

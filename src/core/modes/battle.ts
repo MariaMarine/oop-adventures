@@ -6,6 +6,9 @@ import { NonHero } from '../../models/living/classes/non-hero';
 import { IChoice } from '../choices/interface/choice';
 import { IPotion } from '../../models/non-living/interfaces/potion';
 import { PotionType } from '../../models/non-living/enums/potionTypes';
+import { IRepository } from '../../models/non-living/interfaces/repository';
+import { Iwriter } from '../UI/interfaces/writer';
+import { write } from 'fs';
 
 @injectable()
 export class Battle {
@@ -16,10 +19,16 @@ export class Battle {
     private _tempMagicBoost: number;
     private _tempStrengthBoost: number;
     private _rounds: number;
+    private repository: IRepository;
+    private writer: Iwriter;
     constructor(
+        @inject('ui-writer') writer: Iwriter,
+        @inject('repository') repository: IRepository,
         @inject('prompt-loop') promptLoop: PromptLoop,
         @inject('battle-choices') battleChoices: IbattleChoices
     ) {
+        this.writer = writer;
+        this.repository = repository;
         this._promptLoop = promptLoop;
         this._battleChoices = battleChoices;
     }
@@ -59,12 +68,8 @@ export class Battle {
     public set rounds(rounds: number) {
         this._rounds = rounds;
     }
-    public start(hero: Ihero, enemy: NonHero): Ihero {
-        this.rounds = 0;
-        this.tempMagicBoost = 0;
-        this.tempStrengthBoost = 0;
-        this._hero = hero;
-        this._enemy = enemy;
+    public start(): void {
+        const enemy: NonHero = this.repository.currentPlace.creature;
         while (enemy.life > 0) {
             this.setCurrentChoices();
             const nextChoice: IChoice =
@@ -75,12 +80,11 @@ export class Battle {
             this.rounds += 1;
         }
 
-
-        return hero;
     }
 
     private drinkPotion(): void {
-        const potionToDrink: IPotion = this.hero.inventory.removePotion(this.promptLoop.choosePotion(this.hero.inventory.potions));
+        const potionIndex: number = this.promptLoop.choosePotion(this.repository.hero.inventory.potions);
+        const potionToDrink: IPotion = this.repository.hero.inventory.removePotion(potionIndex);
         if (potionToDrink.name === PotionType[0]) { //heal
             this.hero.life += potionToDrink.power;
         }
@@ -90,6 +94,7 @@ export class Battle {
         if (potionToDrink.name === PotionType[2]) { //strength
             this.tempStrengthBoost = potionToDrink.power;
         }
+        this.writer.write(`Drank postion ${potionToDrink.name} successfully`);
     }
 
     private hitRound(): void {
@@ -97,12 +102,12 @@ export class Battle {
     }
 
     private setCurrentChoices(): void {
-        if (this.hero.inventory.potions.length > 0) {
+        if (this.repository.hero.inventory.potions.length > 0) {
             this.battleChoices.drinkPotion.isPossible = true;
         } else {
             this.battleChoices.drinkPotion.isPossible = false;
         }
-        if (this.hero.isMagical) {
+        if (this.repository.hero.isMagical) {
             this.battleChoices.performMagic.isPossible = true;
         } else {
             this.battleChoices.performMagic.isPossible = false;

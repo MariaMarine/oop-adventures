@@ -130,13 +130,13 @@ export class PromptLoop {
     }
 
     public choosePotion(potions: IPotion[]): number {
-        this.writer.write('To choose the potion you want to drink, enter it`s number:\n', '\x1b[34m');
+        this.writer.write('To choose the potion you want to drink, enter it`s number:\n', '\x1b[32m');
         potions.forEach((potion: IPotion, index: number) => {
             this.writer.write(`${index}) ${potion.name}, power: ${potion.power}`);
         });
-        let currentInput: string = '';
+        let currentInput: string = 'asdasd';
         const promptStrings: string[] = ['Try again!', 'Invalid potion', 'No such Potion'];
-        while (+currentInput > potions.length - 1 && +currentInput < 0) {
+        while (!(+currentInput < potions.length && +currentInput > -1)) {
             currentInput = this.reader.read();
             Randomizer.GETRANDOMARRAYELEMENT(promptStrings);
         }
