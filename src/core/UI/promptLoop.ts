@@ -111,15 +111,13 @@ export class PromptLoop {
         return <Ihero>this.dbService.readByKey(CollectionNames.heroes, currentInput);
     }
 
-    public chooseTradeItem(possibleDeals: string[]): string {
-        this.writer.write(`To trade, type 'buy' or 'sell' followed by the item code \n`);
-        this.writer.write(`If you don't want to trade, type 'exit' \n`);
+    public chooseItem(possibleDeals: string[]): string {
         let currentInput: string = '';
         const promptStrings: string[] = ['Try again!', 'Invalid name', 'No such item'];
         while (!possibleDeals.includes(currentInput)) {
             currentInput = this.reader.read();
             if (possibleDeals.includes(currentInput)) {
-                console.log('ok');
+                this.writer.write('Done!', '\x1b[34m');
                 continue;
             }
 

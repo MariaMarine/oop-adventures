@@ -14,7 +14,7 @@ export class PlaceGenerator {
 
     private readonly factory: Ifactory;
     private readonly repository: IRepository;
-    private writer: Iwriter;
+    private readonly writer: Iwriter;
     constructor(@inject('ui-writer') writer: Iwriter,
                 @inject('repository') repository: IRepository,
                 @inject('factory') factory: Ifactory) {
@@ -33,7 +33,6 @@ export class PlaceGenerator {
         } else {
             this.generateNewPlace();
         }
-
     }
 
     private generateNewPlace(): void {
@@ -46,7 +45,8 @@ export class PlaceGenerator {
         const newPlace: IPlace = new Place(diffCoef, newDirections.getAllDirections());
         this.repository.currentPlace = newPlace;
         this.repository.map[x][y].place = newPlace;
-        this.writer.write(newPlace.introText);
+
+        this.writer.write(newPlace.introText, '\x1b[31m');
         newPlace.visited = true;
         if (newPlace.containsCreature) {
             newPlace.creature = this.factory.createNonHero(diffCoef);
@@ -72,7 +72,5 @@ export class PlaceGenerator {
                this.writer.write(`You reckon the ${creature.name} has ${creature.life} life and ${creature.strength} strength`, '\x1b[32m');
             }
         }
-
     }
-
 }
