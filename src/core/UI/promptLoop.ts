@@ -39,7 +39,8 @@ export class PromptLoop {
             let input: string = this.reader.read().toLowerCase();
             while (input === 'options') {
                 this.writer.write(choices.reduce((acc: string, choice: IChoice) =>
-                    `${acc} ${choice.names[0]}`, `You have the following options: `), '\x1b[31m');
+                    `${acc} ${choice.names[0]}`, `You have the following options: `),
+                                  '\x1b[31m');
                 input = this.reader.read().toLowerCase();
             }
             choices.forEach((choice: IChoice) => {
@@ -49,7 +50,7 @@ export class PromptLoop {
                             commandToReturn = choice;
                             oneOfThePossibleChoicesInputed = true;
                         } else {
-                            this.writer.write(choice.commandNotPossibleStrings[i] || choice.commandNotPossibleStrings[0]);
+                            this.writer.write(choice.commandNotPossibleStrings[i] || choice.commandNotPossibleStrings[0], '\x1b[34m');
                         }
                     }
                 });
@@ -104,8 +105,7 @@ export class PromptLoop {
             if (heroesPossibleNames.includes(currentInput)) {
                 continue;
             }
-            currentInput = Randomizer.GETRANDOMARRAYELEMENT(promptStrings);
-            this.writer.write(currentInput);
+            this.writer.write(Randomizer.GETRANDOMARRAYELEMENT(promptStrings), '\x1b[34m');
         }
 
         return <Ihero>this.dbService.readByKey(CollectionNames.heroes, currentInput);
@@ -122,8 +122,8 @@ export class PromptLoop {
                 console.log('ok');
                 continue;
             }
-            currentInput = Randomizer.GETRANDOMARRAYELEMENT(promptStrings);
-            this.writer.write(currentInput);
+
+            this.writer.write(Randomizer.GETRANDOMARRAYELEMENT(promptStrings), '\x1b[34m');
         }
 
         return currentInput;
@@ -138,7 +138,7 @@ export class PromptLoop {
         const promptStrings: string[] = ['Try again!', 'Invalid potion', 'No such Potion'];
         while (!(+currentInput < potions.length && +currentInput > -1)) {
             currentInput = this.reader.read();
-            Randomizer.GETRANDOMARRAYELEMENT(promptStrings);
+            this.writer.write(Randomizer.GETRANDOMARRAYELEMENT(promptStrings), '\x1b[34m');
         }
 
         return +currentInput;

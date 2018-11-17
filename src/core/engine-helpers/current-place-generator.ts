@@ -7,6 +7,7 @@ import { inject, injectable } from 'inversify';
 import { Ifactory } from '../../factory/interface/Ifactory';
 import { IRepository } from '../../models/non-living/interfaces/repository';
 import { Iwriter } from '../UI/interfaces/writer';
+import { NonHero } from '../../models/living/classes/non-hero';
 
 @injectable()
 export class PlaceGenerator {
@@ -26,7 +27,9 @@ export class PlaceGenerator {
         if (this.repository.map[this.repository.currentX][this.repository.currentY] &&
             this.repository.map[this.repository.currentX][this.repository.currentY].place) {
             this.repository.currentPlace = this.repository.map[this.repository.currentX][this.repository.currentY].place;
-            this.writer.write(this.repository.currentPlace.nextVisitText);
+            this.writer.write(this.repository.currentPlace.nextVisitText, '\x1b[34m');
+            this.writer.write(`${this.repository.currentPlace.creature.name} says ${this.repository.currentPlace.creature.say()}`,
+                              '\x1b[34m');
         } else {
             this.generateNewPlace();
         }
@@ -42,12 +45,32 @@ export class PlaceGenerator {
         // Create the new Place
         const newPlace: IPlace = new Place(diffCoef, newDirections.getAllDirections());
         this.repository.currentPlace = newPlace;
+        this.repository.map[x][y].place = newPlace;
         this.writer.write(newPlace.introText);
         newPlace.visited = true;
         if (newPlace.containsCreature) {
             newPlace.creature = this.factory.createNonHero(diffCoef);
+            const creature: NonHero = newPlace.creature;
             const creatureText: string = newPlace.creature.say();
-            this.writer.write(`You hear: ${(creatureText)}`);
+
+            const promptString: string = Randomizer.GETRANDOMARRAYELEMENT(
+                [`You hear a sudden ${creatureText}! You turn around and you see a ${creature.name}`,
+                `You are very shocked to see a ${creature.name}. It says ${(creatureText)}`,
+                `And a ${creature.name} appears out of nowhere. The ${creature.name} says ${creatureText}`,
+                `LOL! You have never seen such a funky ${creature.name} before, it says ${creatureText}`,
+                `Well... Just a ${creature.name}`,
+                `How is this even possible? A ${creature.name} appears from the dirt and roars ${creatureText}`
+                ]);
+            this.writer.write(promptString, '\x1b[32m');
+            if (creature.nonHeroType === 'Trader') {
+                this.writer.write(Randomizer.GETRANDOMARRAYELEMENT(
+                    [`You think that there is a high chance the ${creature.name} will screw you`,
+                    `The ${creature.name} looks a bit spooky`,
+                    `You have the chance to trade with the ${creature.name}`]),
+                    `\x1b[32m`);
+            } else {
+               this.writer.write(`You reckon the ${creature.name} has ${creature.life} life and ${creature.strength} strength`, '\x1b[32m');
+            }
         }
 
     }

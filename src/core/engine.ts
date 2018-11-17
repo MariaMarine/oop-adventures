@@ -49,7 +49,7 @@ export class MainEngine implements Iengine {
                 ['What would you like to do?', 'Well...', 'For all possible choices type "options"', 'Please try again'],
                 this.currentChoices);
             if (nextChoice.names[0] === 'search') {
-                this.itemService.lootPlace(this.repository.currentPlace, this.repository.hero.inventory);
+                this.itemService.lootPlace();
             }
             if (nextChoice.names[0] === 'items') {
                 this.writer.write(`You have the following items:\n${this.repository.hero.inventory.listItems()}`, '\x1b[34m');
@@ -60,7 +60,7 @@ export class MainEngine implements Iengine {
                 this.repository.currentPlace.containsCreature = false;
             }
             if (nextChoice.names[0] === 'trade') {
-                this.itemService.setTradeItem(this.repository.hero.inventory, this.repository.currentPlace.creature.inventory);
+                this.itemService.setTradeItem();
             }
             if (nextChoice instanceof Direction) {
                 this.repository.currentX += nextChoice.xDirection;

@@ -32,7 +32,7 @@ export class Init {
 
         const randomMaze: Maze = new Maze(Constants.gameRows, Constants.gameCols, container.get<MazeDashPrinter>('maze-printer'));
         this.repository.map = randomMaze.maze;
-        console.log(this.repository.map)
+
         randomMaze.printer.visualize(randomMaze.maze, Constants.gameCols, Constants.gameRows);
         const hero: Ihero = this.promptLoop.chooseHero();
         this.repository.hero = this.factory.createHero(hero);

@@ -17,7 +17,7 @@ export class Place implements IPlace {
                        containsCreature?: boolean, introText?: string, loot?: IInventory) {
         this._visited = false;
         this._directions = directions || [];
-        this._containsCreature = containsCreature || Randomizer.GENERATERANDOMBOOLEAN();
+        this._containsCreature = containsCreature || true; // toggled out for testing Randomizer.GENERATERANDOMBOOLEAN();
         const newPlaceDescription: string = Randomizer.GETRANDOMENUMOPTION(PlaceDescription);
         this._introText = introText || `You enter ${newPlaceDescription}.`;
         this._nextVisitText = introText || `You are back to ${newPlaceDescription}.`;

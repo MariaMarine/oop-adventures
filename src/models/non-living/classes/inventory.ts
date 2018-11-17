@@ -2,6 +2,8 @@ import { IPotion } from './../interfaces/potion';
 import { IWeapon } from './../interfaces/weapon';
 import { IInventory } from './../interfaces/inventory';
 import { IArmour } from '../interfaces/armour';
+import { inject } from 'inversify';
+import { Iwriter } from '../../../core/UI/interfaces/writer';
 
 export class Inventory implements IInventory {
     private _weapons: IWeapon[];
@@ -9,11 +11,15 @@ export class Inventory implements IInventory {
     private _potions: IPotion[];
     private _coins: number;
     private _difficultyCoef: number;
-
-    public constructor(difficultyCoef: number) {
+    private writer: Iwriter;
+    public constructor(difficultyCoef: number, @inject('ui-writer') writer?: Iwriter) {
         if (difficultyCoef === null || difficultyCoef < 0) {
-            throw new Error ('Difficulty coefficient must be a positive number!');
-            }
+            throw new Error('Difficulty coefficient must be a positive number!');
+        }
+        if (writer) {
+            this.writer = writer;
+        }
+
         this._difficultyCoef = difficultyCoef;
         this._weapons = [];
         this._armour = [];
@@ -63,7 +69,7 @@ export class Inventory implements IInventory {
         this._coins += coins;
     }
 
-     public removeArmour(armourToRemoveIndex: number): IArmour {
+    public removeArmour(armourToRemoveIndex: number): IArmour {
         if (armourToRemoveIndex === null || armourToRemoveIndex < 0) {
             throw new Error(`Current inventory does not include that many armour!`);
         }
@@ -79,7 +85,7 @@ export class Inventory implements IInventory {
         return this._weapons.splice(weaponToRemoveIndex, 1)[0];
     }
     public removePotion(potionToRemoveIndex: number): IPotion {
-        if (potionToRemoveIndex === null  || potionToRemoveIndex < 0) {
+        if (potionToRemoveIndex === null || potionToRemoveIndex < 0) {
             throw new Error(`Current inventory does not include that many potions!`);
         }
 
@@ -90,25 +96,32 @@ export class Inventory implements IInventory {
             throw new Error(`Not a valid amount of coins to remove!`);
         }
         if (this._coins < coinsToRemove) {
-            throw new Error (`Insufficient amount of coins!`);
+            throw new Error(`Insufficient amount of coins!`);
         }
         this._coins -= coinsToRemove;
     }
 
-    public removeAll () : void {
+    public removeAll(): void {
         this._armour = [];
         this._weapons = [];
         this._potions = [];
         this._coins = 0;
     }
 
-    // To inject console writer in constructor!
-    public listItems () : string {
+    public consumeInventory(inventory: IInventory): void {
+        inventory.armour.forEach((armour: IArmour) => this.addArmour(armour));
+        inventory.weapons.forEach((weapon: IWeapon) => this.addWeapon(weapon));
+        inventory.potions.forEach((potion: IPotion) => this.addPotion(potion));
+        this.addCoins(inventory.coins);
+        inventory.removeAll();
+    }
+
+    public listItems(): string {
         let result: string = '';
         if (this._weapons.length > 0) {
             result += `Weapons:\n`;
             this._weapons.forEach((weapon: IWeapon, index: number) => result +=
-            `w${index}-${weapon.name} (Physical: ${weapon.physicalDamage}, Magic: ${weapon.magicalDamage}, Price: ${weapon.price})\n`);
+                `w${index}-${weapon.name} (Physical: ${weapon.physicalDamage}, Magic: ${weapon.magicalDamage}, Price: ${weapon.price})\n`);
         }
         if (this._armour.length > 0) {
             result += `Armour:\n`;
@@ -118,7 +131,7 @@ export class Inventory implements IInventory {
         if (this._potions.length > 0) {
             result += `Potions:\n`;
             this._potions.forEach((potion: IPotion, index: number) => result +=
-            `p${index}-${potion.name} (Power: ${potion.power}, Price: ${potion.price})\n`);
+                `p${index}-${potion.name} (Power: ${potion.power}, Price: ${potion.price})\n`);
         }
         if (this._coins > 0) {
             result += `Coins: ${this._coins}`;

@@ -55,6 +55,8 @@ export abstract class LivingBeingModel implements IAlive {
   public set life(newLife: number) {
     if (newLife > this.maxLife) {
       this.life = this._maxlife;
+    } else if (newLife <= 0) {
+      this._life = 0;
     } else {
       this._life = newLife;
     }

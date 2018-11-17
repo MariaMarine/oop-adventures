@@ -17,7 +17,7 @@ import { MagicType } from '../models/living/enums/magicType';
 @injectable()
 export class Factory implements Ifactory {
     private dbService: IDbService;
-    private readonly nonHeroTypes: string[] = ['Trader', 'Creature', 'Humanoid'];
+    private readonly nonHeroTypes: string[] = ['Humanoid', 'Humanoid', 'Trader', 'Creature', 'Creature'];
     private readonly nonHeroStrengthStrings: { names: string[]; fearFactor: number }[] = [];
     constructor(@inject('database-service') dbService: IDbService) {
         this.dbService = dbService;
@@ -48,7 +48,7 @@ export class Factory implements Ifactory {
         const nonHeroSayStrings: string[] = nonHero.sayStrings;
         let fearFactor: number = 0;
         let nonHeroStrengthString: string = '';
-        const nonHeroInventory: IInventory =  Randomizer.GENERATETRADERINVENTORY(difficultyCoef);
+        const nonHeroInventory: IInventory =  Randomizer.GENERATETRADERINVENTORY(Math.sqrt(difficultyCoef));
         if (difficultyCoef < 4) {
             nonHeroStrengthString = Randomizer.GETRANDOMARRAYELEMENT(this.nonHeroStrengthStrings[0].names);
             fearFactor = this.nonHeroStrengthStrings[0].fearFactor;
@@ -68,10 +68,10 @@ export class Factory implements Ifactory {
             nonHeroName = nonHero.name;
         }
 
-        const randomCoef: number = Randomizer.GENERATERANDOMNUMBER(10) / 10;
-        const nonHeroLife: number = difficultyCoef * randomCoef * Constants.baseLife;
-        const nonHeroStrength: number = difficultyCoef * randomCoef * Constants.baseStrength;
-        const nonHeroMagicResistance: number = difficultyCoef * randomCoef * Constants.baseMagicResistance;
+        const randomCoef: number = Math.cbrt(Randomizer.GENERATERANDOMNUMBER(4) + 1);
+        const nonHeroLife: number = Math.floor(difficultyCoef * randomCoef * Constants.baseLife);
+        const nonHeroStrength: number = Math.floor(difficultyCoef * randomCoef * Constants.baseStrength);
+        const nonHeroMagicResistance: number = Math.floor(difficultyCoef * randomCoef * Constants.baseMagicResistance);
         const isMagical: boolean = false;
         const magicStrings: string[] = Array(Randomizer.GETRANDOMENUMOPTION(MagicType));
 

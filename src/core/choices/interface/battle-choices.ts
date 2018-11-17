@@ -5,4 +5,5 @@ export interface IbattleChoices {
     performMagic: IChoice;
     drinkPotion: IChoice;
     escape: IChoice;
+    approach: IChoice;
 }
