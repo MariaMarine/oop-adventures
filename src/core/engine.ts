@@ -62,6 +62,9 @@ export class MainEngine implements Iengine {
             if (nextChoice.names[0] === 'trade') {
                 this.itemService.setTradeItem(this.repository.hero.inventory, this.repository.currentPlace.creature.inventory);
             }
+            if (nextChoice.names[0] === 'equip') {
+                this.itemService.equipItem(this.repository.hero.inventory, this.repository.hero.equipment);
+            }
             if (nextChoice instanceof Direction) {
                 this.repository.currentX += nextChoice.xDirection;
                 this.repository.currentY += nextChoice.yDirection;
@@ -78,9 +81,11 @@ export class MainEngine implements Iengine {
         this.actions.loot.isPossible = !creatureExists;
         this.actions.exit.isPossible = true;
         this.actions.currentInventory.isPossible = true;
-        this.actions.trade.isPossible = creatureExists && this.repository.currentPlace.creature.nonHeroType === 'Trader';
-        this.actions.attack.isPossible = creatureExists && this.repository.currentPlace.creature.nonHeroType !== 'Trader';
+        this.actions.trade.isPossible = this.repository.currentPlace.containsCreature
+        && this.repository.currentPlace.creature.nonHeroType === 'Trader';
+        this.actions.attack.isPossible = this.repository.currentPlace.containsCreature
+        && this.repository.currentPlace.creature.nonHeroType !== 'Trader';
+        this.actions.equip.isPossible = true;
         this.currentChoices.push(...this.repository.currentPlace.directions, ...Object.values(this.actions));
-
     }
 }

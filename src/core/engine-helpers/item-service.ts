@@ -1,3 +1,4 @@
+import { IEquipment } from './../../models/non-living/interfaces/equipment';
 import { inject, injectable } from 'inversify';
 import { ICollectable } from './../../models/non-living/interfaces/collectable';
 import { PromptLoop } from './../UI/promptLoop';
@@ -30,19 +31,58 @@ export class ItemService {
         // Reaplce with hero inventory
         this.writer.write(`You have the following items:\n${heroInventory.listItems()}`);
         this.writer.write(`Trader has the following items:\n${traderInventory.listItems()}`);
+        this.writer.write(`To trade, type 'buy' or 'sell' followed by the item code \n`);
+        this.writer.write(`If you don't want to trade, type 'exit' \n`);
         const possibleBuys: string[] = [...traderInventory.armour.map((item: IArmour, index: number) => `buy a${index}`),
         ...traderInventory.weapons.map((item: IWeapon, index: number) => `buy w${index}`),
         ...traderInventory.potions.map((item: IPotion, index: number) => `buy p${index}`)];
         const possibleSells: string[] = [...heroInventory.armour.map((item: IArmour, index: number) => `sell a${index}`),
         ...heroInventory.weapons.map((item: IWeapon, index: number) => `sell w${index}`),
         ...heroInventory.potions.map((item: IPotion, index: number) => `sell p${index}`)];
-        const result: string[] = this.promptLoop.chooseTradeItem([...possibleBuys, ...possibleSells, 'exit']).split(' ');
+        const result: string[] = this.promptLoop.chooseItem([...possibleBuys, ...possibleSells, 'exit']).split(' ');
         if (result[0] === 'sell') {
             this.sellItem(traderInventory, heroInventory, result[1]);
         }
         if (result[0] === 'buy') {
         this.buyItem(traderInventory, heroInventory, result[1]);
         }
+    }
+
+    public equipItem (heroInventory: IInventory, heroEquipment: IEquipment) : void {
+        this.showCurrentEquipment(heroEquipment);
+        this.writer.write(`In your bag, you have the following items:\n${heroInventory.listItems()}`, '\x1b[32m');
+        this.writer.write(`To equip an armour or a weapon, type the item code. \n`, '\x1b[32m');
+        this.writer.write(`To cancel, type 'exit' \n`, '\x1b[32m');
+        const possibleItems: string[] = [...heroInventory.armour.map((item: IArmour, index: number) => `a${index}`),
+        ...heroInventory.weapons.map((item: IWeapon, index: number) => `w${index}`)];
+        const result: string = this.promptLoop.chooseItem([...possibleItems, 'exit']);
+        if (result === 'exit') {
+            return;
+        } else {
+            const itemType: string = result[0];
+            const itemIndex: number = +result.substr(1, result.length);
+            let itemToEquip: IArmour | IWeapon;
+            if (itemType === 'a') {
+                itemToEquip = heroInventory.removeArmour(itemIndex);
+                const armourToRemove: IArmour = heroEquipment.armour;
+                heroEquipment.armour = itemToEquip;
+                heroInventory.addArmour(armourToRemove);
+            } else {
+                itemToEquip = heroInventory.removeWeapon(itemIndex);
+                const weaponToRemove: IWeapon = heroEquipment.weapon;
+                heroEquipment.weapon = itemToEquip;
+                heroInventory.addWeapon(weaponToRemove);
+            }
+        }
+    }
+
+    private showCurrentEquipment(heroEquipment: IEquipment): void {
+        // tslint:disable-next-line:max-line-length
+        this.writer.write(`Currently equipped Weapon: ${heroEquipment.weapon.name}, Physical Damage: ${heroEquipment.weapon.physicalDamage}, Magical Damage: ${heroEquipment.weapon.magicalDamage}`,
+                          '\x1b[32m');
+        // tslint:disable-next-line:max-line-length
+        this.writer.write(`Currently equipped Armour: ${heroEquipment.armour.name}, Physical Resistance: ${heroEquipment.armour.physicalResistance}, Magical Resistance: ${heroEquipment.armour.magicalResistance}\n`,
+                          '\x1b[32m');
     }
     private sellItem(traderInventory: IInventory, heroInventory: IInventory, itemToSell: string): void {
         const itemType: string = itemToSell[0];

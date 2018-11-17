@@ -15,6 +15,7 @@ export class Actions implements IActions {
     private _trade: IChoice;
 
     private _attack: IChoice;
+    private _equip: IChoice;
 
     public constructor() {
         this._loot = new Choice(['search', 'loot'], ['You found nothing', 'You search for a while - in vain', 'Nothing here']);
@@ -23,6 +24,7 @@ export class Actions implements IActions {
         this._trade = new Choice(['trade', 'buy', 'sell', 'exchange'], ['No one to trade with!',
         'You can`t see anyone willing to trade.', 'Nobody wants to trade with you here.']);
         this._attack = new Choice(['attack', 'kill', 'battle'], ['Can`t attack right now', 'Atack who??!', 'Noone here right now']);
+        this._equip = new Choice(['equip', 'equipment'], [`You can't change your equipment at the moment`]);
     }
 
     public get exit(): IChoice {
@@ -40,5 +42,7 @@ export class Actions implements IActions {
     public get loot(): IChoice {
         return this._loot;
     }
-
+    public get equip(): IChoice {
+        return this._equip;
+    }
 }

@@ -10,4 +10,6 @@ export interface IActions {
     trade: IChoice;
 
     attack: IChoice;
+
+    equip: IChoice;
 }

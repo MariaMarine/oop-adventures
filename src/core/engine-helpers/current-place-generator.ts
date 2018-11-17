@@ -13,7 +13,7 @@ export class PlaceGenerator {
 
     private readonly factory: Ifactory;
     private readonly repository: IRepository;
-    private writer: Iwriter;
+    private readonly writer: Iwriter;
     constructor(@inject('ui-writer') writer: Iwriter,
                 @inject('repository') repository: IRepository,
                 @inject('factory') factory: Ifactory) {
@@ -30,7 +30,6 @@ export class PlaceGenerator {
         } else {
             this.generateNewPlace();
         }
-
     }
 
     private generateNewPlace(): void {
@@ -42,14 +41,12 @@ export class PlaceGenerator {
         // Create the new Place
         const newPlace: IPlace = new Place(diffCoef, newDirections.getAllDirections());
         this.repository.currentPlace = newPlace;
-        this.writer.write(newPlace.introText);
+        this.writer.write(newPlace.introText, '\x1b[31m');
         newPlace.visited = true;
         if (newPlace.containsCreature) {
             newPlace.creature = this.factory.createNonHero(diffCoef);
             const creatureText: string = newPlace.creature.say();
             this.writer.write(`You hear: ${(creatureText)}`);
         }
-
     }
-
 }
