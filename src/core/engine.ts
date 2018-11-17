@@ -79,7 +79,7 @@ export class MainEngine implements Iengine {
                 this.writer.write(`You have the following items:\n${this.myInventory.listItems()}`, '\x1b[34m');
             }
             if (nextChoice.names[0] === 'trade') {
-                this.itemService.setTradeItem(this.myInventory);
+                this.itemService.setTradeItem(this.myInventory, this.currentPlace.creature.inventory);
             }
             if (nextChoice instanceof Direction) {
                 this._currentX += nextChoice.xDirection;
