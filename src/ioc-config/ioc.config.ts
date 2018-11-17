@@ -24,6 +24,7 @@ import { Battle } from '../core/modes/battle';
 import { PlaceGenerator } from '../core/engine-helpers/current-place-generator';
 import { IRepository } from '../models/non-living/interfaces/repository';
 import { Repository } from '../models/non-living/classes/repository';
+import { ItemService } from '../core/engine-helpers/item-service';
 
 const container: Container = new Container();
 
@@ -41,4 +42,5 @@ container.bind<IbattleChoices>('battle-choices').to(BattleChoices);
 container.bind<Battle>('battle').to(Battle);
 container.bind<PlaceGenerator>('current-place-generator').to(PlaceGenerator);
 container.bind<IRepository>('repository').to(Repository).inSingletonScope();
+container.bind<ItemService>('item-service').to(ItemService);
 export { container };

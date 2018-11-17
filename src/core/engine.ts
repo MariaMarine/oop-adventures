@@ -1,14 +1,10 @@
-import { Inventory } from './../models/non-living/classes/inventory';
 import { inject, injectable } from 'inversify';
 import { PromptLoop } from './UI/promptLoop';
 import { Iengine } from './interfaces/engine';
 import { IChoice } from './choices/interface/choice';
 import { PlaceGenerator } from './engine-helpers/current-place-generator';
-import { IInventory } from '../models/non-living/interfaces/inventory';
 import { Constants } from './constants/constants';
 import { Direction } from './choices/models/direction';
-import { Ihero } from '../models/living/interfaces/hero';
-import { Ifactory } from '../factory/interface/Ifactory';
 import { IActions } from './choices/interface/actions';
 import { Iwriter } from './UI/interfaces/writer';
 import { ItemService } from './engine-helpers/item-service';
@@ -21,7 +17,6 @@ export class MainEngine implements Iengine {
     private currentChoices: IChoice[] = [];
     private placeGenerator: PlaceGenerator;
     private actions: IActions;
-    private myInventory: IInventory = new Inventory(0);
     private itemService: ItemService;
     private writer: Iwriter;
     private battle: Battle;
@@ -32,7 +27,8 @@ export class MainEngine implements Iengine {
         @inject('ui-writer') writer: Iwriter,
         @inject('actions') actions: IActions,
         @inject('prompt-loop') promptloop: PromptLoop,
-        @inject('battle') battle: Battle
+        @inject('battle') battle: Battle,
+        @inject ('item-service') itemService: ItemService
     ) {
         this.repository = repository;
         this.writer = writer;
@@ -40,8 +36,7 @@ export class MainEngine implements Iengine {
         this.battle = battle;
         this.promptLoop = promptloop;
         this.placeGenerator = placeGenerator;
-        this.itemService = new ItemService(this.promptLoop, this.writer);
-
+        this.itemService = itemService;
     }
 
     public start(): void {
@@ -53,12 +48,11 @@ export class MainEngine implements Iengine {
             const nextChoice: IChoice = this.promptLoop.multiple(
                 ['What would you like to do?', 'Well...', 'For all possible choices type "options"', 'Please try again'],
                 this.currentChoices);
-            // To implement: adding all items to hero's inventory
             if (nextChoice.names[0] === 'search') {
-                this.itemService.lootPlace(this.repository.currentPlace, this.myInventory);
+                this.itemService.lootPlace(this.repository.currentPlace, this.repository.hero.inventory);
             }
             if (nextChoice.names[0] === 'items') {
-                this.writer.write(`You have the following items:\n${this.myInventory.listItems()}`, '\x1b[34m');
+                this.writer.write(`You have the following items:\n${this.repository.hero.inventory.listItems()}`, '\x1b[34m');
             }
             if (nextChoice.names[0] === 'attack') {
                 this.writer.write(`You decided to attack!!`, '\x1b[34m');
@@ -66,7 +60,7 @@ export class MainEngine implements Iengine {
                 this.repository.currentPlace.containsCreature = false;
             }
             if (nextChoice.names[0] === 'trade') {
-                this.itemService.setTradeItem(this.myInventory, this.repository.currentPlace.creature.inventory);
+                this.itemService.setTradeItem(this.repository.hero.inventory, this.repository.currentPlace.creature.inventory);
             }
             if (nextChoice instanceof Direction) {
                 this.repository.currentX += nextChoice.xDirection;
@@ -89,5 +83,4 @@ export class MainEngine implements Iengine {
         this.currentChoices.push(...this.repository.currentPlace.directions, ...Object.values(this.actions));
 
     }
-
 }

@@ -11,8 +11,8 @@
             "weapon":{
                 "oneHanded":true,
                 "physicalDamage":25,
-                "magicalDamage": null,
-                "price":null,
+                "magicalDamage": 0,
+                "price":0,
                 "name":"Rusty Knife"
             },
             "armour":{
@@ -32,11 +32,12 @@
             "potions":[
                 {
                     "power": 25,
-                    "name": "Strength Potion"
+                    "name": "Strength Potion",
+                    "price": 0
                 }
 
             ],
-            "coins": null
+            "coins": 0
         }
     },
     "Gandalf": {
@@ -51,9 +52,9 @@
         "equipment": {
             "weapon":{
                 "oneHanded":true,
-                "physicalDamage":null,
+                "physicalDamage":0,
                 "magicalDamage": 30,
-                "price":null,
+                "price":0,
                 "name":"Broken Wand"
             },
             "armour":{
@@ -73,10 +74,11 @@
             "potions":[
                 {
                     "power":10,
-                    "name": "Magic Potion" 
+                    "name": "Magic Potion",
+                    "price": 0 
                 }
             ],
-            "coins": null
+            "coins": 0
         }
     }
 }
