@@ -6,7 +6,7 @@ export namespace Constants {
     export const maxItemPrice: number = 100;
     export const maxPhysicalResistance: number = 100;
     export const maxMagicalResistance: number = 100;
-    export const maxPotionPower: number = 200;
+    export const maxPotionPower: number = 300;
     export const maxCoinLoot: number = 10;
     export const baseLife: number = 100;
     export const baseStrength: number = 20;
