@@ -68,7 +68,7 @@ export class Battle {
     }
     public start(): void {
         this.enemy = this.repository.currentPlace.creature;
-
+        this.rounds = 0;
         while (this.enemy.life > 0) {
             this.writer.write(`ROUND ${this.rounds}\n`, '\x1b[31m');
             this.setCurrentChoices();
