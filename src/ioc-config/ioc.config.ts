@@ -22,6 +22,7 @@ import { IbattleChoices } from '../core/choices/interface/battle-choices';
 import { BattleChoices } from '../core/choices/battle-choices';
 import { Battle } from '../core/modes/battle';
 import { PlaceGenerator } from '../core/engine-helpers/current-place-generator';
+import { ItemService } from '../core/engine-helpers/item-service';
 
 const container: Container = new Container();
 
@@ -38,4 +39,5 @@ container.bind<IActions>('actions').to(Actions);
 container.bind<IbattleChoices>('battle-choices').to(BattleChoices);
 container.bind<Battle>('battle').to(Battle);
 container.bind<PlaceGenerator>('current-place-generator').to(PlaceGenerator);
+container.bind<ItemService>('item-service').to(ItemService);
 export { container };

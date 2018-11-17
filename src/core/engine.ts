@@ -28,7 +28,7 @@ export class MainEngine implements Iengine {
     // For test purposes
     private map: MazeCell[][];
     private factory: Ifactory;
-    private myInventory: IInventory = new Inventory(0);
+    private heroInventory: IInventory;
     private itemService: ItemService;
     private hero: Ihero;
     private userName: string;
@@ -40,7 +40,8 @@ export class MainEngine implements Iengine {
         @inject('actions') actions: IActions,
         @inject('factory') factory: Ifactory,
         @inject('prompt-loop') promptloop: PromptLoop,
-        @inject('battle') battle: Battle
+        @inject('battle') battle: Battle,
+        @inject ('item-service') itemService: ItemService
     ) {
         this.writer = writer;
         this.actions = actions;
@@ -48,8 +49,7 @@ export class MainEngine implements Iengine {
         this.battle = battle;
         this.promptLoop = promptloop;
         this.placeGenerator = placeGenerator;
-        this.itemService = new ItemService(this.promptLoop, this.writer);
-
+        this.itemService = itemService;
     }
 
     public get currentY(): number {
@@ -70,18 +70,17 @@ export class MainEngine implements Iengine {
         this.hero = hero;
         this.userName = userName;
         this.setNewPlace();
+        this.heroInventory = this.hero.inventory;
         while (this._currentX !== Constants.gameRows - 1 || this.currentY !== Constants.gameCols - 1) {
             this.setCurrentChoices();
-            // Console.log(this.currentPlace.creature);
             const nextChoice: IChoice = this.promptLoop.multiple(
                 ['What would you like to do?', 'Well...', 'For all possible choices type "options"', 'Please try again'],
                 this.currentChoices);
-            // To implement: adding all items to hero's inventory
             if (nextChoice.names[0] === 'search') {
-                this.itemService.lootPlace(this.currentPlace, this.myInventory);
+                this.itemService.lootPlace(this.currentPlace, this.heroInventory);
             }
             if (nextChoice.names[0] === 'items') {
-                this.writer.write(`You have the following items:\n${this.myInventory.listItems()}`, '\x1b[34m');
+                this.writer.write(`You have the following items:\n${this.heroInventory.listItems()}`, '\x1b[34m');
             }
             if (nextChoice.names[0] === 'attack') {
                 this.writer.write(`You decided to attack!!`, '\x1b[34m');
@@ -89,7 +88,7 @@ export class MainEngine implements Iengine {
                 this.currentPlace.containsCreature = false;
             }
             if (nextChoice.names[0] === 'trade') {
-                this.itemService.setTradeItem(this.myInventory, this.currentPlace.creature.inventory);
+                this.itemService.setTradeItem(this.heroInventory, this.currentPlace.creature.inventory);
             }
             if (nextChoice instanceof Direction) {
                 this._currentX += nextChoice.xDirection;
@@ -108,7 +107,6 @@ export class MainEngine implements Iengine {
             this.currentPlace = this.placeGenerator.setCurrentPlace(this.map[this.currentX][this.currentY], this.currentX, this.currentY);
             this.map[this.currentX][this.currentY].place = this.currentPlace;
         }
-
     }
     private setCurrentChoices(): void {
         this.currentChoices = [];
@@ -118,7 +116,5 @@ export class MainEngine implements Iengine {
         this.actions.trade.isPossible = this.currentPlace.containsCreature && this.currentPlace.creature.nonHeroType === 'Trader';
         this.actions.attack.isPossible = this.currentPlace.containsCreature && this.currentPlace.creature.nonHeroType !== 'Trader';
         this.currentChoices.push(...this.currentPlace.directions, ...Object.values(this.actions));
-
     }
-
 }
