@@ -55,6 +55,7 @@ export class Randomizer {
     public static GETRANDOMARRAYELEMENT<T>(array: T[]): T {
         const max: number = Array.length + 1;
 
+        // tslint:disable-next-line:insecure-random
         return array[Math.floor(Math.random() * (max  + 1))];
 
         // tslint:disable-next-line:insecure-random

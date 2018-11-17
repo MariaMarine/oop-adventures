@@ -63,7 +63,7 @@ export class MainEngine implements Iengine {
                 this.itemService.setTradeItem();
             }
             if (nextChoice.names[0] === 'equip') {
-                this.itemService.equipItem(this.repository.hero.inventory, this.repository.hero.equipment);
+                this.itemService.equipItem();
             }
             if (nextChoice instanceof Direction) {
                 this.repository.currentX += nextChoice.xDirection;
