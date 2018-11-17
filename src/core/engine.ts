@@ -88,7 +88,7 @@ export class MainEngine implements Iengine {
                 this.currentPlace.containsCreature = false;
             }
             if (nextChoice.names[0] === 'trade') {
-                this.itemService.setTradeItem(this.myInventory);
+                this.itemService.setTradeItem(this.myInventory, this.currentPlace.creature.inventory);
             }
             if (nextChoice instanceof Direction) {
                 this._currentX += nextChoice.xDirection;

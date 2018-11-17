@@ -30,16 +30,9 @@ export class ItemService {
         currentPlace.loot.removeAll();
     }
 
-    public setTradeItem(myInventory: IInventory): void {
+    public setTradeItem(myInventory: IInventory, traderInventory: IInventory): void {
         // Reaplce with hero inventory
         this.writer.write(`You have the following items:\n${myInventory.listItems()}`);
-        // TEST INVENTORY To be repalced with trader inventory??
-        //const currentDifficultyCoef: number = Randomizer.GENERATEDIFFICULTYCOEF(this.currentX, this.currentY);
-        const traderInventory: IInventory = new Inventory(1);
-        traderInventory.addArmour(new Armour(1));
-        traderInventory.addWeapon(new Weapon(1));
-        traderInventory.addPotion(new Potion(1));
-
         this.writer.write(`Trader has the following items:\n${traderInventory.listItems()}`);
         const possibleBuys: string[] = [...traderInventory.armour.map((item: IArmour, index: number) => `buy a${index}`),
         ...traderInventory.weapons.map((item: IWeapon, index: number) => `buy w${index}`),

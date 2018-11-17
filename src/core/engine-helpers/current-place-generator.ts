@@ -18,11 +18,12 @@ export class PlaceGenerator {
         const diffCoef: number = Randomizer.GENERATEDIFFICULTYCOEF(currentX, currentY);
         // Create the new Place
         const newPlace: IPlace = new Place(diffCoef, newDirections.getAllDirections());
-        const creatureText: string = newPlace.containsCreature ? 'someone' : 'no one';
-        console.log(`${newPlace.introText} You have the feeling that there is ${creatureText} here.`);
+        console.log(newPlace.introText);
         newPlace.visited = true;
         if (newPlace.containsCreature) {
             newPlace.creature = this.factory.createNonHero(diffCoef);
+            const creatureText: string = newPlace.creature.say();
+            console.log(`You hear: ${(creatureText)}`);
         }
 
         return newPlace;

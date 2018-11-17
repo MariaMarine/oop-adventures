@@ -48,6 +48,7 @@ export class Factory implements Ifactory {
         const nonHeroSayStrings: string[] = nonHero.sayStrings;
         let fearFactor: number = 0;
         let nonHeroStrengthString: string = '';
+        const nonHeroInventory: IInventory =  Randomizer.GENERATETRADERINVENTORY(difficultyCoef);
         if (difficultyCoef < 4) {
             nonHeroStrengthString = Randomizer.GETRANDOMARRAYELEMENT(this.nonHeroStrengthStrings[0].names);
             fearFactor = this.nonHeroStrengthStrings[0].fearFactor;
@@ -75,6 +76,6 @@ export class Factory implements Ifactory {
         const magicStrings: string[] = Array(Randomizer.GETRANDOMENUMOPTION(MagicType));
 
         return new NonHero(nonHeroType, nonHeroName, nonHeroLife, nonHeroStrength, nonHeroMagicResistance,
-                           nonHeroSayStrings, fearFactor, isMagical, magicStrings);
+                           nonHeroSayStrings, fearFactor, nonHeroInventory, isMagical, magicStrings);
     }
 }

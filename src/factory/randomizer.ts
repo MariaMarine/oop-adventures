@@ -40,6 +40,15 @@ export class Randomizer {
 
         return loot;
     }
+
+    public static GENERATETRADERINVENTORY (difficultyCoef: number): IInventory {
+        const traderInventory: IInventory = new Inventory(difficultyCoef);
+        traderInventory.addArmour(new Armour(difficultyCoef));
+        traderInventory.addWeapon(new Weapon(difficultyCoef));
+        traderInventory.addPotion(new Potion(difficultyCoef));
+
+        return traderInventory;
+    }
     public static GENERATEDIFFICULTYCOEF(x: number, y: number): number {
         return Math.sqrt((x + 1) + (y + 1));
     }
