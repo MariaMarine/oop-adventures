@@ -30,7 +30,7 @@ export class PlaceGenerator {
             this.writer.write(this.repository.currentPlace.nextVisitText, '\x1b[32m');
             if (this.repository.currentPlace.containsCreature) {
                 this.writer.write(`${this.repository.currentPlace.creature.name} says ${this.repository.currentPlace.creature.say()}`,
-                '\x1b[32m');
+                                  '\x1b[32m');
             }
 
         } else {
@@ -45,7 +45,7 @@ export class PlaceGenerator {
         const newDirections: Directions = new Directions(!mazeCell.top, !mazeCell.bottom, !mazeCell.right, !mazeCell.left);
         const diffCoef: number = Randomizer.GENERATEDIFFICULTYCOEF(x, y);
         // Create the new Place
-        const newPlace: IPlace = new Place(diffCoef, newDirections.getAllDirections());
+        const newPlace: IPlace = Randomizer.GENERATERANDOMPLACE (diffCoef, newDirections.getAllDirections());
         this.repository.currentPlace = newPlace;
         this.repository.map[x][y].place = newPlace;
 
@@ -70,8 +70,9 @@ export class PlaceGenerator {
                     [`You think that there is a high chance the ${creature.name} will screw you`,
                     `The ${creature.name} looks a bit spooky`,
                     `You have the chance to trade with the ${creature.name}`]),
-                    `\x1b[32m`);
+                                  `\x1b[32m`);
             } else {
+                // tslint:disable-next-line:max-line-length
                 this.writer.write(`You reckon the ${creature.name} has ${creature.life} life and ${creature.strength} strength`, '\x1b[32m');
             }
         }

@@ -71,7 +71,8 @@ export class MainEngine implements Iengine {
                 this.placeGenerator.setNewPlace();
             }
         }
-        this.writer.write(`You win :)`);
+        this.writer.write(`CONGRATULATIONS!!! You've found your way out of the OOP labyrinth\n
+        You win a beautiful Telerik t-shirt :)`);
     }
 
     private setCurrentChoices(): void {

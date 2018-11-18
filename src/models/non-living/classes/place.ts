@@ -13,15 +13,14 @@ export class Place implements IPlace {
     private _loot: IInventory;
     private _nextVisitText: string = '';
     private _directions: IDirection[];
-    public constructor(difficultyCoef: number, directions?: IDirection[],
-                       containsCreature?: boolean, introText?: string, loot?: IInventory) {
+    public constructor(difficultyCoef: number, directions: IDirection[],
+                       containsCreature: boolean, introText: string, loot: IInventory) {
         this._visited = false;
-        this._directions = directions || [];
-        this._containsCreature = containsCreature || true; // toggled out for testing Randomizer.GENERATERANDOMBOOLEAN();
-        const newPlaceDescription: string = Randomizer.GETRANDOMENUMOPTION(PlaceDescription);
-        this._introText = introText || `You enter ${newPlaceDescription}.`;
-        this._nextVisitText = introText || `You are back to ${newPlaceDescription}.`;
-        this._loot = loot || Randomizer.GENERATERANDOMLOOT(difficultyCoef);
+        this._directions = directions;
+        this._containsCreature = containsCreature;
+        this._introText = `You enter ${introText}.`;
+        this._nextVisitText = `You are back to ${introText}.`;
+        this._loot = loot;
 
     }
 

@@ -92,12 +92,13 @@ export class Randomizer {
 
         return traderInventory;
     }
-    /*
+
     public static GENERATERANDOMPLACE (difficultyCoef: number, directions: IDirection[]): IPlace {
-        return new Place (difficultyCoef, directions, Randomizer.GETRANDOMENUMOPTION(PlaceDescription),
-                          Randomizer.GENERATERANDOMBOOLEAN(), Randomizer.GENERATERANDOMLOOT(difficultyCoef));
+        return new Place (difficultyCoef, directions, Randomizer.GENERATERANDOMBOOLEAN(),
+                          Randomizer.GETRANDOMENUMOPTION(PlaceDescription),
+                          Randomizer.GENERATERANDOMLOOT(difficultyCoef));
     }
-    */
+
     public static GENERATEDIFFICULTYCOEF(x: number, y: number): number {
         return Math.sqrt((x + 1) + (y + 1));
     }
@@ -106,9 +107,6 @@ export class Randomizer {
         const max: number = Array.length + 1;
 
         // tslint:disable-next-line:insecure-random
-        return array[Math.floor(Math.random() * (max  + 1))];
-
-        // tslint:disable-next-line:insecure-random
-
+        return array[Math.floor(Math.random() * (max + 1))];
     }
 }
