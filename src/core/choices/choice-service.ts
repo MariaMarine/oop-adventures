@@ -17,7 +17,7 @@ export class ChoiceService implements IChoiceService {
     public setMapChoices(): void {
 
         const creatureExists: boolean = this.repository.currentPlace.containsCreature;
-
+        this.choiceProvider.showItems.isPossible = true;
         this.choiceProvider.equip.isPossible = true;
         this.choiceProvider.loot.isPossible = !creatureExists;
         this.choiceProvider.trade.isPossible = creatureExists && this.repository.currentPlace.creature.nonHeroType === 'Trader';
