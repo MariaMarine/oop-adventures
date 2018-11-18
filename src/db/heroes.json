@@ -121,5 +121,46 @@
             ],
             "coins": 0
         }
+    },
+    "Gorgona": {
+        "info":"A stunning beauty (literally) from the depths of the sea. A bit misunderstood perhaps, but mighty in her magic.",
+        "name": "Gorgona",
+        "life": 500,
+        "strength": 80,
+        "magicResistance": 0.5,
+        "fearFactor":1,
+        "isMagical": true,
+        "magicStrings": ["Hissssss", "Screech", "Stoneface", "Look at me"],
+        "equipment": {
+            "weapon":{
+                "oneHanded":true,
+                "physicalDamage":0,
+                "magicalDamage": 70,
+                "price":0,
+                "name":"Sleepy snake"
+            },
+            "armour":{
+                "physicalResistance": 10,
+                "magicalResistance": 10,
+                "price": 55,
+                "name": "Shedding snakeskin"
+            }
+        },
+        "inventory": {
+            "weapons":[
+
+            ],
+            "armours":[
+                
+            ],
+            "potions":[
+                {
+                    "power":10,
+                    "name": "Magic Potion",
+                    "price": 0 
+                }
+            ],
+            "coins": 0
+        }
     }
 }

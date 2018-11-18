@@ -1,8 +1,12 @@
 {
     "Trader": [
         {
+            "name":  "Crooked woman",
+            "sayStrings":["Cough...", "I have got anything you're looking for", "I'd bet you would love my stuff?"]
+         },
+        {
             "name":"Bella Donna",
-            "sayStrings":["I sell funky stuff", "Trade with me"]
+            "sayStrings":["I sell funky stuff", "Trade with me", "Hello, gorgeous!"]
          },
          {
             "name": "Mascarpone",
@@ -15,8 +19,12 @@
         ],
         "Creature": [
             {
+                "name":  "Rabid rabbit",
+                "sayStrings":["Don't you dare touch my ears", "Pet me", "Grrr"]
+             },
+            {
                 "name":"Wolf",
-                "sayStrings":["Woof", "Woooooof"]
+                "sayStrings":["Woof", "Woooooof", "Moon looks lovely tonight..."]
              },
              {
                 "name": "Bear",
@@ -24,13 +32,17 @@
              },
              {
                 "name":  "Mountain Lion",
-                "sayStrings":["Mrrrrr", "Pst"]
+                "sayStrings":["Mrrrrr", "Pst", "Hakuna Matata"]
              }
             ],
     
     "Humanoid":[
         {
-            "name":"Skeleton",
+            "name":  "Witch",
+            "sayStrings":["Have you got a lighter?", "You would look good in my cauldron", "I need to find some bat wings"]
+         },
+        {
+            "name":  "Skeleton",
             "sayStrings":["I will bone you", "RIP", "I am hanging in the closet"]
          },
          {
@@ -40,6 +52,10 @@
          {
             "name":  "Giant",
             "sayStrings":["But I have gentle heart", "I like roses", "Where are you, little pug?"]
+         },
+         {
+            "name":  "Vampire",
+            "sayStrings":["Cheers!", "You forgot to wear a scarf", "Do you know what time it is?"]
          }
         ]
     
