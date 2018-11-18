@@ -21,10 +21,6 @@ import { PlaceGenerator } from '../core/engine-helpers/current-place-generator';
 import { IRepository } from '../models/non-living/interfaces/repository';
 import { Repository } from '../models/non-living/classes/repository';
 import { ItemService } from '../core/engine-helpers/item-service';
-import { ShowItems } from '../core/choices/models/actions/show-items';
-import { Attack } from '../core/choices/models/actions/attack';
-import { Trade } from '../core/choices/models/actions/trade';
-import { Loot } from '../core/choices/models/actions/loot';
 import { North } from '../core/choices/models/directions/north';
 import { South } from '../core/choices/models/directions/south';
 import { East } from '../core/choices/models/directions/east';
@@ -32,11 +28,15 @@ import { West } from '../core/choices/models/directions/west';
 import { ChoiceService } from '../core/choices/choice-service';
 import { IChoiceProvider } from '../core/choices/interface/choice-provider';
 import { ChoiceProvider } from '../core/choices/choice-provider';
-import { Equip } from '../core/choices/models/actions/equip';
 import { Hit } from '../core/choices/models/battle-choices/hit';
 import { DrinkPotion } from '../core/choices/models/battle-choices/drink-potion';
 import { PerformMagic } from '../core/choices/models/battle-choices/perform-magic';
 import { Approach } from '../core/choices/models/battle-choices/approach';
+import { Equip } from '../core/choices/models/map-choices/equip';
+import { Attack } from '../core/choices/models/map-choices/attack';
+import { Trade } from '../core/choices/models/map-choices/trade';
+import { Loot } from '../core/choices/models/map-choices/loot';
+import { ShowItems } from '../core/choices/models/map-choices/show-items';
 
 const container: Container = new Container();
 
@@ -69,4 +69,5 @@ container.bind<Hit>('hit').to(Hit);
 container.bind<DrinkPotion>('drink-potion').to(DrinkPotion);
 container.bind<PerformMagic>('perform-magic').to(PerformMagic);
 container.bind<Approach>('approach').to(Approach);
+
 export { container };
