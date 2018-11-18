@@ -6,13 +6,13 @@ Team leader: [Stelyan](https://gitlab.com/wideyedwonderer)
 Team members: 
 [Stelyan](https://my.telerikacademy.com/Users/stelyangeorgiev@yahoo.com), 
 [Maria](https://my.telerikacademy.com/Users/maria.marinova), 
-[Niko](https://my.telerikacademy.com/Users/NikoPenevv)
+[Niko](https://my.telerikacademy.com/Users/NikoPenev)
 
 ## Project Description:
 A text based RPG adventure game
 
 ## Project URL:
-(https://gitlab.com/wideyedwonderer/oop-teamwork)
+[Here](https://gitlab.com/wideyedwonderer/oop-teamwork)
 
 ## Trello:
 [Board](https://trello.com/b/zH0fxWJi/oop)
