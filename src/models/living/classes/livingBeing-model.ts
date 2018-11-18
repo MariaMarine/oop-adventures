@@ -69,10 +69,10 @@ export abstract class LivingBeingModel implements IAlive {
     this._strength = newStrength;
   }
   public get magicResistance(): number {
-    return this.magicResistance;
+    return this._magicResistance;
   }
   public get fearFactor(): number {
-    return this.fearFactor;
+    return this._fearFactor;
   }
   public get maxLife(): number {
     return this._maxlife;

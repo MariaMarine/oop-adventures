@@ -4,5 +4,6 @@ export interface IAlive {
     strength: number;
     magicResistance: number;
     fearFactor: number;
+    isMagical: boolean;
     say(): string;
 }
