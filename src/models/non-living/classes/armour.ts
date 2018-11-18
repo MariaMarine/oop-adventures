@@ -1,8 +1,4 @@
-// tslint:disable-next-line:no-import-side-effect
-import { Randomizer } from '../../../factory/randomizer';
-import { ArmourType } from '../enums/armourTypes';
 import { IArmour } from '../interfaces/armour';
-import { Constants } from '../../../core/constants/constants';
 
 export class Armour implements IArmour {
     private _physicalResistance: number;
@@ -10,23 +6,15 @@ export class Armour implements IArmour {
     private _price: number;
     private _name: string;
 
-    public constructor (difficultyCoef: number, physicalResistance?: number, magicalResistance?: number,
-                        price?: number, name?: string) {
+    public constructor (difficultyCoef: number, physicalResistance: number, magicalResistance: number,
+                        price: number, name: string) {
         if (difficultyCoef === null || difficultyCoef < 0) {
             throw new Error ('Difficulty coefficient must be a positive number!');
         }
-        this.physicalResistance = physicalResistance ||
-        Randomizer.GENERATERANDOMNUMBER(Constants.maxPhysicalResistance * difficultyCoef);
-
-        this.magicalResistance = magicalResistance ||
-        Randomizer.GENERATERANDOMNUMBER(Constants.maxMagicalResistance * difficultyCoef);
-
-        this.price = price ||
-        Randomizer.GENERATERANDOMNUMBER(Constants.maxItemPrice * difficultyCoef);
-
-        this.name = name || (this._magicalResistance < this._physicalResistance ?
-        Randomizer.GETRANDOMENUMOPTION (ArmourType) :
-        `Enchanted ${ Randomizer.GETRANDOMENUMOPTION (ArmourType)}`);
+        this.physicalResistance = physicalResistance;
+        this.magicalResistance = magicalResistance;
+        this.price = price;
+        this.name = name;
     }
 
     public get physicalResistance (): number {
@@ -69,9 +57,3 @@ export class Armour implements IArmour {
         this._name = input;
     }
 }
-
-/*
-const armour1: IArmour = new Armour(1);
-const armour2: IArmour = new Armour(1, 1, 50, 70, 'dsd');
-console.log (armour1, armour2);
-*/

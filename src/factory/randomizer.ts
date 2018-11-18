@@ -1,8 +1,19 @@
+import { PlaceDescription } from './../models/non-living/enums/placeDescriptions';
+import { IDirection } from './../core/choices/interface/direction';
+import { Place } from './../models/non-living/classes/place';
+import { IPlace } from './../models/non-living/interfaces/place';
+import { WeaponType } from './../models/non-living/enums/weaponTypes';
+import { IWeapon } from './../models/non-living/interfaces/weapon';
+import { ArmourType } from './../models/non-living/enums/armourTypes';
+import { PotionType } from './../models/non-living/enums/potionTypes';
+import { IPotion } from './../models/non-living/interfaces/potion';
 import { Armour } from './../models/non-living/classes/armour';
 import { Inventory } from '../models/non-living/classes/inventory';
 import { IInventory } from '../models/non-living/interfaces/inventory';
 import { Weapon } from '../models/non-living/classes/weapon';
 import { Potion } from '../models/non-living/classes/potion';
+import { Constants } from '../core/constants/constants';
+import { IArmour } from '../models/non-living/interfaces/armour';
 
 export class Randomizer {
 
@@ -22,19 +33,52 @@ export class Randomizer {
         // tslint:disable-next-line:insecure-random
         return Math.floor(Math.random() * (maxValue + 1));
     }
+
+    public static GENERATERANDOMPOTION(difficultyCoef: number): IPotion {
+        return new Potion (difficultyCoef,
+                           Randomizer.GENERATERANDOMNUMBER (Constants.maxPotionPower * difficultyCoef),
+                           Randomizer.GENERATERANDOMNUMBER (Constants.maxItemPrice * difficultyCoef),
+                           Randomizer.GETRANDOMENUMOPTION (PotionType));
+    }
+
+    public static GENERATERANDOMARMOUR(difficultyCoef: number): IArmour {
+        const armour: IArmour = new Armour (difficultyCoef,
+                                            Randomizer.GENERATERANDOMNUMBER(Constants.maxPhysicalResistance * difficultyCoef),
+                                            Randomizer.GENERATERANDOMNUMBER(Constants.maxMagicalResistance * difficultyCoef),
+                                            Randomizer.GENERATERANDOMNUMBER(Constants.maxItemPrice * difficultyCoef),
+                                            Randomizer.GETRANDOMENUMOPTION (ArmourType));
+        if (armour.magicalResistance > armour.physicalResistance) {
+            armour.name = `Enchanted ${armour.name}`;
+        }
+
+        return armour;
+    }
+    public static GENERATERANDOMWEAPON(difficultyCoef: number): IWeapon {
+        const weapon: IWeapon = new Weapon (difficultyCoef,
+                                            Randomizer.GENERATERANDOMBOOLEAN(),
+                                            Randomizer.GENERATERANDOMNUMBER(Constants.maxPhysicalDamage * difficultyCoef),
+                                            Randomizer.GENERATERANDOMNUMBER(Constants.maxMagicalDamage * difficultyCoef),
+                                            Randomizer.GENERATERANDOMNUMBER(Constants.maxItemPrice * difficultyCoef),
+                                            Randomizer.GETRANDOMENUMOPTION (WeaponType));
+        if (weapon.magicalDamage > weapon.physicalDamage) {
+            weapon.name = `Enchanted ${weapon.name}`;
+        }
+
+        return weapon;
+    }
     public static GENERATERANDOMLOOT(difficultyCoef: number): IInventory {
         const loot: IInventory = new Inventory(difficultyCoef);
         // tslint:disable-next-line:insecure-random
         if (Math.random() < 0.4) {
-            loot.addArmour(new Armour (difficultyCoef));
+            loot.addArmour(Randomizer.GENERATERANDOMARMOUR(difficultyCoef));
         }
         // tslint:disable-next-line:insecure-random
         if (Math.random() < 0.4) {
-            loot.addWeapon(new Weapon (difficultyCoef));
+            loot.addWeapon(Randomizer.GENERATERANDOMWEAPON(difficultyCoef));
         }
         // tslint:disable-next-line:insecure-random
         if (Math.random() < 0.4) {
-            loot.addPotion(new Potion (difficultyCoef));
+            loot.addPotion(Randomizer.GENERATERANDOMPOTION(difficultyCoef));
         }
 
         return loot;
@@ -42,12 +86,18 @@ export class Randomizer {
 
     public static GENERATETRADERINVENTORY (difficultyCoef: number): IInventory {
         const traderInventory: IInventory = new Inventory(difficultyCoef);
-        traderInventory.addArmour(new Armour(difficultyCoef));
-        traderInventory.addWeapon(new Weapon(difficultyCoef));
-        traderInventory.addPotion(new Potion(difficultyCoef));
+        traderInventory.addArmour(Randomizer.GENERATERANDOMARMOUR(difficultyCoef));
+        traderInventory.addWeapon(Randomizer.GENERATERANDOMWEAPON(difficultyCoef));
+        traderInventory.addPotion(Randomizer.GENERATERANDOMPOTION(difficultyCoef));
 
         return traderInventory;
     }
+    /*
+    public static GENERATERANDOMPLACE (difficultyCoef: number, directions: IDirection[]): IPlace {
+        return new Place (difficultyCoef, directions, Randomizer.GETRANDOMENUMOPTION(PlaceDescription),
+                          Randomizer.GENERATERANDOMBOOLEAN(), Randomizer.GENERATERANDOMLOOT(difficultyCoef));
+    }
+    */
     public static GENERATEDIFFICULTYCOEF(x: number, y: number): number {
         return Math.sqrt((x + 1) + (y + 1));
     }

@@ -1,7 +1,4 @@
-import { Randomizer } from '../../../factory/randomizer';
-import { WeaponType } from '../enums/weaponTypes';
 import { IWeapon } from '../interfaces/weapon';
-import { Constants } from '../../../core/constants/constants';
 
 export class Weapon implements IWeapon {
     private _physicalDamage: number;
@@ -10,26 +7,16 @@ export class Weapon implements IWeapon {
     private _name: string;
     private _oneHanded: boolean;
 
-    public constructor(difficultyCoef: number, oneHanded?: boolean,
-                       physicalDamage?: number, magicalDamage?: number, price?: number, name?: string) {
+    public constructor(difficultyCoef: number, oneHanded: boolean,
+                       physicalDamage: number, magicalDamage: number, price: number, name: string) {
         if (difficultyCoef === null || difficultyCoef < 0) {
             throw new Error ('Difficulty coefficient must be a positive number!');
             }
-
-        this.oneHanded = oneHanded || Randomizer.GENERATERANDOMBOOLEAN();
-
-        this.physicalDamage = physicalDamage ||
-        Randomizer.GENERATERANDOMNUMBER(Constants.maxPhysicalDamage * difficultyCoef);
-
-        this.magicalDamage = magicalDamage ||
-        Randomizer.GENERATERANDOMNUMBER(Constants.maxMagicalDamage * difficultyCoef);
-
-        this.price = price ||
-        Randomizer.GENERATERANDOMNUMBER(Constants.maxItemPrice * difficultyCoef);
-
-        this.name = name || (this._magicalDamage < this._physicalDamage ?
-            Randomizer.GETRANDOMENUMOPTION (WeaponType) :
-            `Enchanted ${ Randomizer.GETRANDOMENUMOPTION (WeaponType)}`);
+        this.oneHanded = oneHanded;
+        this.physicalDamage = physicalDamage;
+        this.magicalDamage = magicalDamage;
+        this.price = price;
+        this.name = name;
         }
 
     public get physicalDamage(): number {
@@ -79,8 +66,3 @@ export class Weapon implements IWeapon {
     }
 
 }
-/*
-const myWeapon: IWeapon = new Weapon(1, true, 30, 50, 70, 'Wicked Wand');
-const randomWeapon: IWeapon = new Weapon(2);
-console.log(myWeapon, randomWeapon);
-*/

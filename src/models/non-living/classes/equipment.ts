@@ -8,7 +8,7 @@ export class Equipment implements IEquipment {
     private _armour: IArmour;
     private _shield: Ishield;
 
-    public constructor (weapon?: IWeapon, armour?: IArmour, shield?: Ishield) {
+    public constructor (weapon: IWeapon, armour: IArmour, shield?: Ishield) {
         if (weapon) {
             this.weapon = weapon;
         }
@@ -49,10 +49,3 @@ export class Equipment implements IEquipment {
     }
 
 }
-/*
-const myEquipment: IEquipment = new Equipment();
-const beginnerEquipment: IEquipment =
-    new Equipment (new Weapon(1, true, 10, 1, 10, 'Rusty Knife'),
-                   new Armour (1, 10, 1, 10, 'A thick layer of clothes'));
-console.log(myEquipment, beginnerEquipment);
-*/

@@ -1,20 +1,17 @@
-import { PotionType } from './../enums/potionTypes';
-import { Randomizer } from '../../../factory/randomizer';
 import { IPotion } from '../interfaces/potion';
-import { Constants } from '../../../core/constants/constants';
 
 export class Potion implements IPotion {
     private _power: number;
     private _price: number;
     private _name: string;
 
-    public constructor (difficultyCoef: number, power?: number, price?: number, name?: string) {
+    public constructor (difficultyCoef: number, power: number, price: number, name: string) {
         if (difficultyCoef === null || difficultyCoef < 0) {
             throw new Error ('Difficulty coefficient must be a positive number!');
             }
-        this.power = power || Randomizer.GENERATERANDOMNUMBER (Constants.maxPotionPower * difficultyCoef);
-        this.price = price || Randomizer.GENERATERANDOMNUMBER (Constants.maxItemPrice * difficultyCoef);
-        this.name = name || Randomizer.GETRANDOMENUMOPTION (PotionType);
+        this.power = power;
+        this.price = price;
+        this.name = name;
     }
 
     public get power (): number {
@@ -45,8 +42,3 @@ export class Potion implements IPotion {
         this._price = input;
     }
 }
-/*
-const potion1: IPotion = new Potion ();
-const potion2: IPotion = new Potion (44);
-console.log(potion1, potion2);
-*/

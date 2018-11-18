@@ -140,10 +140,3 @@ export class Inventory implements IInventory {
         return result !== '' ? result : `No items`;
     }
 }
-/*
-const start: IInventory = new Inventory(1);
-start.addArmour(new Armour(start.difficultyCoef));
-start.addWeapon(new Weapon(start.difficultyCoef));
-start.addPotion(new Potion(start.difficultyCoef));
-console.log(start.listItems());
-*/
