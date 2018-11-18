@@ -80,5 +80,46 @@
             ],
             "coins": 0
         }
+    },
+    "Atalanta": {
+        "info":"Atalanta is one of the few mortal heroines in Greek mythology. She possessed great athletic prowess: she was a skilled huntress, archer and wrestler, and was capable of running at astounding speeds.",
+        "name": "Atalanta",
+        "life": 800,
+        "strength": 70,
+        "magicResistance": 0.5,
+        "fearFactor":1,
+        "isMagical": false,
+        "equipment": {
+            "weapon":{
+                "oneHanded":true,
+                "physicalDamage":85,
+                "magicalDamage": 0,
+                "price":100,
+                "name":"A long spear"
+            },
+            "armour":{
+                "physicalResistance": 25,
+                "magicalResistance": 20,
+                "price": 88,
+                "name": "Nice Corsette"
+            }
+        },
+        "inventory": {
+            "weapons":[
+
+            ],
+            "armours":[
+
+            ],
+            "potions":[
+                {
+                    "power": 65,
+                    "name": "Healing Potion",
+                    "price": 0
+                }
+
+            ],
+            "coins": 0
+        }
     }
 }

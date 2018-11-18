@@ -15,14 +15,14 @@ export class DrinkPotion extends Choice {
             this.repository.hero.life += potionToDrink.power;
             this.writer.write(`You boost your life by ${potionToDrink.power} which is now ${this.repository.hero.life}`);
         }
-        if (potionToDrink.name === PotionType[1]) {
-         //   this.tempMagicBoost = potionToDrink.power;
+        if (potionToDrink.name === PotionType[2]) {
+            this.repository.hero.tempMagicBoost = potionToDrink.power;
             this.writer.write(`You temporarily boost your magic power by ${potionToDrink.power}`);
         }
-        if (potionToDrink.name === PotionType[2]) {
-          //  this.tempStrengthBoost = potionToDrink.power;
+        if (potionToDrink.name === PotionType[1]) {
+            this.repository.hero.tempStrengthBoost = potionToDrink.power;
             this.writer.write(`You temporarily boost your strength by ${potionToDrink.power}`);
         }
-        this.writer.write(`Drank postion ${potionToDrink.name} successfully`, '\x1b[34m');
+        this.writer.write(`Drank potion ${potionToDrink.name} successfully`, '\x1b[34m');
     }
 }

@@ -11,4 +11,6 @@ export interface Ihero {
     info: string;
     isMagical: boolean;
     magicStrings: string[];
+    tempMagicBoost: number;
+    tempStrengthBoost: number;
 }

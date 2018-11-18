@@ -10,6 +10,8 @@ export class Hero extends LivingBeingModel implements IPerson, IAlive, Ihero {
     private readonly _equipment: IEquipment;
     private readonly _inventory: IInventory;
     private readonly _info: string;
+    private _tempMagicBoost: number = 0;
+    private _tempStrengthBoost: number = 0;
     public constructor(
         name: string,
         info: string,
@@ -21,7 +23,7 @@ export class Hero extends LivingBeingModel implements IPerson, IAlive, Ihero {
         inventory: IInventory,
         isMagical: boolean,
         magicStrings?: string[]
-        ) {
+    ) {
         super(name, life, strength, magicResistance, fearFactor, isMagical, magicStrings);
         this._equipment = equipment;
         this._inventory = inventory;
@@ -36,6 +38,18 @@ export class Hero extends LivingBeingModel implements IPerson, IAlive, Ihero {
         return this._inventory;
     }
 
+    get tempMagicBoost(): number {
+        return this._tempMagicBoost;
+    }
+    set tempMagicBoost(boost: number) {
+        this._tempMagicBoost = boost;
+    }
+    get tempStrengthBoost(): number {
+        return this._tempStrengthBoost;
+    }
+    set tempStrengthBoost(boost: number) {
+        this._tempStrengthBoost = boost;
+    }
     // To implement say()
     public say(): string {
         return ('Hello');

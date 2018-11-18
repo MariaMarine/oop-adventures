@@ -9,13 +9,16 @@ export class Hit extends Choice {
     }
     public run(): void {
         const enemy: NonHero = this.repository.currentPlace.creature;
-        const heroHitDamage: number = Math.floor((this.repository.hero.strength + 2) * 1.75 +    //temp strendth boost?!??!?!
-        this.repository.hero.equipment.weapon.physicalDamage);
+        const heroHitDamage: number = Math.floor((this.repository.hero.strength + this.repository.hero.tempStrengthBoost) * 1.75 +
+                                                  this.repository.hero.equipment.weapon.physicalDamage);
         const enemyHitDamage: number = Math.floor(enemy.strength * 2.25);
+
         this.repository.hero.life -= enemyHitDamage;
         enemy.life -= heroHitDamage;
+
         this.writer.write(`You hit the ${enemy.name} and it takes ${heroHitDamage} damage!`, '\x1b[35m');
         this.writer.write(`The ${enemy.name} hits back and you take ${enemyHitDamage} damage!`, '\x1b[35m');
+
         if (this.repository.hero.life === 0) {
             let i: number = 500;
             let output: string = '';

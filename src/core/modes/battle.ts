@@ -72,10 +72,13 @@ export class Battle {
                     this.choiceProvider.getBattleChoices());
 
             nextChoice.run();
-            this.rounds += 1;
+            if (nextChoice.names[0] !== 'potion') {
+                this.rounds += 1;
+            }
+
         }
-        this.tempMagicBoost = 0;
-        this.tempStrengthBoost = 0;
+        this.repository.hero.tempMagicBoost = 0;
+        this.repository.hero.tempStrengthBoost = 0;
 
     }
 }

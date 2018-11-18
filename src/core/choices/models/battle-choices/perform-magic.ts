@@ -6,11 +6,12 @@ import { NonHero } from '../../../../models/living/classes/non-hero';
 @injectable()
 export class PerformMagic extends Choice {
     public constructor() {
-        super(['magic', 'cast'], [`The enemy is too close!!!!`, `Can't do that`]);
+        super(['magic', 'cast'], [`Well...`, `Can't do that`]);
     }
     public run(): void {
         const enemy: NonHero = this.repository.currentPlace.creature;
-        const heroMagicDamage: number = Math.floor(this.repository.hero.equipment.weapon.magicalDamage + 2 * 1.5);//tempmagicboost???
+        // tslint:disable-next-line:max-line-length
+        const heroMagicDamage: number = Math.floor(this.repository.hero.equipment.weapon.magicalDamage + this.repository.hero.tempMagicBoost * 1.5);
         const magicString: string = Randomizer.GETRANDOMARRAYELEMENT(this.repository.hero.magicStrings);
         enemy.life -= heroMagicDamage;
         this.writer.write(`You performed ${magicString} and the ${enemy.name} takes ${heroMagicDamage} damage!`, '\x1b[35m');
@@ -30,7 +31,6 @@ export class PerformMagic extends Choice {
             this.repository.currentPlace.containsCreature = false;
         } else {
             this.writer.write(`The ${enemy.name} looks shocked, but approaches you nevertheless!!!`, '\x1b[35m');
-            // tslint:disable-next-line:max-line-length
             this.writer.write(`Your enemy is left with ${enemy.life} health, you have ${this.repository.hero.life}!\n`, '\x1b[34m');
         }
     }

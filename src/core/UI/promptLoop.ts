@@ -27,7 +27,8 @@ export class PromptLoop {
         let commandToReturn: IChoice = {
             names: [],
             commandNotPossibleStrings: [],
-            isPossible: false
+            isPossible: false,
+            run(): void { console.log(1); }
         };
         let oneOfThePossibleChoicesInputed: boolean = false;
         // tslint:disable-next-line:no-constant-condition
@@ -40,7 +41,7 @@ export class PromptLoop {
             while (input === 'options') {
                 this.writer.write(choices.reduce((acc: string, choice: IChoice) =>
                     `${acc} ${choice.names[0]}`, `You have the following options: `),
-                                  '\x1b[31m');
+                    '\x1b[31m');
                 input = this.reader.read().toLowerCase();
             }
             choices.forEach((choice: IChoice) => {
