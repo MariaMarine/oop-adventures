@@ -1,8 +1,5 @@
-import { PlaceDescription } from './../enums/placeDescriptions';
-import { Randomizer } from '../../../factory/randomizer';
 import { IInventory } from '../interfaces/inventory';
 import { IPlace } from '../interfaces/place';
-import { IDirection } from '../../../core/choices/interface/direction';
 import { NonHero } from '../../living/classes/non-hero';
 
 export class Place implements IPlace {
@@ -12,11 +9,9 @@ export class Place implements IPlace {
     private _introText: string;
     private _loot: IInventory;
     private _nextVisitText: string = '';
-    private _directions: IDirection[];
-    public constructor(difficultyCoef: number, directions: IDirection[],
+    public constructor(difficultyCoef: number,
                        containsCreature: boolean, introText: string, loot: IInventory) {
         this._visited = false;
-        this._directions = directions;
         this._containsCreature = containsCreature;
         this._introText = `You enter ${introText}.`;
         this._nextVisitText = `You are back to ${introText}.`;
@@ -49,9 +44,6 @@ export class Place implements IPlace {
         return this._loot;
     }
 
-    public get directions(): IDirection[] {
-        return this._directions;
-    }
     public get nextVisitText(): string {
         return this._nextVisitText;
     }

@@ -1,7 +1,5 @@
 import { Randomizer } from './../../factory/randomizer';
 import { IPlace } from '../../models/non-living/interfaces/place';
-import { Directions } from '../choices/directions';
-import { Place } from '../../models/non-living/classes/place';
 import { MazeCell } from '../../models/non-living/classes/maze-cell';
 import { inject, injectable } from 'inversify';
 import { Ifactory } from '../../factory/interface/Ifactory';
@@ -42,10 +40,9 @@ export class PlaceGenerator {
         const x: number = this.repository.currentX;
         const y: number = this.repository.currentY;
         const mazeCell: MazeCell = this.repository.map[x][y];
-        const newDirections: Directions = new Directions(!mazeCell.top, !mazeCell.bottom, !mazeCell.right, !mazeCell.left);
         const diffCoef: number = Randomizer.GENERATEDIFFICULTYCOEF(x, y);
         // Create the new Place
-        const newPlace: IPlace = Randomizer.GENERATERANDOMPLACE (diffCoef, newDirections.getAllDirections());
+        const newPlace: IPlace = Randomizer.GENERATERANDOMPLACE(diffCoef);
         this.repository.currentPlace = newPlace;
         this.repository.map[x][y].place = newPlace;
 

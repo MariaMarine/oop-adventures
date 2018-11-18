@@ -11,5 +11,6 @@ export namespace Constants {
     export const baseLife: number = 100;
     export const baseStrength: number = 20;
     export const baseMagicResistance: number = 20;
+    export const directionNotPossible: string[] = ['Path is blocked', 'Can`t do that', 'Giant stone is blocking the way'];
 
 }

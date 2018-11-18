@@ -1,5 +1,4 @@
 import { PlaceDescription } from './../models/non-living/enums/placeDescriptions';
-import { IDirection } from './../core/choices/interface/direction';
 import { Place } from './../models/non-living/classes/place';
 import { IPlace } from './../models/non-living/interfaces/place';
 import { WeaponType } from './../models/non-living/enums/weaponTypes';
@@ -93,8 +92,8 @@ export class Randomizer {
         return traderInventory;
     }
 
-    public static GENERATERANDOMPLACE (difficultyCoef: number, directions: IDirection[]): IPlace {
-        return new Place (difficultyCoef, directions, Randomizer.GENERATERANDOMBOOLEAN(),
+    public static GENERATERANDOMPLACE (difficultyCoef: number): IPlace {
+        return new Place (difficultyCoef, Randomizer.GENERATERANDOMBOOLEAN(),
                           Randomizer.GETRANDOMENUMOPTION(PlaceDescription),
                           Randomizer.GENERATERANDOMLOOT(difficultyCoef));
     }
