@@ -1,9 +1,9 @@
-import { Weapon } from './../../../../src/models/non-living/classes/weapon';
-import { Armour } from './../../../../src/models/non-living/classes/armour';
-import { IInventory } from './../../../../src/models/non-living/interfaces/inventory';
-import { Inventory } from '../../../../src/models/non-living/classes/inventory';
-import { Potion } from '../../../../src/models/non-living/classes/potion';
-import { IPotion } from '../../../../src/models/non-living/interfaces/potion';
+import { IPotion } from './../../../src/models/non-living/interfaces/potion';
+import { IInventory } from './../../../src/models/non-living/interfaces/inventory';
+import { Armour } from './../../../src/models/non-living/classes/armour';
+import { Weapon } from './../../../src/models/non-living/classes/weapon';
+import { Potion } from './../../../src/models/non-living/classes/potion';
+import { Inventory } from './../../../src/models/non-living/classes/inventory';
 
 describe (`Inventory`, () => {
     describe (`SubtractCoins() should`, () => {

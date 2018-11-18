@@ -1,5 +1,5 @@
-import { Armour } from './../../../../src/models/non-living/classes/armour';
-import { IArmour } from '../../../../src/models/non-living/interfaces/armour';
+import { IArmour } from './../../../src/models/non-living/interfaces/armour';
+import { Armour } from './../../../src/models/non-living/classes/armour';
 
 describe (`Armour`, () => {
     describe ('name should', () => {
