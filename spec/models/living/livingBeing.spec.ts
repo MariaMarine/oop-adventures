@@ -1,7 +1,7 @@
-import { IAlive } from './../../../models/living/interfaces/alive';
 // tslint:disable-next-line
 import 'reflect-metadata';
 import { LivingBeingMock } from './livingBeing.mock';
+import { IAlive } from '../../../src/models/living/interfaces/alive';
 
 describe('LivingBeing', () => {
     describe('constructor should', () => {
@@ -14,6 +14,8 @@ describe('LivingBeing', () => {
             expect(livingBeing.strength).toBe(100);
             expect(livingBeing.magicResistance).toBe(100);
             expect(livingBeing.fearFactor).toBe(150);
+            expect(livingBeing.isMagical).toBe(true);
+
         });
     });
     describe('validateStrength should:', () => {

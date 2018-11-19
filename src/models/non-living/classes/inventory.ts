@@ -3,7 +3,6 @@ import { IWeapon } from './../interfaces/weapon';
 import { IInventory } from './../interfaces/inventory';
 import { IArmour } from '../interfaces/armour';
 import { inject } from 'inversify';
-import { Iwriter } from '../../../core/UI/interfaces/writer';
 
 export class Inventory implements IInventory {
     private _weapons: IWeapon[];
@@ -11,21 +10,15 @@ export class Inventory implements IInventory {
     private _potions: IPotion[];
     private _coins: number;
     private _difficultyCoef: number;
-    private writer: Iwriter;
-    public constructor(difficultyCoef: number, @inject('ui-writer') writer?: Iwriter) {
+
+    public constructor(difficultyCoef: number) {
         if (difficultyCoef === null || difficultyCoef < 0) {
             throw new Error('Difficulty coefficient must be a positive number!');
         }
-        if (writer) {
-            this.writer = writer;
-        }
-
         this._difficultyCoef = difficultyCoef;
         this._weapons = [];
         this._armour = [];
-
         this._potions = [];
-
         this._coins = 0;
     }
     public get weapons(): IWeapon[] {

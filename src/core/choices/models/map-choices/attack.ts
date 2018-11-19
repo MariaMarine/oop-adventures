@@ -5,7 +5,7 @@ import { Choice } from '../choice';
 export class Attack extends Choice {
 
     constructor() {
-        super(['attack', 'kill', 'battle'],
+        super(['attack', 'kill', 'battle', 'fight'],
               ['Can`t attack right now', 'Atack who??!', 'Noone here right now']);
 
     }
