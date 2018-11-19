@@ -35,7 +35,7 @@ export class Randomizer {
 
     public static GENERATERANDOMPOTION(difficultyCoef: number): IPotion {
         return new Potion (difficultyCoef,
-                           Randomizer.GENERATERANDOMNUMBER (Constants.maxPotionPower * difficultyCoef * 2),
+                           Randomizer.GENERATERANDOMNUMBER (Constants.maxPotionPower * difficultyCoef),
                            Randomizer.GENERATERANDOMNUMBER (Constants.maxItemPrice * difficultyCoef),
                            Randomizer.GETRANDOMENUMOPTION (PotionType));
     }
