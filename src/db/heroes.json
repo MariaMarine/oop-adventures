@@ -2,7 +2,7 @@
     "Arthur": {
         "info":"King Arthur is a medieval, mythological figure who was the head of the kingdom Camelot. Give him the chance to reborn and fuck those bastards!",
         "name": "Arthur",
-        "life": 1000,
+        "life": 1500,
         "strength": 60,
         "magicResistance": 0.5,
         "fearFactor":1,
@@ -43,7 +43,7 @@
     "Gandalf": {
         "info":"A mighty Lizard coming from the Old Times to rescue the world. He is a bit crazy, but powerful with the stuff",
         "name": "Gandalf",
-        "life": 700,
+        "life": 900,
         "strength": 30,
         "magicResistance": 0.5,
         "fearFactor":1,
@@ -84,7 +84,7 @@
     "Atalanta": {
         "info":"Atalanta is one of the few mortal heroines in Greek mythology. She possessed great athletic prowess: she was a skilled huntress, archer and wrestler, and was capable of running at astounding speeds.",
         "name": "Atalanta",
-        "life": 800,
+        "life": 1250,
         "strength": 70,
         "magicResistance": 0.5,
         "fearFactor":1,

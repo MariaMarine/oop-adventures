@@ -17,7 +17,7 @@ import { MagicType } from '../models/living/enums/magicType';
 @injectable()
 export class Factory implements Ifactory {
     private dbService: IDbService;
-    private readonly nonHeroTypes: string[] = ['Humanoid', 'Humanoid', 'Trader', 'Creature', 'Creature'];
+    private readonly nonHeroTypes: string[] = ['Humanoid', 'Trader', 'Creature', 'Creature'];
     private readonly nonHeroStrengthStrings: { names: string[]; fearFactor: number }[] = [];
     constructor(@inject('database-service') dbService: IDbService) {
         this.dbService = dbService;
@@ -49,15 +49,15 @@ export class Factory implements Ifactory {
         let fearFactor: number = 0;
         let nonHeroStrengthString: string = '';
         const nonHeroInventory: IInventory =  Randomizer.GENERATETRADERINVENTORY(Math.sqrt(difficultyCoef));
-        if (difficultyCoef < 4) {
+        if (difficultyCoef < 3) {
             nonHeroStrengthString = Randomizer.GETRANDOMARRAYELEMENT(this.nonHeroStrengthStrings[0].names);
             fearFactor = this.nonHeroStrengthStrings[0].fearFactor;
         }
-        if (difficultyCoef > 4 && difficultyCoef < 7) {
+        if (difficultyCoef >= 3 && difficultyCoef < 6) {
             nonHeroStrengthString = Randomizer.GETRANDOMARRAYELEMENT(this.nonHeroStrengthStrings[1].names);
             fearFactor = this.nonHeroStrengthStrings[1].fearFactor;
         }
-        if (difficultyCoef > 6) {
+        if (difficultyCoef >= 6) {
             nonHeroStrengthString = Randomizer.GETRANDOMARRAYELEMENT(this.nonHeroStrengthStrings[2].names);
             fearFactor = this.nonHeroStrengthStrings[2].fearFactor;
         }

@@ -11,10 +11,22 @@
          {
             "name":  "Old gypsy",
             "sayStrings":["I like singing in the rain", "I am old, but good in bed", "I sell Chinese stock only"]
+         },
+         {
+            "name":  "Pale Veggie seller",
+            "sayStrings":["Don`t forget to eat your Veggies!!", "Who does not eat veggies dies young", "Buy my carrots", "I do not sell fruit"]
          }
         ],
         "Creature": [
             {
+                "name":"Tasmanian devil",
+                "sayStrings":["SAdasldasdADJ", "ASKDHASKDJahsksadnaskjd","asdasKLJASHDjkashd"]
+             },
+             {
+                "name":"Skunk",
+                "sayStrings":["Smell that", "Do you see my but?","Huhhuhuhuhuihihi"]
+             },
+             {
                 "name":"Wolf",
                 "sayStrings":["Woof", "Woooooof"]
              },
@@ -40,6 +52,18 @@
          {
             "name":  "Giant",
             "sayStrings":["But I have gentle heart", "I like roses", "Where are you, little pug?"]
+         },
+         {
+            "name":  "Old Witch",
+            "sayStrings":["I like young boys", "Can`t really see you", "Are you well fed?"]
+         },
+         {
+            "name":  "Smelly Knight",
+            "sayStrings":["I met a Skunk", "Beware of my socks", "Really????"]
+         },
+         {
+            "name":  "PoliMorphism",
+            "sayStrings":["I change forms", "My face can morph in seconds", "I can morph any part of my body"]
          }
         ]
     

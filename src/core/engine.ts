@@ -5,7 +5,6 @@ import { IChoice } from './choices/interface/choice';
 import { PlaceGenerator } from './engine-helpers/current-place-generator';
 import { Constants } from './constants/constants';
 import { Iwriter } from './UI/interfaces/writer';
-import { ItemService } from './engine-helpers/item-service';
 import { Battle } from './modes/battle';
 import { IRepository } from '../models/non-living/interfaces/repository';
 import { IChoiceProvider } from './choices/interface/choice-provider';
@@ -20,7 +19,7 @@ export class MainEngine implements Iengine {
     private writer: Iwriter;
     private repository: IRepository;
     private choiceService: IChoiceService;
-    private choiceProvider: IChoiceProvider
+    private choiceProvider: IChoiceProvider;
     private battle: Battle;
     public constructor(
         @inject('battle') battle: Battle,
@@ -28,8 +27,8 @@ export class MainEngine implements Iengine {
         @inject('current-place-generator') placeGenerator: PlaceGenerator,
         @inject('ui-writer') writer: Iwriter,
         @inject('prompt-loop') promptloop: PromptLoop,
-        @inject ('choice-service') choiceService: IChoiceService,
-        @inject ('choice-provider') choiceProvider: IChoiceProvider
+        @inject('choice-service') choiceService: IChoiceService,
+        @inject('choice-provider') choiceProvider: IChoiceProvider
     ) {
         this.battle = battle;
         this.choiceProvider = choiceProvider;
@@ -45,14 +44,13 @@ export class MainEngine implements Iengine {
         this.placeGenerator.setNewPlace();
         while (this.repository.currentX !== Constants.gameRows - 1 || this.repository.currentY !== Constants.gameCols - 1) {
             this.choiceService.setMapChoices();
-            console.log(this.repository.currentX,this.repository.currentY)
 
             const nextChoice: IChoice = this.promptLoop.multiple(
-            ['What would you like to do?', 'Well...', 'For all possible choices type "options"', 'Please try again'],
-            this.choiceProvider.getMapChoices());
-            
+                ['What would you like to do?', 'Well...', 'For all possible choices type "options"', 'Please try again'],
+                this.choiceProvider.getMapChoices());
+
             nextChoice.run();
-            if(nextChoice.names[0]==='attack'){
+            if (nextChoice.names[0] === 'attack') {
                 this.battle.start();
             }
             this.placeGenerator.setNewPlace();

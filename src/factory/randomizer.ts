@@ -24,9 +24,9 @@ export class Randomizer {
         return enumerator[item];
     }
 
-    public static GENERATERANDOMBOOLEAN(): boolean {
+    public static GENERATERANDOMBOOLEAN(prob: number): boolean {
         // tslint:disable-next-line:insecure-random
-        return Math.random() < 0.5;
+        return Math.random() < prob;
     }
     public static GENERATERANDOMNUMBER(maxValue: number): number {
         // tslint:disable-next-line:insecure-random
@@ -35,7 +35,7 @@ export class Randomizer {
 
     public static GENERATERANDOMPOTION(difficultyCoef: number): IPotion {
         return new Potion (difficultyCoef,
-                           Randomizer.GENERATERANDOMNUMBER (Constants.maxPotionPower * difficultyCoef),
+                           Randomizer.GENERATERANDOMNUMBER (Constants.maxPotionPower * difficultyCoef * 2),
                            Randomizer.GENERATERANDOMNUMBER (Constants.maxItemPrice * difficultyCoef),
                            Randomizer.GETRANDOMENUMOPTION (PotionType));
     }
@@ -54,7 +54,7 @@ export class Randomizer {
     }
     public static GENERATERANDOMWEAPON(difficultyCoef: number): IWeapon {
         const weapon: IWeapon = new Weapon (difficultyCoef,
-                                            Randomizer.GENERATERANDOMBOOLEAN(),
+                                            Randomizer.GENERATERANDOMBOOLEAN(0.5),
                                             Randomizer.GENERATERANDOMNUMBER(Constants.maxPhysicalDamage * difficultyCoef),
                                             Randomizer.GENERATERANDOMNUMBER(Constants.maxMagicalDamage * difficultyCoef),
                                             Randomizer.GENERATERANDOMNUMBER(Constants.maxItemPrice * difficultyCoef),
@@ -93,7 +93,7 @@ export class Randomizer {
     }
 
     public static GENERATERANDOMPLACE (difficultyCoef: number): IPlace {
-        return new Place (difficultyCoef, Randomizer.GENERATERANDOMBOOLEAN(),
+        return new Place (difficultyCoef, Randomizer.GENERATERANDOMBOOLEAN(0.65),
                           Randomizer.GETRANDOMENUMOPTION(PlaceDescription),
                           Randomizer.GENERATERANDOMLOOT(difficultyCoef));
     }

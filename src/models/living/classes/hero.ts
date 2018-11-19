@@ -25,6 +25,7 @@ export class Hero extends LivingBeingModel implements IPerson, IAlive, Ihero {
         magicStrings?: string[]
     ) {
         super(name, life, strength, magicResistance, fearFactor, isMagical, magicStrings);
+        this._info = info;
         this._equipment = equipment;
         this._inventory = inventory;
     }
@@ -42,12 +43,18 @@ export class Hero extends LivingBeingModel implements IPerson, IAlive, Ihero {
         return this._tempMagicBoost;
     }
     set tempMagicBoost(boost: number) {
+        if (boost < 0) {
+            throw new Error('Boost can`t be < 0');
+        }
         this._tempMagicBoost = boost;
     }
     get tempStrengthBoost(): number {
         return this._tempStrengthBoost;
     }
     set tempStrengthBoost(boost: number) {
+        if (boost < 0) {
+            throw new Error('Boost can`t be < 0');
+        }
         this._tempStrengthBoost = boost;
     }
     // To implement say()

@@ -3,7 +3,6 @@ import { inject, injectable } from 'inversify';
 import { PromptLoop } from './UI/promptLoop';
 import { MainEngine } from './engine';
 import { Maze } from '../ioc-config/maze-generator';
-
 import { container } from '../ioc-config/ioc.config';
 import { Constants } from './constants/constants';
 import { Ihero } from '../models/living/interfaces/hero';
@@ -28,8 +27,6 @@ export class Init {
     }
     public initialize(): void {
         this.repository.userName = this.promptLoop.setName();
-        //  const difficulty: string = this.promptLoop.multiple(['Choose difficulty'], ['easy', 'intermediate', 'hard']);
-
         const randomMaze: Maze = new Maze(Constants.gameRows, Constants.gameCols, container.get<MazeDashPrinter>('maze-printer'));
         this.repository.map = randomMaze.maze;
 

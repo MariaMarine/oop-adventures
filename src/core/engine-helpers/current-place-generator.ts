@@ -41,7 +41,7 @@ export class PlaceGenerator {
         const y: number = this.repository.currentY;
         const mazeCell: MazeCell = this.repository.map[x][y];
         const diffCoef: number = Randomizer.GENERATEDIFFICULTYCOEF(x, y);
-        // Create the new Place
+
         const newPlace: IPlace = Randomizer.GENERATERANDOMPLACE(diffCoef);
         this.repository.currentPlace = newPlace;
         this.repository.map[x][y].place = newPlace;
