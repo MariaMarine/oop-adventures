@@ -1,4 +1,3 @@
-import { Inventory } from './../../non-living/classes/inventory';
 import { IInventory } from './../../non-living/interfaces/inventory';
 import { LivingBeingModel } from './livingBeing-model';
 import { IAlive } from '../interfaces/alive';
